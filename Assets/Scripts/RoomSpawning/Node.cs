@@ -8,5 +8,6 @@ public struct Node
     public int x;
     public int y;
     public OpenDir dir;
+    public bool visited;
 
 }

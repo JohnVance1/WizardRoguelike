@@ -12,6 +12,7 @@ public class RoomSpawner : MonoBehaviour
 
     private Grid grid;
     private GameObject startRoom;
+    private int roomNum;
 
     private Queue<Node> openQueue;
 
@@ -19,6 +20,7 @@ public class RoomSpawner : MonoBehaviour
     {
         grid = new Grid();
         openQueue = new Queue<Node>();
+        roomNum = 4;
         SpawnRooms();
     }
 
@@ -26,15 +28,13 @@ public class RoomSpawner : MonoBehaviour
     {
         Node currentRoom;
 
-        if (grid.grid[4, 0].room == null) 
-        {
-            startRoom = Instantiate(startingRooms[Random.Range(0, 3)], Vector3.zero, Quaternion.identity);
-            grid.grid[4, 0].room = startRoom;
-            currentRoom = grid.grid[4, 0];
-            currentRoom.dir = currentRoom.room.GetComponent<Room>().openDirections;
-            currentRoom.dir -= OpenDir.D;
-            openQueue.Enqueue(currentRoom);
-        }
+        startRoom = Instantiate(startingRooms[Random.Range(0, 3)], Vector3.zero, Quaternion.identity);
+        grid.grid[4, 4].room = startRoom;
+        currentRoom = grid.grid[4, 4];
+        currentRoom.dir = currentRoom.room.GetComponent<Room>().openDirections;
+        currentRoom.dir -= OpenDir.D;
+        currentRoom.visited = true;
+        openQueue.Enqueue(currentRoom);
 
         //  while queue > 0
         //  pop queue
@@ -45,13 +45,34 @@ public class RoomSpawner : MonoBehaviour
 
 
 
-        while(openQueue.Count > 0)
+        while (openQueue.Count > 0)
         {
+            //while (openQueue.Peek().visited)
+            //{
+
+            //}
             currentRoom = openQueue.Dequeue();
+
+
 
             if (currentRoom.dir.HasFlag(OpenDir.L))
             {
                 GameObject room = GetSpawnedRoom(rightRooms, grid.grid[currentRoom.x - 1, currentRoom.y], OpenDir.L);
+
+                if (roomNum <= 0)
+                {
+                    for (int i = 0; i < rightRooms.Length; i++)
+                    {
+                        if (rightRooms[i].GetComponent<Room>().openDirections == (OpenDir.R))
+                        {
+                            room = rightRooms[i];
+                        }
+                    }
+                }
+                else
+                {
+                    roomNum--;
+                }
 
                 grid.grid[currentRoom.x - 1, currentRoom.y].room = Instantiate(room,
                     currentRoom.room.transform.position - Vector3.right * 3,
@@ -62,8 +83,12 @@ public class RoomSpawner : MonoBehaviour
 
                 grid.grid[currentRoom.x - 1, currentRoom.y].dir = grid.grid[currentRoom.x - 1, currentRoom.y].room.GetComponent<Room>().openDirections;
                 grid.grid[currentRoom.x - 1, currentRoom.y].dir -= OpenDir.R;
+
+                
+
                 if (grid.grid[currentRoom.x - 1, currentRoom.y].dir != OpenDir.None)
                 {
+                    grid.grid[currentRoom.x - 1, currentRoom.y].visited = true;
                     openQueue.Enqueue(grid.grid[currentRoom.x - 1, currentRoom.y]);
                     
                 }
@@ -73,6 +98,20 @@ public class RoomSpawner : MonoBehaviour
             {
                 GameObject room = GetSpawnedRoom(leftRooms, grid.grid[currentRoom.x + 1, currentRoom.y], OpenDir.R);
                 
+                if (roomNum <= 0)
+                {
+                    for (int i = 0; i < leftRooms.Length; i++)
+                    {
+                        if (leftRooms[i].GetComponent<Room>().openDirections == (OpenDir.L))
+                        {
+                            room = leftRooms[i];
+                        }
+                    }
+                }
+                else
+                {
+                    roomNum--;
+                }
                 grid.grid[currentRoom.x + 1, currentRoom.y].room = Instantiate(room,
                     currentRoom.room.transform.position + Vector3.right * 3,
                     Quaternion.identity);
@@ -82,6 +121,8 @@ public class RoomSpawner : MonoBehaviour
                 grid.grid[currentRoom.x + 1, currentRoom.y].dir -= OpenDir.L;
                 if (grid.grid[currentRoom.x + 1, currentRoom.y].dir != OpenDir.None)
                 {
+                    grid.grid[currentRoom.x + 1, currentRoom.y].visited = true;
+
                     openQueue.Enqueue(grid.grid[currentRoom.x + 1, currentRoom.y]);
                     
                 }
@@ -91,7 +132,20 @@ public class RoomSpawner : MonoBehaviour
             {
                 GameObject room = GetSpawnedRoom(downRooms, grid.grid[currentRoom.x, currentRoom.y + 1], OpenDir.U);
 
-               
+                if (roomNum <= 0)
+                {
+                    for (int i = 0; i < downRooms.Length; i++)
+                    {
+                        if (downRooms[i].GetComponent<Room>().openDirections == (OpenDir.D))
+                        {
+                            room = downRooms[i];
+                        }
+                    }
+                }
+                else
+                {
+                    roomNum--;
+                }
 
                 grid.grid[currentRoom.x, currentRoom.y + 1].room = Instantiate(room,
                     currentRoom.room.transform.position + Vector3.up * 3,
@@ -103,6 +157,8 @@ public class RoomSpawner : MonoBehaviour
 
                 if (grid.grid[currentRoom.x, currentRoom.y + 1].dir != OpenDir.None)
                 {
+                    grid.grid[currentRoom.x, currentRoom.y + 1].visited = true;
+
                     openQueue.Enqueue(grid.grid[currentRoom.x, currentRoom.y + 1]);
                     
                 }
@@ -113,6 +169,21 @@ public class RoomSpawner : MonoBehaviour
             {
                 GameObject room = GetSpawnedRoom(upRooms, grid.grid[currentRoom.x, currentRoom.y - 1], OpenDir.D);
 
+                if (roomNum <= 0)
+                {
+                    for (int i = 0; i < upRooms.Length; i++)
+                    {
+                        if (upRooms[i].GetComponent<Room>().openDirections == (OpenDir.U))
+                        {
+                            room = upRooms[i];
+                        }
+                    }
+                }
+                else
+                {
+                    roomNum--;
+                }
+
                 grid.grid[currentRoom.x, currentRoom.y - 1].room = Instantiate(room,
                     currentRoom.room.transform.position - Vector3.up * 3,
                     Quaternion.identity);
@@ -122,6 +193,8 @@ public class RoomSpawner : MonoBehaviour
                 grid.grid[currentRoom.x, currentRoom.y - 1].dir -= OpenDir.U;
                 if (grid.grid[currentRoom.x, currentRoom.y - 1].dir != OpenDir.None)
                 {
+                    grid.grid[currentRoom.x, currentRoom.y - 1].visited = true;
+
                     openQueue.Enqueue(grid.grid[currentRoom.x, currentRoom.y - 1]);
                     
                 }
@@ -206,34 +279,50 @@ public class RoomSpawner : MonoBehaviour
         GameObject room = roomArray[Random.Range(0, 7)];
 
         OpenDir required = grid.CheckNeighbors(current, parentDir);
-        OpenDir restricted = grid.CheckBounds(current, parentDir);
-        if (required != OpenDir.None || restricted != OpenDir.None)
+
+        if (!room.GetComponent<Room>().openDirections.HasFlag(required))
         {
-            if (required != OpenDir.None && restricted != OpenDir.None)
+            for(int i = 0;i < roomArray.Length; i++)
             {
-                while (room.GetComponent<Room>().openDirections.HasFlag(restricted) && !room.GetComponent<Room>().openDirections.HasFlag(required))
+                if(roomArray[i].GetComponent<Room>().openDirections.HasFlag(required))
                 {
-                    room = roomArray[Random.Range(0, 7)];
-                }
-            }
+                    room = roomArray[i];
 
-            else if (required != OpenDir.None)
-            {
-                while (!room.GetComponent<Room>().openDirections.HasFlag(required))
-                {
-                    room = roomArray[Random.Range(0, 7)];
                 }
-            }
 
-            else if (restricted != OpenDir.None)
-            {
-                while (room.GetComponent<Room>().openDirections.HasFlag(restricted))
-                {
-                    room = roomArray[Random.Range(0, 7)];
-                }
             }
-
         }
+
+
+
+        //OpenDir restricted = grid.CheckBounds(current, parentDir);
+        //if (required != OpenDir.None || restricted != OpenDir.None)
+        //{
+        //    if (required != OpenDir.None && restricted != OpenDir.None)
+        //    {
+        //        while (room.GetComponent<Room>().openDirections.HasFlag(restricted) && !room.GetComponent<Room>().openDirections.HasFlag(required))
+        //        {
+        //            room = roomArray[Random.Range(0, 7)];
+        //        }
+        //    }
+
+        //    else if (required != OpenDir.None)
+        //    {
+        //        while (!room.GetComponent<Room>().openDirections.HasFlag(required))
+        //        {
+        //            room = roomArray[Random.Range(0, 7)];
+        //        }
+        //    }
+
+        //    else if (restricted != OpenDir.None)
+        //    {
+        //        while (room.GetComponent<Room>().openDirections.HasFlag(restricted))
+        //        {
+        //            room = roomArray[Random.Range(0, 7)];
+        //        }
+        //    }
+
+        //}
 
         return room;
     }

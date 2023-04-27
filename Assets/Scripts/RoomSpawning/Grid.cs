@@ -18,6 +18,7 @@ public class Grid
                 Node n = new Node();
                 n.x = i;
                 n.y = j;
+                n.visited = false;
                 grid[i, j] = n;
             }
         }
@@ -34,28 +35,28 @@ public class Grid
         OpenDir dir = OpenDir.None;
         if (current.y - 1 >= 0)
         {
-            if ((grid[current.x, current.y - 1].room != null && grid[current.x, current.y - 1].dir.HasFlag(OpenDir.U)) && parentRoomDir != OpenDir.U)
+            if (grid[current.x, current.y - 1].room != null /*&& grid[current.x, current.y - 1].dir.HasFlag(OpenDir.U) && parentRoomDir != OpenDir.U*/)
             {
                 dir = dir | OpenDir.D;
             }
         }
         if (current.y + 1 < height)
         {
-            if ((grid[current.x, current.y + 1].room != null && grid[current.x, current.y + 1].dir.HasFlag(OpenDir.D)) && parentRoomDir != OpenDir.D)
+            if (grid[current.x, current.y + 1].room != null /*&& grid[current.x, current.y + 1].dir.HasFlag(OpenDir.D) && parentRoomDir != OpenDir.D*/)
             {
                 dir = dir | OpenDir.U;
             }
         }
         if (current.x - 1 >= 0)
         {
-            if ((grid[current.x - 1, current.y].room != null && grid[current.x - 1, current.y].dir.HasFlag(OpenDir.R)) && parentRoomDir != OpenDir.R)
+            if (grid[current.x - 1, current.y].room != null /*&& grid[current.x - 1, current.y].dir.HasFlag(OpenDir.R) && parentRoomDir != OpenDir.R*/)
             {
                 dir = dir | OpenDir.L;
             }
         }
         if (current.x + 1 < width)
         {
-            if ((grid[current.x + 1, current.y].room != null && grid[current.x + 1, current.y].dir.HasFlag(OpenDir.L)) && parentRoomDir != OpenDir.L)
+            if (grid[current.x + 1, current.y].room != null /*&& grid[current.x + 1, current.y].dir.HasFlag(OpenDir.L) && parentRoomDir != OpenDir.L*/)
             {
                 dir = dir | OpenDir.R;
             }
