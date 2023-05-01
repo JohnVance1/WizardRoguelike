@@ -7,7 +7,6 @@ public struct Node
     public GameObject room;
     public int x;
     public int y;
-    public OpenDir dir;
     public bool visited;
 
 }

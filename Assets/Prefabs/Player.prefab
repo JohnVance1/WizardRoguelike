@@ -138,6 +138,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   weapon1: {fileID: 8424761283032664995, guid: cd35a6457e2f7294ba073f58312dc528, type: 3}
   weapon1Spawn: {fileID: 1086765588212183186}
+  inventory: []
 --- !u!61 &8072996559884704101
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -183,7 +184,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!1 &8705858190930943998
 GameObject:

@@ -18,6 +18,10 @@ public class Player : Character
     [SerializeField]
     private Transform weapon1Spawn;
 
+    public List<Item_Base> inventory;
+
+    public bool IsInteractButtonDown { get; private set; }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -29,6 +33,7 @@ public class Player : Character
     private void FixedUpdate()
     {
         Movement();
+
     }
 
     private void Update()
@@ -37,6 +42,12 @@ public class Player : Character
         {
             Attack();
         }
+
+        IsInteractButtonDown = Input.GetMouseButtonDown(0) ? true : false;
+
+
+
+
     }
 
 
@@ -77,7 +88,15 @@ public class Player : Character
 
     }
     
+    public void AddItemToInventory(Item_Base item)
+    {
+        inventory.Add(item);
+    }
 
+    public void RemoveItemFromInventory(Item_Base item)
+    {
+        inventory.Remove(item);
+    }
 
 
 }
