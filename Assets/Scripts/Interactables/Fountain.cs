@@ -12,16 +12,22 @@ public class Fountain : Interactable_Base
     public int range = 2;
     public GameObject healedPrefab;
     public Tilemap tilemap;
+
+    private float timer;
+    private float timerMax;
+
+
     private void Start()
     {
         tilemap = FindObjectOfType<Tilemap>();
-
+        timer = 0;
+        timerMax = 2f;
     }
 
     private void Update()
     {
         Interact();
-        
+        PotionTimer();
     }
 
     private void HealLand()
@@ -62,6 +68,20 @@ public class Fountain : Interactable_Base
             {
                 Debug.Log("Mouse Button Down!");
             }
+        }
+    }
+
+    private void PotionTimer()
+    {
+        if(storage != null)
+        {
+            timer += Time.deltaTime;
+            if(timer >= timerMax)
+            {
+                storage = null;
+                timer = 0;
+            }
+
         }
     }
 
