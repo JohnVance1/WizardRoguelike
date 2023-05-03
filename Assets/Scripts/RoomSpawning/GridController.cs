@@ -18,21 +18,16 @@ public class GridController : MonoBehaviour
     [SerializeField] 
     private GameObject fountainPrefab;
 
-    [SerializeField]
-    private CorruptionManager corruptionManager;
+  
 
 
     private Vector3Int previousMousePos = new Vector3Int();
 
 
-    [SerializeField]
-    private List<TileData> tileDatas;
-    [SerializeField]
-    private Dictionary<TileBase, TileBase> healedCorruptedLookup;
+    
 
     private void Awake()
     {
-        healedCorruptedLookup = new Dictionary<TileBase, TileBase>();
 
 
     }
@@ -60,21 +55,21 @@ public class GridController : MonoBehaviour
     void Update()
     {
         // Mouse over -> highlight tile
-        Vector3Int mousePos = GetMousePosition();
-        if (!mousePos.Equals(previousMousePos))
-        {
-            interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
-            interactiveMap.SetTile(mousePos, hoverTile);
-            previousMousePos = mousePos;
-        }
+        //Vector3Int mousePos = GetMousePosition();
+        //if (!mousePos.Equals(previousMousePos))
+        //{
+        //    interactiveMap.SetTile(previousMousePos, null); // Remove old hoverTile
+        //    interactiveMap.SetTile(mousePos, hoverTile);
+        //    previousMousePos = mousePos;
+        //}
 
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            GameObject fount = Instantiate(fountainPrefab, interactiveMap.GetCellCenterWorld(mousePos), Quaternion.identity);
+        //if(Input.GetKeyDown(KeyCode.L))
+        //{
+        //    GameObject fount = Instantiate(fountainPrefab, interactiveMap.GetCellCenterWorld(mousePos), Quaternion.identity);
 
-            corruptionManager.FountainSpawned(interactiveMap.GetCellCenterWorld(mousePos), fount);
+        //    corruptionManager.FountainSpawned(interactiveMap.GetCellCenterWorld(mousePos), fount);
 
-        }
+        //}
 
     }
 

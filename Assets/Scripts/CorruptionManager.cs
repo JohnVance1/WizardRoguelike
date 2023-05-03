@@ -29,18 +29,18 @@ public class CorruptionManager : MonoBehaviour
 
     private void Start()
     {
-        SetCorruption();
+        //SetCorruption();
     }
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(1))
-        {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            AddCorruption(mousePos, testVal, testRadius);
+        //if(Input.GetMouseButtonDown(1))
+        //{
+        //    Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //    AddCorruption(mousePos, testVal, testRadius);
 
-        }
-        CheckFountains();
+        //}
+        //CheckFountains();
     }
 
     private void CheckFountains()
