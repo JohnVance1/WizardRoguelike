@@ -172,10 +172,10 @@ MonoBehaviour:
   corrupted: {r: 0.99338573, g: 0.3820755, b: 1, a: 0.6509804}
   clear: {r: 1, g: 1, b: 1, a: 0}
   testVal: 10
-  testRadius: 0
+  testRadius: 2
   corruptionFallOff: 0.3
-  reduceAmount: -1
-  reduceIntervall: 0.3
+  reduceAmount: -0.5
+  reduceIntervall: 0.1
 --- !u!1 &391843261
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,6 +579,7 @@ MonoBehaviour:
   interactiveMap: {fileID: 915749744}
   hoverTile: {fileID: 11400000, guid: 33b59708c72cc894db0b727754818005, type: 2}
   fountainPrefab: {fileID: 6553478015456715573, guid: 2df47cda48e82244c9631c4a7d3128fe, type: 3}
+  corruptionManager: {fileID: 292859974}
   tileDatas:
   - {fileID: 11400000, guid: 4989d2947413bf348a85407973af1b6c, type: 2}
 --- !u!1 &915749743
@@ -34973,6 +34974,10 @@ PrefabInstance:
     - target: {fileID: 6553478015456715573, guid: 2df47cda48e82244c9631c4a7d3128fe, type: 3}
       propertyPath: m_Name
       value: Fountain
+      objectReference: {fileID: 0}
+    - target: {fileID: 6553478015456715573, guid: 2df47cda48e82244c9631c4a7d3128fe, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6553478015456715575, guid: 2df47cda48e82244c9631c4a7d3128fe, type: 3}
       propertyPath: m_RootOrder

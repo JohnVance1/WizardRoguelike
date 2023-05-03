@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3e8e69fae551ad419dfb7cd48729e36, type: 3}
   m_Name: Potion
   m_EditorClassIdentifier: 
+  usageTime: 2
+  radius: 2

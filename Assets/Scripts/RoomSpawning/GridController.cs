@@ -18,6 +18,9 @@ public class GridController : MonoBehaviour
     [SerializeField] 
     private GameObject fountainPrefab;
 
+    [SerializeField]
+    private CorruptionManager corruptionManager;
+
 
     private Vector3Int previousMousePos = new Vector3Int();
 
@@ -67,7 +70,10 @@ public class GridController : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.L))
         {
-            Instantiate(fountainPrefab, interactiveMap.GetCellCenterWorld(mousePos), Quaternion.identity);
+            GameObject fount = Instantiate(fountainPrefab, interactiveMap.GetCellCenterWorld(mousePos), Quaternion.identity);
+
+            corruptionManager.FountainSpawned(interactiveMap.GetCellCenterWorld(mousePos), fount);
+
         }
 
     }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
+using System.Security.Claims;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -12,16 +13,16 @@ public class Fountain : Interactable_Base
     public int range = 2;
     public GameObject healedPrefab;
     public Tilemap tilemap;
-
+    public bool toHeal;
+    public bool reclaim;
     private float timer;
-    private float timerMax;
-
+    public List<Vector3Int> healedTiles = new List<Vector3Int>();
 
     private void Start()
     {
         tilemap = FindObjectOfType<Tilemap>();
+        reclaim = false;
         timer = 0;
-        timerMax = 2f;
     }
 
     private void Update()
@@ -60,7 +61,8 @@ public class Fountain : Interactable_Base
                     {
                         storage = (Potion)player.inventory[i];
                         player.RemoveItemFromInventory(player.inventory[i]);
-                        HealLand();
+                        toHeal = true;
+                        //HealLand();
                     }
                 }
             }
@@ -76,9 +78,10 @@ public class Fountain : Interactable_Base
         if(storage != null)
         {
             timer += Time.deltaTime;
-            if(timer >= timerMax)
+            if(timer >= storage.usageTime)
             {
                 storage = null;
+                reclaim = true;
                 timer = 0;
             }
 

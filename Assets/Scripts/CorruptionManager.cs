@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -22,11 +23,12 @@ public class CorruptionManager : MonoBehaviour
     [SerializeField]
     private float reduceAmount, reduceIntervall = 1f;
 
+    public List<Fountain> spawnedFountains = new List<Fountain>();
+
     private Dictionary<Vector3Int, float> corruptedTiles = new Dictionary<Vector3Int, float>();
 
     private void Start()
     {
-        //StartCoroutine(ReduceCorruptedRoutine());
         SetCorruption();
     }
 
@@ -36,8 +38,26 @@ public class CorruptionManager : MonoBehaviour
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             AddCorruption(mousePos, testVal, testRadius);
-        }
 
+        }
+        CheckFountains();
+    }
+
+    private void CheckFountains()
+    {
+        foreach(Fountain fount in spawnedFountains)
+        {
+            if(fount.storage == null && fount.reclaim)
+            {
+                StartCoroutine(ReduceCorruptedRoutine());
+                fount.reclaim = false;
+            }
+            else if(fount.toHeal)
+            {
+                AddCorruption(fount.transform.position, 10, fount.storage.radius);
+                fount.toHeal = false;
+            }
+        }
     }
 
     private void SetCorruption()
@@ -48,12 +68,18 @@ public class CorruptionManager : MonoBehaviour
             Vector3 place = baseMap.CellToWorld(localPlace);
             if (baseMap.HasTile(localPlace))
             {
-                AddCorruption(place, testVal, testRadius);
+                AddCorruption(place, 0, 0);
             }
         }
 
     }
 
+    public void FountainSpawned(Vector3 worldPos, GameObject fount)
+    {
+        Fountain spawned = fount.GetComponentInChildren<Fountain>();
+        spawnedFountains.Add(spawned);
+        AddCorruption(worldPos, testVal, 0);
+    }
 
 
     public void AddCorruption(Vector3 worldPos, float changeby, int radius)
@@ -64,20 +90,23 @@ public class CorruptionManager : MonoBehaviour
         {
             for (int y = -radius; y <= radius; y++)
             {
-                float distanceFromCenter = Mathf.Abs(x) + Mathf.Abs(y);
-                if (distanceFromCenter <= radius)
-                {
-                    Vector3Int nextTilePosition = new Vector3Int(gridPos.x + x, gridPos.y + y, 0);
-                    ChangeCorrupt(nextTilePosition, changeby - (distanceFromCenter * corruptionFallOff * changeby));
+                //float distanceFromCenter = Mathf.Abs(x) + Mathf.Abs(y);
+                float distanceFromCenter = Mathf.Abs(x) >= Mathf.Abs(y) ? Mathf.Abs(x) : Mathf.Abs(y);
+                //distanceFromCenter *= 2;
+                Vector3Int nextTilePosition = new Vector3Int(gridPos.x + x, gridPos.y + y, 0);
+                ChangeCorrupt(nextTilePosition, changeby - (distanceFromCenter * corruptionFallOff * changeby));
+                //if (distanceFromCenter <= radius) 
+                //{
+                    
+                //}
 
-                }
-
+                
 
             }
         }
 
         ChangeCorrupt(gridPos, changeby);
-        VisualizeCorruption();
+        VisualizeHealed();
 
     }
 
@@ -90,13 +119,12 @@ public class CorruptionManager : MonoBehaviour
 
         float newValue = corruptedTiles[gridPos] + changeby;
 
-
         if (newValue <= 0f)
         {
             corruptedTiles.Remove(gridPos);
 
             corruptionMap.SetTileFlags(gridPos, TileFlags.None);
-            corruptionMap.SetColor(gridPos, clear);
+            corruptionMap.SetColor(gridPos, corrupted);
             corruptionMap.SetTileFlags(gridPos, TileFlags.LockColor);
 
         }
@@ -107,29 +135,30 @@ public class CorruptionManager : MonoBehaviour
 
     }
 
-    private void VisualizeCorruption()
+    private void VisualizeHealed()
     {
         foreach (var entry in corruptedTiles)
         {            
             corruptionMap.SetTileFlags(entry.Key, TileFlags.None);
-            corruptionMap.SetColor(entry.Key, corrupted);
+            corruptionMap.SetColor(entry.Key, clear);
             corruptionMap.SetTileFlags(entry.Key, TileFlags.LockColor);
 
         }
     }
 
-    private IEnumerator ReduceCorruptedRoutine()
+    public IEnumerator ReduceCorruptedRoutine()
     {
-        while (true)
+        Dictionary<Vector3Int, float> corruptedTilesCopy = new Dictionary<Vector3Int, float>(corruptedTiles);
+        while (corruptedTilesCopy.Count > 0)
         {
-            Dictionary<Vector3Int, float> stinkingTilesCopy = new Dictionary<Vector3Int, float>(corruptedTiles);
+            corruptedTilesCopy = new Dictionary<Vector3Int, float>(corruptedTiles);
 
-            foreach (var entry in stinkingTilesCopy)
+            foreach (var entry in corruptedTilesCopy)
             {
                 ChangeCorrupt(entry.Key, reduceAmount);
             }
 
-            VisualizeCorruption();
+            VisualizeHealed();
 
             yield return new WaitForSeconds(reduceIntervall);
 
