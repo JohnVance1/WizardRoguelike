@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5ce7aaf94a0df43a16134b19b0ac80, type: 3}
   m_Name: CorruptableTileData
   m_EditorClassIdentifier: 
-  tiles:
-  - {fileID: 11400000, guid: 796e0352a6028454c9b924ec38c3838a, type: 2}
+  healedTile: {fileID: 11400000, guid: 796e0352a6028454c9b924ec38c3838a, type: 2}
+  corruptTile: {fileID: 11400000, guid: 2950aa6d39743bc4cb5727af3dffa617, type: 2}
   IsCorrupted: 0
