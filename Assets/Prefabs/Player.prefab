@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1425910917
-  m_SortingLayer: 3
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -138,7 +138,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   weapon1: {fileID: 8424761283032664995, guid: cd35a6457e2f7294ba073f58312dc528, type: 3}
   weapon1Spawn: {fileID: 1086765588212183186}
-  inventory: []
+  inventory: {fileID: 11400000, guid: 2b479184f7dc470468a1d0ae83da7c88, type: 2}
 --- !u!61 &8072996559884704101
 BoxCollider2D:
   m_ObjectHideFlags: 0

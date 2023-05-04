@@ -18,8 +18,9 @@ public class Cauldron : Interactable_Base
         {            
             if (player.IsInteractButtonDown && player.inventory.Contains(storage))
             {
-                player.AddItemToInventory(potion);
                 player.RemoveItemFromInventory(storage);
+                player.AddItemToInventory(potion);
+
             }
             if (player.IsInteractButtonDown)
             {

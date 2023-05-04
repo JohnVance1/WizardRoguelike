@@ -18,7 +18,12 @@ public class Player : Character
     [SerializeField]
     private Transform weapon1Spawn;
 
-    public List<Item_Base> inventory;
+    public GameObject InventoryCanvas;
+    private bool IsInventoryOpen;
+
+    //public List<Item_Base> inventory;
+
+    public Inventory inventory;
 
     public bool IsInteractButtonDown { get; private set; }
 
@@ -26,7 +31,7 @@ public class Player : Character
     {
         rb = GetComponent<Rigidbody2D>();
         Name = gameObject.name;
-
+        IsInventoryOpen = false;
     }
 
 
@@ -45,7 +50,19 @@ public class Player : Character
 
         IsInteractButtonDown = Input.GetMouseButtonDown(0) ? true : false;
 
-
+        if(Input.GetKeyDown(KeyCode.V))
+        {
+            if(IsInventoryOpen)
+            {
+                InventoryCanvas.gameObject.SetActive(false);
+                IsInventoryOpen = false;
+            }
+            else
+            {
+                InventoryCanvas.gameObject.SetActive(true);
+                IsInventoryOpen = true;
+            }
+        }
 
 
     }

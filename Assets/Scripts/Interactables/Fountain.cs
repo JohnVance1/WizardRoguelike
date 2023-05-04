@@ -53,23 +53,23 @@ public class Fountain : Interactable_Base
     {
         if (CanInteract)
         {
-            if (player.IsInteractButtonDown && player.inventory.OfType<Potion>().Any())
-            {
-                for (int i = 0; i < player.inventory.Count; i++)
-                {
-                    if (player.inventory[i].GetType() == typeof(Potion))
-                    {
-                        storage = (Potion)player.inventory[i];
-                        player.RemoveItemFromInventory(player.inventory[i]);
-                        toHeal = true;
-                        //HealLand();
-                    }
-                }
-            }
-            if (player.IsInteractButtonDown)
-            {
-                Debug.Log("Mouse Button Down!");
-            }
+            //if (player.IsInteractButtonDown && player.inventory.inventory.OfType<Potion>().Any())
+            //{
+            //    for (int i = 0; i < player.inventory.inventory.Count; i++)
+            //    {
+            //        if (player.inventory.inventory[i].GetType() == typeof(Potion))
+            //        {
+            //            storage = (Potion)player.inventory.inventory[i];
+            //            player.RemoveItemFromInventory(player.inventory[i].inventory);
+            //            toHeal = true;
+            //            //HealLand();
+            //        }
+            //    }
+            //}
+            //if (player.IsInteractButtonDown)
+            //{
+            //    Debug.Log("Mouse Button Down!");
+            //}
         }
     }
 
