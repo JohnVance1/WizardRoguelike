@@ -12,12 +12,14 @@ public class Character : MonoBehaviour
     protected string Name { get; set; }
 
     [SerializeField]
-    protected float speed = 5;
+    public float speed;
+    private float defaultSpeed;
 
-    private void Start()
+    protected void Start()
     {
         health = maxHealth;
         Name = gameObject.name;
+        defaultSpeed = 5;
     }
 
     virtual public void TakeDamage(int damage)
@@ -44,6 +46,21 @@ public class Character : MonoBehaviour
         Debug.Log(Name + " Died!");
 
     }
+
+    public void SetSpeed(float val)
+    {
+        if (val <= 0)
+        {
+            speed = val;
+        }
+        else
+        {
+            speed = defaultSpeed;
+        }
+
+    }
+
+    
 
     virtual public void Attack() { }
 

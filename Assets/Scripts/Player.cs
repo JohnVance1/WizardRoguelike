@@ -27,11 +27,13 @@ public class Player : Character
 
     public bool IsInteractButtonDown { get; private set; }
 
-    private void Start()
+    private new void Start()
     {
+        base.Start();
         rb = GetComponent<Rigidbody2D>();
-        Name = gameObject.name;
+        //Name = gameObject.name;
         IsInventoryOpen = false;
+        speed = 5f;
     }
 
 
