@@ -16,7 +16,7 @@ public class Dialogue : MonoBehaviour
 
     void Start()
     {
-        textUI.text = string.Empty;
+        //textUI.text = string.Empty;
         //StartDialogue();
 
     }
@@ -30,14 +30,14 @@ public class Dialogue : MonoBehaviour
 
     private void OnDisable()
     {
-        textUI.text = string.Empty;
+        //textUI.text = string.Empty;
         StopAllCoroutines();
 
     }
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(1))
+        if(Input.GetMouseButtonDown(0))
         {
             CallDialogue();
         }

@@ -18,6 +18,8 @@ public class Player : Character
     [SerializeField]
     private Transform weapon1Spawn;
 
+    public GameObject FarmInventoryCanvas;
+
     public GameObject InventoryCanvas;
     private bool IsInventoryOpen;
 
@@ -55,20 +57,38 @@ public class Player : Character
         if(Input.GetKeyDown(KeyCode.V))
         {
             if(IsInventoryOpen)
-            {
-                InventoryCanvas.gameObject.SetActive(false);
-                IsInventoryOpen = false;
+            {                
+                CloseInventory();
             }
             else
             {
-                InventoryCanvas.gameObject.SetActive(true);
-                IsInventoryOpen = true;
+                OpenInventory();                
             }
         }
 
 
     }
 
+    public void OpenInventory()
+    {
+        InventoryCanvas.gameObject.SetActive(true);
+        IsInventoryOpen = true;
+    }
+    public void CloseInventory()
+    {
+        InventoryCanvas.gameObject.SetActive(false);
+        //FarmInventoryCanvas.gameObject.SetActive(false);
+        IsInventoryOpen = false;
+
+    }
+
+    public void OpenFarmInventory(FarmPlot plot)
+    {
+        InventoryCanvas.gameObject.SetActive(true);
+        InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().state = OpenState.Farm;
+        InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().interactable = plot;
+        IsInventoryOpen = true;
+    }
 
     public void Movement()
     {

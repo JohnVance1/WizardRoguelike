@@ -13,3 +13,7 @@ MonoBehaviour:
   m_Name: Herb
   m_EditorClassIdentifier: 
   sprite: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa, type: 3}
+  herbStages:
+  - {fileID: 3625043607559282579, guid: d68359301f36c5241a5d92e1c4ce0b13, type: 3}
+  - {fileID: 3625043607559282579, guid: 0f42e12c5e96e924384e957fcaa73c85, type: 3}
+  timeToGrow: 3

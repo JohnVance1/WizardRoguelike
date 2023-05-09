@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class Inventory_UI : MonoBehaviour
 {
@@ -11,17 +13,25 @@ public class Inventory_UI : MonoBehaviour
     private int yCount;
 
     public Inventory inv;
+    public InventorySlot selected;
     public GameObject[,] inventorySlots = new GameObject[height, width];
 
+    public Button[] inventoryButtons = new Button[height * width];
 
-    void Start()
+    public OpenState state;
+
+    public Interactable_Base interactable;
+
+
+
+    void Awake()
     {
-        for(int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             for (int j = 0; j < transform.GetChild(i).childCount; j++)
             {
                 inventorySlots[i, j] = transform.GetChild(i).GetChild(j).gameObject;
-
+                
             }
 
         }
@@ -29,17 +39,51 @@ public class Inventory_UI : MonoBehaviour
         inv.onInventoryChanged += OnUpdateInventory;
     }
 
-    private void OnEnable()
+    private void Update()
     {
+        //if(selected != null)
+        //{
+        //    if(state == OpenState.Farm)
+        //    {
+        //        if (selected.storedItem.item is Herb)
+        //        {
+        //            ((FarmPlot)interactable).SetHerb((Herb)selected.storedItem.item);
+        //        }
+        //    }
+
+        //}
+    }
+
+    public void buttonCallback(InventorySlot slot)
+    {
+        selected = slot;
+        if (state == OpenState.Farm && selected != null)
+        {
+            if (selected.storedItem.item is Herb)
+            {
+                ((FarmPlot)interactable).SetHerb((Herb)selected.storedItem.item);
+            }
+        }
+    }
+
+    void OnEnable()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            for (int j = 0; j < transform.GetChild(i).childCount; j++)
+            {
+                inventoryButtons[(i * 4) + j] = inventorySlots[i, j].GetComponent<Button>();
+                InventorySlot s = inventorySlots[i, j].GetComponent<InventorySlot>();
+                inventoryButtons[(i * 4) + j].onClick.AddListener(() => buttonCallback(s));
+            }
+
+        }
         OnUpdateInventory();
+
     }
 
     private void OnUpdateInventory()
-    {
-        //foreach(Transform t in transform)
-        //{
-        //    Destroy(t.gameObject);
-        //}
+    {        
         xCount = 0;
         yCount = 0;
 
@@ -58,6 +102,8 @@ public class Inventory_UI : MonoBehaviour
         {
             AddInventorySlot(item);
         }
+
+        
     }
 
     public void AddInventorySlot(InventoryItem item)
@@ -74,6 +120,12 @@ public class Inventory_UI : MonoBehaviour
                 yCount = 0;
             }
         }
+
+    }
+
+    public void FarmState()
+    {
+        
 
     }
 

@@ -16,7 +16,7 @@ public class NPC : Interactable_Base
     {
         if(CanInteract)
         {
-            if (player.IsInteractButtonDown && !dialogueBox.activeSelf)
+            if (player.IsInteractButtonDown && dialogueBox.activeInHierarchy == false)
             {
                 dialogueBox.SetActive(true);
                 player.SetSpeed(0f);

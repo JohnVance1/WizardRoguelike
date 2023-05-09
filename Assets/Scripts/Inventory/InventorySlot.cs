@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class InventorySlot : MonoBehaviour
 {
@@ -16,8 +15,34 @@ public class InventorySlot : MonoBehaviour
     [SerializeField]
     private GameObject countObj;
 
+    [SerializeField]
+    public GameObject highlight;
+
+    public MouseOver mouseOverComp;
+
+    public OpenState openState;
+    public InventoryItem storedItem;
+
+    private void Start()
+    {
+        mouseOverComp = GetComponent<MouseOver>();
+
+    }
+
+    private void Update()
+    {
+        
+    }
+
+    public void ReturnSelf()
+    {
+        
+    }
+
+
     public void Set(InventoryItem item)
     {
+        storedItem = item;
         icon.sprite = item.item.sprite;
         if(item.count <= 1)
         {

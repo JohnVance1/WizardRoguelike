@@ -3,6 +3,19 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
+public enum OpenState
+{
+    None,
+    General,
+    Farm,
+    Cauldron,
+    Storage
+
+}
+
+
+
 [CreateAssetMenu(fileName = "Inventroy", menuName = "ScriptableObjects/Inventory", order = 1)]
 
 public class Inventory : ScriptableObject
@@ -11,7 +24,8 @@ public class Inventory : ScriptableObject
     public List<InventoryItem> inventory = new List<InventoryItem>();
 
     public delegate void OnInventoryChanged();
-    public OnInventoryChanged onInventoryChanged;  
+    public OnInventoryChanged onInventoryChanged;
+
 
     public bool Contains(Item_Base item)
     {
@@ -20,6 +34,22 @@ public class Inventory : ScriptableObject
             return true;
         }
         return false;
+    }   
+
+    public Item_Base GetItemFromInventory<T>()
+    {
+        foreach(var item in itemDictionary)
+        {
+            if(item.Key is T)
+            {
+                Item_Base reference = item.Key;
+                Remove(item.Key);
+                return reference;
+            }
+        }
+
+        return null;
+
     }
 
     public void Add(Item_Base reference)
