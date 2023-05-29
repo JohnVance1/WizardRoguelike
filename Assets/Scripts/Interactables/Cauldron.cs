@@ -22,10 +22,7 @@ public class Cauldron : Interactable_Base
                 player.AddItemToInventory(potion);
 
             }
-            if (player.IsInteractButtonDown)
-            {
-                Debug.Log("Mouse Button Down!");
-            }
+            
         }
         
     }

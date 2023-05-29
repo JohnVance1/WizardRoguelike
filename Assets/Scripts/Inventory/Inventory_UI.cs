@@ -54,7 +54,7 @@ public class Inventory_UI : MonoBehaviour
         //}
     }
 
-    public void buttonCallback(InventorySlot slot)
+    public void ButtonCallback(InventorySlot slot)
     {
         selected = slot;
         if (state == OpenState.Farm && selected != null)
@@ -62,6 +62,14 @@ public class Inventory_UI : MonoBehaviour
             if (selected.storedItem.item is Herb)
             {
                 ((FarmPlot)interactable).SetHerb((Herb)selected.storedItem.item);
+            }
+        }
+
+        else if (state == OpenState.Research && selected != null)
+        {
+            if (selected.storedItem.item is Herb)
+            {
+                ((ResearchStation)interactable).OpenResearchGame((Herb)selected.storedItem.item);
             }
         }
     }
@@ -74,7 +82,7 @@ public class Inventory_UI : MonoBehaviour
             {
                 inventoryButtons[(i * 4) + j] = inventorySlots[i, j].GetComponent<Button>();
                 InventorySlot s = inventorySlots[i, j].GetComponent<InventorySlot>();
-                inventoryButtons[(i * 4) + j].onClick.AddListener(() => buttonCallback(s));
+                inventoryButtons[(i * 4) + j].onClick.AddListener(() => ButtonCallback(s));
             }
 
         }

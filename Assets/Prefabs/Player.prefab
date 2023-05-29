@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 885995106648741119}
   - component: {fileID: 8072996559884704101}
   - component: {fileID: 5927200541214757971}
+  - component: {fileID: 7519089976064825922}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -138,7 +139,14 @@ MonoBehaviour:
   rb: {fileID: 0}
   weapon1: {fileID: 8424761283032664995, guid: cd35a6457e2f7294ba073f58312dc528, type: 3}
   weapon1Spawn: {fileID: 1086765588212183186}
+  FarmInventoryCanvas: {fileID: 0}
+  InventoryCanvas: {fileID: 0}
   inventory: {fileID: 11400000, guid: 2b479184f7dc470468a1d0ae83da7c88, type: 2}
+  directionSprites:
+  - {fileID: 657547712, guid: 6ca21f0731138684ea8cfec475ecbdf0, type: 3}
+  - {fileID: -780247646, guid: 6ca21f0731138684ea8cfec475ecbdf0, type: 3}
+  - {fileID: -503294851, guid: 6ca21f0731138684ea8cfec475ecbdf0, type: 3}
+  - {fileID: -932814362, guid: 6ca21f0731138684ea8cfec475ecbdf0, type: 3}
 --- !u!61 &8072996559884704101
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -186,6 +194,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!95 &7519089976064825922
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885995106648741105}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 242a25d2ba82b2d4d8a5689c71ebac45, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &8705858190930943998
 GameObject:
   m_ObjectHideFlags: 0

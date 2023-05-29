@@ -10,7 +10,8 @@ public enum OpenState
     General,
     Farm,
     Cauldron,
-    Storage
+    Storage,
+    Research
 
 }
 

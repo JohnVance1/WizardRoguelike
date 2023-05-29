@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Sprites
+{
+    FrontLeft = 0,
+    FrontRight = 1,
+    BackLeft = 2,
+    BackRight = 3,
+}
+
+
+
 public class Player : Character
 {
     [SerializeField]
@@ -23,9 +33,12 @@ public class Player : Character
     public GameObject InventoryCanvas;
     private bool IsInventoryOpen;
 
+    private Animator animator;
     //public List<Item_Base> inventory;
 
     public Inventory inventory;
+
+    public Sprite[] directionSprites;
 
     public bool IsInteractButtonDown { get; private set; }
 
@@ -33,6 +46,7 @@ public class Player : Character
     {
         base.Start();
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         //Name = gameObject.name;
         IsInventoryOpen = false;
         speed = 5f;
@@ -47,7 +61,7 @@ public class Player : Character
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Attack();
         }
@@ -66,6 +80,12 @@ public class Player : Character
             }
         }
 
+        ChangeAnimator();
+
+    }
+
+    public void ChangeAnimator()
+    {
 
     }
 
@@ -87,6 +107,14 @@ public class Player : Character
         InventoryCanvas.gameObject.SetActive(true);
         InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().state = OpenState.Farm;
         InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().interactable = plot;
+        IsInventoryOpen = true;
+    }
+
+    public void OpenResearchInventory(ResearchStation research)
+    {
+        InventoryCanvas.gameObject.SetActive(true);
+        InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().state = OpenState.Research;
+        InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().interactable = research;
         IsInventoryOpen = true;
     }
 
@@ -113,8 +141,53 @@ public class Player : Character
             prevHorizontal = 0;
 
         }
+
+        if(horizontal < 0 && vertical < 0)
+        {
+            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontLeft];
+        }
+
+        if (horizontal > 0 && vertical < 0)
+        {
+            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontRight];
+        }
+
+        if (horizontal < 0 && vertical > 0)
+        {
+            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackLeft];
+        }
+
+        if (horizontal > 0 && vertical > 0)
+        {
+            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackRight];
+        }
+
+        if(horizontal > 0 && vertical == 0)
+        {
+            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontRight];
+        }
+
+        if (horizontal < 0 && vertical == 0)
+        {
+            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontLeft];
+        }
+
+        if (horizontal == 0 && vertical > 0)
+        {
+            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackRight];
+        }
         
+
         rb.velocity = new Vector3(horizontal, vertical, 0).normalized * speed;
+
+        if(rb.velocity != Vector2.zero)
+        {
+            animator.SetBool("IsMoving", true);
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
+        }
 
     }
 
