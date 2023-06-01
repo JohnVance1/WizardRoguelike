@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,11 @@ using UnityEngine;
 public class Cauldron : Interactable_Base
 {
     public List<Item_Base> storage;
-    public Potion potion;
 
     public GameObject cauldronUI;
+
+    [SerializeField]
+    public Dictionary<Type, Herb> allHerbs;
 
     void Start()
     {
@@ -20,8 +23,8 @@ public class Cauldron : Interactable_Base
         {            
             if (player.IsInteractButtonDown && player.inventory.DoesInventoryContainItemType<Item_Base>())
             {
-                player.inventory.GetItemFromInventory<Item_Base>();
-                player.AddItemToInventory(potion);
+                //player.inventory.GetItemFromInventory<Item_Base>();
+                //player.AddItemToInventory(potion);
                 OpenCauldronUI();
                 player.OpenCauldronInventory(this);
 
@@ -30,6 +33,12 @@ public class Cauldron : Interactable_Base
 
         }
         
+    }
+
+    public Herb AddBackHerb(Herb herb)
+    {
+        allHerbs.TryGetValue(herb.GetType(), out herb);
+        return herb;
     }
 
     public void OpenCauldronUI()
@@ -44,7 +53,8 @@ public class Cauldron : Interactable_Base
 
     public void SelectCauldron(Herb herb)
     {
-        cauldronUI.GetComponent<Cauldron_UI>().UseDevice(herb);
+        cauldronUI.transform.GetChild(0).GetComponent<Cauldron_UI>().UseDevice(herb);
+        cauldronUI.transform.GetChild(0).GetComponent<Cauldron_UI>().SetPlayer(player);
     }
 
 

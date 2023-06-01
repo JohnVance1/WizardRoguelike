@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
-public class Interactable_Base : MonoBehaviour
+public class Interactable_Base : SerializedMonoBehaviour
 {
     public bool CanInteract { get; protected set; }
     protected Player player;
