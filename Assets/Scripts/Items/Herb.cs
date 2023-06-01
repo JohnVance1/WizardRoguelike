@@ -9,6 +9,8 @@ public class Herb : Item_Base
     public Sprite[] herbStages;
 
     public float timeToGrow;
+    public float timeToProcess;
+
     public int researchNum;
 
 

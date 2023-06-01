@@ -33,9 +33,12 @@ public class ResearchStation : Interactable_Base
     {
         player.CloseInventory();
         researchCanvas.SetActive(true);
-        //if (herb.researchNum < miniGames.Length) 
-        //{
-        //    miniGames[herb.researchNum].SetActive(true);
-        //}
+        
+    }
+
+    public void CloseResearchGame()
+    {
+        researchCanvas.SetActive(false);
+
     }
 }

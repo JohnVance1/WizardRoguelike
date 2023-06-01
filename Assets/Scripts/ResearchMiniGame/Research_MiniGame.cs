@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
+using System;
+
 public class Research_MiniGame : SerializedMonoBehaviour
 {
     public const int width = 6;
@@ -13,7 +15,10 @@ public class Research_MiniGame : SerializedMonoBehaviour
     [SerializeField]
     public GameObject[,] spaces = new GameObject[height, width];
 
-    public GameObject startSpace;
+    public GameObject tempSpace;
+
+    public Space startSpace;
+    public List<Space> endSpace;
 
     private int UILayer;
     private bool IsMouseDown;
@@ -51,7 +56,7 @@ public class Research_MiniGame : SerializedMonoBehaviour
             GameObject square = GetMousedOverSquare(GetEventSystemRaycastResults());
             if (square != null)
             {
-                startSpace = square;
+                tempSpace = square;
 
             }
         }
@@ -60,21 +65,21 @@ public class Research_MiniGame : SerializedMonoBehaviour
         {
             GameObject square = GetMousedOverSquare(GetEventSystemRaycastResults());
 
-            if (square != startSpace && square != null)
+            if (square != tempSpace && square != null)
             {
                 //Debug.DrawLine(startSpace.transform.position, square.transform.position);
-                if(grid.DoesEdgeExist(startSpace.GetComponent<Space>(), square.GetComponent<Space>()))
+                if(grid.DoesEdgeExist(tempSpace.GetComponent<Space>(), square.GetComponent<Space>()))
                 {
-                    grid.RemoveAnEdge(startSpace.GetComponent<Space>(), square.GetComponent<Space>());
+                    grid.RemoveAnEdge(tempSpace.GetComponent<Space>(), square.GetComponent<Space>());
 
                 }
                 else
                 {
-                    grid.AddAnEdge(startSpace.GetComponent<Space>(), square.GetComponent<Space>());
+                    grid.AddAnEdge(tempSpace.GetComponent<Space>(), square.GetComponent<Space>());
 
                 }
 
-                startSpace = square;
+                tempSpace = square;
             }
             
         }
@@ -82,9 +87,14 @@ public class Research_MiniGame : SerializedMonoBehaviour
         if(IsMouseDown && Input.GetMouseButtonUp(0))
         {
             IsMouseDown = false;
-            startSpace = null;
+            tempSpace = null;
         }
-        
+
+        foreach (Space end in endSpace)
+        {
+            CheckCompletePath(startSpace, end);
+        }
+
 
     }
 
@@ -104,6 +114,43 @@ public class Research_MiniGame : SerializedMonoBehaviour
 
                     }
                 }
+            }
+        }
+    }
+
+    public void CheckCompletePath(Space start, Space end)
+    {
+        Dictionary<Space, bool> visited = new Dictionary<Space, bool>();
+        Dictionary<Space, Space> path = new Dictionary<Space, Space>();
+
+        Queue<Space> worklist = new Queue<Space>();
+
+        visited.Add(start, false);
+
+        worklist.Enqueue(start);
+
+        while (worklist.Count != 0)
+        {
+            Space node = worklist.Dequeue();
+
+            foreach (Space neighbor in node.Edges)
+            {
+                if (!visited.ContainsKey(neighbor))
+                {
+                    visited.Add(neighbor, false);
+                    path.Add(neighbor, node);
+                    worklist.Enqueue(neighbor);
+                }
+            }
+        }
+
+        if (path.ContainsKey(end))
+        {
+            Space startEnd = end;
+            while (end != start)
+            {
+                Debug.Log(startEnd + ": " + end);
+                end = path[end];
             }
         }
     }

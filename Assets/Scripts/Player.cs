@@ -118,6 +118,14 @@ public class Player : Character
         IsInventoryOpen = true;
     }
 
+    public void OpenCauldronInventory(Cauldron cauldron)
+    {
+        InventoryCanvas.gameObject.SetActive(true);
+        InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().state = OpenState.Cauldron;
+        InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().interactable = cauldron;
+        IsInventoryOpen = true;
+    }
+
     public void Movement()
     {
         horizontal = Input.GetAxisRaw("Horizontal");

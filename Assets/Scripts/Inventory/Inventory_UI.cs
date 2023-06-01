@@ -72,6 +72,14 @@ public class Inventory_UI : MonoBehaviour
                 ((ResearchStation)interactable).OpenResearchGame((Herb)selected.storedItem.item);
             }
         }
+
+        else if (state == OpenState.Cauldron && selected != null)
+        {
+            if (selected.storedItem.item is Herb)
+            {
+                ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
+            }
+        }
     }
 
     void OnEnable()

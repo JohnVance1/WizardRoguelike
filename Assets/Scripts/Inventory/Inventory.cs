@@ -28,6 +28,11 @@ public class Inventory : ScriptableObject
     public OnInventoryChanged onInventoryChanged;
 
 
+    /// <summary>
+    /// Checks if the Inventory contains a specific Item_Base
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
     public bool Contains(Item_Base item)
     {
         if (itemDictionary.ContainsKey(item))
@@ -37,6 +42,29 @@ public class Inventory : ScriptableObject
         return false;
     }   
 
+    /// <summary>
+    /// Checks the Inventory to see if it contains the 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public bool DoesInventoryContainItemType<T>()
+    {
+        foreach (var item in itemDictionary)
+        {
+            if (item.Key is T)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Returns the Item_Base and removes it from the Inventory
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
     public Item_Base GetItemFromInventory<T>()
     {
         foreach(var item in itemDictionary)
@@ -53,6 +81,10 @@ public class Inventory : ScriptableObject
 
     }
 
+    /// <summary>
+    /// Adds Item to the player's Inventory
+    /// </summary>
+    /// <param name="reference"></param>
     public void Add(Item_Base reference)
     {
         if(itemDictionary.TryGetValue(reference, out InventoryItem value)) 
@@ -72,6 +104,10 @@ public class Inventory : ScriptableObject
         }
     }
 
+    /// <summary>
+    /// Removes an Item from the players Inventory
+    /// </summary>
+    /// <param name="reference"></param>
     public void Remove(Item_Base reference)
     {
         if (itemDictionary.TryGetValue(reference, out InventoryItem value))
