@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f1bbbe537fc96e4583a888f6101a7d0, type: 3}
   m_Name: Herb
   m_EditorClassIdentifier: 
-  sprite: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa, type: 3}
+  sprite: {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
   herbStages:
-  - {fileID: 3625043607559282579, guid: d68359301f36c5241a5d92e1c4ce0b13, type: 3}
-  - {fileID: 3625043607559282579, guid: 0f42e12c5e96e924384e957fcaa73c85, type: 3}
+  - {fileID: -1589588616, guid: 37af949e270a43540a02fa733360e32b, type: 3}
+  - {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
+  defaultSprite: {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
   timeToGrow: 3
+  timeToProcess: 0
+  researchNum: 0
+  processType: 0

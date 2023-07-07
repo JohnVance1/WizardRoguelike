@@ -10,7 +10,7 @@ public class Cauldron_UI : MonoBehaviour
 
     public Cauldron cauldron;
 
-    public List<Herb> storedHerbs;
+    //public List<Herb> storedHerbs;
     public Herb currentHerb;
     public List<Device> devices;
     public Potion potion;
@@ -20,13 +20,28 @@ public class Cauldron_UI : MonoBehaviour
 
     public void SetStoredHerb(Herb herb, ProcessType type = ProcessType.Raw)
     {
-        if(herb != null) 
+        if(herb != null && currentHerb != null) 
         {
-            storedHerbs.Add(herb);
-            storedHerbs[storedHerbs.Count - 1].processType = type;
-            player.RemoveItemFromInventory(currentHerb);
+            cauldron.storedHerbs.Add(herb);
+            cauldron.storedHerbs[cauldron.storedHerbs.Count - 1].processType = type;
+            //player.RemoveItemFromInventory(currentHerb);
             currentHerb = null;
+            //foreach (Device d in devices)
+            //{ 
+            //    d.RemoveOnClick();
+            //}
         }        
+    }
+
+    private void Update()
+    {
+        //if (currentHerb == null)
+        //{
+        //    foreach (Device d in devices)
+        //    {
+        //        d.RemoveOnClick();
+        //    }
+        //}
     }
 
     private void Start()
@@ -35,25 +50,27 @@ public class Cauldron_UI : MonoBehaviour
 
     }
 
+
+
     public void MakePotion()
     {
-        if (storedHerbs.Count > 0)
+        if (cauldron.storedHerbs.Count > 0)
         {
             player.AddItemToInventory(potion);
 
-            storedHerbs.Clear();
+            cauldron.storedHerbs.Clear();
             currentHerb = null;
         }
     }
 
     public void CancelPotion()
     {
-        foreach(Herb h in storedHerbs)
+        foreach(Herb h in cauldron.storedHerbs)
         {
             
             player.AddItemToInventory(cauldron.AddBackHerb(h));
         }
-        storedHerbs.Clear(); 
+        cauldron.storedHerbs.Clear(); 
         currentHerb = null;
     }
 
@@ -67,12 +84,29 @@ public class Cauldron_UI : MonoBehaviour
         currentHerb = herb;
         foreach (Device d in devices)
         {
-            d.ChangeOnClick(herb);
+            //d.ChangeOnClick(herb);
+            d.selectedHerb = herb;
+            //d.GetComponent<Button>().onClick.AddListener(() => DeviceSelected(d));
             if (d.onFinishedDevice == null)
             {
                 d.onFinishedDevice += SetStoredHerb;
             }
+            if (d.onStartedDevice == null)
+            {
+                d.onStartedDevice += DeviceSelected;
+            }
         }
+    }
+
+    public void DeviceSelected()
+    {
+        player.RemoveItemFromInventory(currentHerb);
+        //currentHerb = null;
+        foreach (Device d in devices)
+        {
+            d.selectedHerb = null;
+        }
+
     }
 
 

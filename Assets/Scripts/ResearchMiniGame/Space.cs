@@ -129,6 +129,8 @@ public class Space : MonoBehaviour
     {
         if ((s1.x + 1 == s2.x && s1.y + 1 == s2.y) ||
             (s1.x - 1 == s2.x && s1.y - 1 == s2.y) ||
+            (s1.x + 1 == s2.x && s1.y - 1 == s2.y) ||
+            (s1.x - 1 == s2.x && s1.y + 1 == s2.y) ||
             (s1.x == s2.y && s1.y == s2.x))
         {
             return true;

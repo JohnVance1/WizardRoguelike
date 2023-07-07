@@ -57,28 +57,33 @@ public class Inventory_UI : MonoBehaviour
     public void ButtonCallback(InventorySlot slot)
     {
         selected = slot;
-        if (state == OpenState.Farm && selected != null)
+        if (selected != null)
         {
-            if (selected.storedItem.item is Herb)
+            switch(state)
             {
-                ((FarmPlot)interactable).SetHerb((Herb)selected.storedItem.item);
+                case OpenState.Farm:
+                    if (selected.storedItem.item is Herb)
+                    {
+                        ((FarmPlot)interactable).SetHerb((Herb)selected.storedItem.item);
+                    }
+                    break;
+                case OpenState.Research:
+                    if (selected.storedItem.item is Herb)
+                    {
+                        ((ResearchStation)interactable).OpenResearchGame((Herb)selected.storedItem.item);
+                    }
+                    break;
+                case OpenState.Cauldron:
+                    if (selected.storedItem.item is Herb)
+                    {
+                        ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
+                    }
+                    break;
+                case OpenState.None:
+                    Debug.Log("Not open in a valid state!");
+                    break;
             }
-        }
-
-        else if (state == OpenState.Research && selected != null)
-        {
-            if (selected.storedItem.item is Herb)
-            {
-                ((ResearchStation)interactable).OpenResearchGame((Herb)selected.storedItem.item);
-            }
-        }
-
-        else if (state == OpenState.Cauldron && selected != null)
-        {
-            if (selected.storedItem.item is Herb)
-            {
-                ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
-            }
+            
         }
     }
 

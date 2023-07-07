@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Cauldron : Interactable_Base
 {
-    public List<Item_Base> storage;
+    public List<Herb> storedHerbs;
 
     public GameObject cauldronUI;
 
@@ -31,6 +31,8 @@ public class Cauldron : Interactable_Base
 
             }
 
+            
+
         }
         
     }
@@ -48,13 +50,14 @@ public class Cauldron : Interactable_Base
 
     public void CloseCauldronUI()
     {
+        player.CloseInventory();
         cauldronUI.SetActive(false);
     }
 
     public void SelectCauldron(Herb herb)
     {
-        cauldronUI.transform.GetChild(0).GetComponent<Cauldron_UI>().UseDevice(herb);
-        cauldronUI.transform.GetChild(0).GetComponent<Cauldron_UI>().SetPlayer(player);
+        cauldronUI.GetComponentInChildren<Cauldron_UI>().UseDevice(herb);
+        cauldronUI.GetComponentInChildren<Cauldron_UI>().SetPlayer(player);
     }
 
 

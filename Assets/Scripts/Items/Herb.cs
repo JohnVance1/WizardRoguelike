@@ -17,6 +17,8 @@ public class Herb : Item_Base
     [SerializeField]
     public Sprite[] herbStages;
 
+    public Sprite defaultSprite;
+
     public float timeToGrow;
     public float timeToProcess;
 

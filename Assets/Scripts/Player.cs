@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Sprites
@@ -28,27 +29,36 @@ public class Player : Character
     [SerializeField]
     private Transform weapon1Spawn;
 
-    public GameObject FarmInventoryCanvas;
 
     public GameObject InventoryCanvas;
     private bool IsInventoryOpen;
+
+    public GameObject JournalCanvas;
+    private bool IsJournalOpen;
 
     private Animator animator;
     //public List<Item_Base> inventory;
 
     public Inventory inventory;
+    public Journal journal;
 
     public Sprite[] directionSprites;
 
     public bool IsInteractButtonDown { get; private set; }
 
+    public int gateNum { get; set; }
+
+    
+
     private new void Start()
     {
+        DontDestroyOnLoad(gameObject);
         base.Start();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         //Name = gameObject.name;
         IsInventoryOpen = false;
+        IsJournalOpen = false;
         speed = 5f;
     }
 
@@ -63,7 +73,7 @@ public class Player : Character
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Attack();
+            //Attack();
         }
 
         IsInteractButtonDown = Input.GetMouseButtonDown(0) ? true : false;
@@ -77,6 +87,18 @@ public class Player : Character
             else
             {
                 OpenInventory();                
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (IsJournalOpen)
+            {
+                CloseJournal();
+            }
+            else
+            {
+                OpenJournal();
             }
         }
 
@@ -97,8 +119,19 @@ public class Player : Character
     public void CloseInventory()
     {
         InventoryCanvas.gameObject.SetActive(false);
-        //FarmInventoryCanvas.gameObject.SetActive(false);
         IsInventoryOpen = false;
+
+    }
+
+    public void OpenJournal()
+    {
+        JournalCanvas.gameObject.SetActive(true);
+        IsJournalOpen = true;
+    }
+    public void CloseJournal()
+    {
+        JournalCanvas.gameObject.SetActive(false);
+        IsJournalOpen = false;
 
     }
 
@@ -211,6 +244,13 @@ public class Player : Character
     public void AddItemToInventory(Item_Base item)
     {
         inventory.Add(item);
+        if (item is Herb)
+        {
+            if (!journal.Contains((Herb)item))
+            {
+                journal.AddHerb((Herb)item);
+            }
+        }
     }
 
     public void RemoveItemFromInventory(Item_Base item)

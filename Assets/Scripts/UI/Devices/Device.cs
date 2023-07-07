@@ -2,44 +2,74 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Device;
 
 public class Device : MonoBehaviour
 {
     public bool IsActive;
     public bool IsFinished;
     public Herb storedHerb;
+    public Herb selectedHerb;
     public ProcessType type;
 
     public delegate void OnFinishedDevice(Herb herb, ProcessType type);
     public OnFinishedDevice onFinishedDevice;
 
-    public void Activate(Herb herb)
-    {
-        IsFinished = false;
-        storedHerb = Object.Instantiate(herb);
+    public delegate void OnStartedDevice();
+    public OnStartedDevice onStartedDevice;
 
-        if (storedHerb != null && !IsActive)
+    public Slider slider;
+    public float processTime = 2f;
+    public float elapsedTime = 0f;
+
+    private void Start()
+    {
+        //ChangeOnClick();
+    }
+
+    private void Update()
+    {
+        if (IsActive)
         {
-            IsActive = true;
-            StartCoroutine(UpdateDevice());
+            slider.gameObject.SetActive(true);
+            ProgressSlider();
         }
+
+    }
+
+    public void Activate()
+    {
+        if (selectedHerb != null)
+        {
+            IsFinished = false;
+            storedHerb = Object.Instantiate(selectedHerb);
+
+            if (storedHerb != null && !IsActive)
+            {
+                IsActive = true;
+                onStartedDevice();
+                StartCoroutine(UpdateDevice());
+            }
+        }
+        
     }
 
     public IEnumerator UpdateDevice()
     {
-        //  Play animation here
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(processTime);
         IsActive = false;
+        slider.gameObject.SetActive(false);
+        elapsedTime = 0f;
         IsFinished = true;
         onFinishedDevice(storedHerb, type);
         RemoveOnClick();
 
     }
 
-    public void ChangeOnClick(Herb herb)
+    public void ChangeOnClick()
     {
         GetComponent<Button>().onClick.RemoveAllListeners();
-        GetComponent<Button>().onClick.AddListener(() => Activate(herb));
+        GetComponent<Button>().onClick.AddListener(() => Activate());
 
     }
 
@@ -49,6 +79,13 @@ public class Device : MonoBehaviour
         GetComponent<Button>().onClick.RemoveAllListeners();
         IsFinished = false;
 
+    }
+
+    public void ProgressSlider()
+    {
+        elapsedTime += Time.deltaTime;
+        float percentComplete = elapsedTime / processTime;
+        slider.value = percentComplete;
     }
 
 
