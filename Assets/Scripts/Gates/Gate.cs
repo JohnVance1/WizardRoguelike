@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 public class Gate : MonoBehaviour
 {
     public int num;
-    public int scene;    
+    public int scene;
+    public Transform GateSpawn;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

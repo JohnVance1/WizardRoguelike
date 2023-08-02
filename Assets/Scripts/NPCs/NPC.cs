@@ -5,7 +5,10 @@ using UnityEngine.AI;
 
 public class NPC : Interactable_Base
 {
-    public NPC_Lines lines;
+    public NPC_Lines questCompleteLines;
+    public NPC_Lines questActiveLines;
+    public NPC_Lines questStartLines;
+
     public GameObject dialogueBox;
     public NavMeshAgent agent;
 
@@ -14,16 +17,30 @@ public class NPC : Interactable_Base
     public int pathCount;
     public bool IsPaused;
 
+    public string questType = "AskForPotion";
+    public Quest quest;
+    public bool AssignedQuest;
+    public bool QuestCompleted;
+    //public GameObject gameManager;
+    public QuestsActive questLog;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        AssignedQuest = false;
+        QuestCompleted = false;
 
     }
     public void Start()
     {
-        lines.NPCname = gameObject.name;
+        questCompleteLines.NPCname = gameObject.name;
+        questActiveLines.NPCname = gameObject.name;
+        questStartLines.NPCname = gameObject.name;
+
+        
+
         pathCount = 0;
         IsPaused = false;
         SetPath();
@@ -51,9 +68,34 @@ public class NPC : Interactable_Base
                 dialogueBox.SetActive(true);
                 player.SetSpeed(0f);
                 Dialogue dialogue = dialogueBox.GetComponent<Dialogue>();
-                dialogue.lines = lines.lines;
-                dialogue.StartDialogue();
-                Dialogue.OnEnd += EndDialouge;
+                if(questLog.ContainsQuest(quest))
+                {
+                    AssignedQuest = true;
+                }
+
+                if (!AssignedQuest && !QuestCompleted)
+                {
+                    // Assign Quest
+                    dialogue.lines = questStartLines.lines;
+                    AssignQuest();
+                    dialogue.StartDialogue();
+                    Dialogue.OnEnd += EndDialouge;
+
+                }
+                else if(AssignedQuest && !QuestCompleted)
+                {
+                    // Check Quest Status
+                    CheckQuestStatus(dialogue);
+                }
+                else if(QuestCompleted)
+                {
+                    // Dialouge after Quest is completeed
+                    dialogue.lines = questCompleteLines.lines;
+                    dialogue.StartDialogue();
+                    Dialogue.OnEnd += EndDialouge;
+                }
+                
+
             }
 
             
@@ -63,6 +105,8 @@ public class NPC : Interactable_Base
     public void EndDialouge()
     {
         player.SetSpeed(5f);
+        dialogueBox.SetActive(false);
+        Dialogue.OnEnd -= EndDialouge;
     }
 
     public void MoveAgent()
@@ -83,7 +127,7 @@ public class NPC : Interactable_Base
                     StartCoroutine(PauseMovement(2f));
                 }
             }
-            else
+            if(dialogueBox.activeInHierarchy == true)
             {
                 agent.isStopped = true;
             }
@@ -105,6 +149,42 @@ public class NPC : Interactable_Base
 
     }
 
+    public void AssignQuest()
+    {
+        AssignedQuest = true;
+        //quest = (Quest)gameManager.AddComponent<AskForPotion>();
+        questLog.AddQuest(quest); 
+        quest.Active = true;
+    }
+
+    public void CheckQuestStatus(Dialogue dialogue)
+    {
+        if(Player.Instance.inventory.DoesInventoryContainItemType<Potion>() && questLog.ContainsQuest(quest))
+        {
+            AssignedQuest = false;
+            QuestCompleted = true;
+            Player.Instance.RemoveItemFromInventory(Player.Instance.inventory.GetItemFromInventory<Potion>());
+            questLog.RemoveQuest(quest);
+            dialogue.lines = questCompleteLines.lines;
+            dialogue.StartDialogue();
+            Dialogue.OnEnd += EndDialouge;
+
+        }
+        else
+        {
+            //if (Player.Instance.inventory.DoesInventoryContainItemType<Potion>())
+            //{
+            //    quest.Completed = true;
+            //}
+            //else
+            //{
+                dialogue.lines = questActiveLines.lines;
+                dialogue.StartDialogue();
+                Dialogue.OnEnd += EndDialouge;
+            //}
+            
+        }
+    }
 
 
 
