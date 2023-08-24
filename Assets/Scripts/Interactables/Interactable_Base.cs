@@ -7,14 +7,17 @@ public class Interactable_Base : SerializedMonoBehaviour
 {
     public bool CanInteract { get; protected set; }
     protected Player player;
+    protected Player_Interact playerInteract;
+    public Herb currentHerb;
 
-    
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             CanInteract = true;
             player = collision.GetComponent<Player>();
+            playerInteract = player.GetComponent<Player_Interact>();
         }
     }
 
@@ -24,5 +27,10 @@ public class Interactable_Base : SerializedMonoBehaviour
         {
             CanInteract = false;
         }
+    }
+
+    public virtual void SetHerb(Herb herb)
+    {
+        currentHerb = herb;
     }
 }

@@ -28,15 +28,15 @@ public class FarmPlot : Interactable_Base
     {
         if (CanInteract)
         {
-            if (player.IsInteractButtonDown && player.inventory.Contains(defaultHerb) && storedHerb == null)
+            if (playerInteract.IsInteractButtonDown && player.inventory.Contains(defaultHerb) && storedHerb == null)
             {
                 //Herb playerHerb = (Herb)player.inventory.GetItemFromInventory<Herb>();
                 //SetHerb(playerHerb);
-                player.OpenFarmInventory(this);
+                playerInteract.OpenFarmInventory(this);
 
             }
 
-            if(player.IsInteractButtonDown && CanHarvest && storedHerb != null)
+            if(playerInteract.IsInteractButtonDown && CanHarvest && storedHerb != null)
             {
                 HarvestHerb();
             }
@@ -56,12 +56,12 @@ public class FarmPlot : Interactable_Base
         }
     }
 
-    public void SetHerb(Herb herb)
+    public override void SetHerb(Herb herb)
     {
         storedHerb = herb;
         herbStages = herb.herbStages;
         player.RemoveItemFromInventory(herb);
-        player.CloseInventory();
+        playerInteract.CloseInventory();
         StartGrowing();
     }
 

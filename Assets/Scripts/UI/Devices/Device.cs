@@ -25,6 +25,7 @@ public class Device : MonoBehaviour
     private void Start()
     {
         //ChangeOnClick();
+        IsFinished = true;
     }
 
     private void Update()
@@ -39,11 +40,11 @@ public class Device : MonoBehaviour
 
     public void Activate()
     {
-        if (selectedHerb != null)
+        if (selectedHerb != null && IsFinished)
         {
             IsFinished = false;
             storedHerb = Object.Instantiate(selectedHerb);
-
+            selectedHerb = null;
             if (storedHerb != null && !IsActive)
             {
                 IsActive = true;
@@ -61,25 +62,27 @@ public class Device : MonoBehaviour
         slider.gameObject.SetActive(false);
         elapsedTime = 0f;
         IsFinished = true;
-        onFinishedDevice(storedHerb, type);
-        RemoveOnClick();
-
-    }
-
-    public void ChangeOnClick()
-    {
-        GetComponent<Button>().onClick.RemoveAllListeners();
-        GetComponent<Button>().onClick.AddListener(() => Activate());
-
-    }
-
-    public void RemoveOnClick()
-    {
+        Herb temp = storedHerb;
         storedHerb = null;
-        GetComponent<Button>().onClick.RemoveAllListeners();
-        IsFinished = false;
+        onFinishedDevice(temp, type);
+        //RemoveOnClick();
 
     }
+
+    //public void ChangeOnClick()
+    //{
+    //    GetComponent<Button>().onClick.RemoveAllListeners();
+    //    GetComponent<Button>().onClick.AddListener(() => Activate());
+
+    //}
+
+    //public void RemoveOnClick()
+    //{
+    //    storedHerb = null;
+    //    GetComponent<Button>().onClick.RemoveAllListeners();
+    //    IsFinished = false;
+
+    //}
 
     public void ProgressSlider()
     {

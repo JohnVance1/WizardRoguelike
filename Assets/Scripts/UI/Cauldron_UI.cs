@@ -18,20 +18,7 @@ public class Cauldron_UI : MonoBehaviour
 
     public Player player;
 
-    public void SetStoredHerb(Herb herb, ProcessType type = ProcessType.Raw)
-    {
-        if(herb != null && currentHerb != null) 
-        {
-            cauldron.storedHerbs.Add(herb);
-            cauldron.storedHerbs[cauldron.storedHerbs.Count - 1].processType = type;
-            //player.RemoveItemFromInventory(currentHerb);
-            currentHerb = null;
-            //foreach (Device d in devices)
-            //{ 
-            //    d.RemoveOnClick();
-            //}
-        }        
-    }
+    
 
     private void Update()
     {
@@ -46,11 +33,32 @@ public class Cauldron_UI : MonoBehaviour
 
     private void Start()
     {
-        GetComponent<Button>().onClick.AddListener(() => SetStoredHerb(Object.Instantiate(currentHerb)));
+        //GetComponent<Button>().onClick.AddListener(() => SetStoredHerb(Object.Instantiate(currentHerb)));
 
     }
 
+    public void SetRawHerb()
+    {
+        if (currentHerb != null)
+        {
+            Instantiate(currentHerb);
+            cauldron.storedHerbs.Add(currentHerb);
+            cauldron.storedHerbs[cauldron.storedHerbs.Count - 1].processType = ProcessType.Raw;
+            currentHerb = null;
+            
+        }
+    }
 
+    public void SetStoredHerb(Herb herb, ProcessType type = ProcessType.Raw)
+    {
+        if (herb != null)
+        {
+            cauldron.storedHerbs.Add(herb);
+            cauldron.storedHerbs[cauldron.storedHerbs.Count - 1].processType = type;
+            //currentHerb = null;
+            
+        }
+    }
 
     public void MakePotion()
     {
@@ -82,29 +90,35 @@ public class Cauldron_UI : MonoBehaviour
     public void UseDevice(Herb herb)
     {
         currentHerb = herb;
-        foreach (Device d in devices)
+        if (currentHerb != null)
         {
-            //d.ChangeOnClick(herb);
-            d.selectedHerb = herb;
-            //d.GetComponent<Button>().onClick.AddListener(() => DeviceSelected(d));
-            if (d.onFinishedDevice == null)
+            foreach (Device d in devices)
             {
-                d.onFinishedDevice += SetStoredHerb;
-            }
-            if (d.onStartedDevice == null)
-            {
-                d.onStartedDevice += DeviceSelected;
+                //d.ChangeOnClick(herb);
+                d.selectedHerb = herb;
+                //d.GetComponent<Button>().onClick.AddListener(() => DeviceSelected(d));
+                if (d.onFinishedDevice == null)
+                {
+                    d.onFinishedDevice += SetStoredHerb;
+                }
+                if (d.onStartedDevice == null)
+                {
+                    d.onStartedDevice += DeviceSelected;
+                }
             }
         }
     }
 
     public void DeviceSelected()
     {
-        player.RemoveItemFromInventory(currentHerb);
-        //currentHerb = null;
-        foreach (Device d in devices)
+        if (currentHerb != null)
         {
-            d.selectedHerb = null;
+            player.RemoveItemFromInventory(currentHerb);
+            currentHerb = null;
+            foreach (Device d in devices)
+            {
+                d.selectedHerb = null;
+            }
         }
 
     }

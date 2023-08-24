@@ -8,5 +8,8 @@ public class Quest : ScriptableObject
     public string Name;
     public bool Completed;
     public bool Active;
+    public NPC_Lines QuestCompleted;
+    public NPC_Lines QuestActive;
+
 
 }

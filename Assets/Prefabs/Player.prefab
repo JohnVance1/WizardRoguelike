@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!1 &885995106648741105
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,6 +97,8 @@ GameObject:
   - component: {fileID: 5927200541214757971}
   - component: {fileID: 7519089976064825922}
   - component: {fileID: 4147429663675344487}
+  - component: {fileID: 3691949204260807872}
+  - component: {fileID: 7293488517518995663}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -137,18 +139,12 @@ MonoBehaviour:
   health: 0
   maxHealth: 10
   speed: 7.5
-  rb: {fileID: 0}
   weapon1: {fileID: 8424761283032664995, guid: cd35a6457e2f7294ba073f58312dc528, type: 3}
   weapon1Spawn: {fileID: 1086765588212183186}
-  InventoryCanvas: {fileID: 0}
-  JournalCanvas: {fileID: 0}
+  interact: {fileID: 0}
+  move: {fileID: 0}
   inventory: {fileID: 11400000, guid: 2b479184f7dc470468a1d0ae83da7c88, type: 2}
   journal: {fileID: 11400000, guid: 69f09a103786a754fad630022a767ff3, type: 2}
-  directionSprites:
-  - {fileID: -1319636926, guid: de4933ede8fc9dc408712fb326e95cc2, type: 3}
-  - {fileID: -1649248893, guid: de4933ede8fc9dc408712fb326e95cc2, type: 3}
-  - {fileID: -1319636926, guid: de4933ede8fc9dc408712fb326e95cc2, type: 3}
-  - {fileID: -1649248893, guid: de4933ede8fc9dc408712fb326e95cc2, type: 3}
 --- !u!50 &5927200541214757971
 Rigidbody2D:
   serializedVersion: 4
@@ -206,6 +202,37 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
+--- !u!114 &3691949204260807872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885995106648741105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e8f7ca78826e694681dece911ca6145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InventoryCanvas: {fileID: 3033416832641645779}
+  JournalCanvas: {fileID: 0}
+  player: {fileID: 0}
+--- !u!114 &7293488517518995663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885995106648741105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55fbae3dbf4862443ac241bfd2e01daa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  player: {fileID: 0}
+  directionSprites: []
+  speed: 0
 --- !u!1 &3033416832641645779
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +282,7 @@ Canvas:
   m_GameObject: {fileID: 3033416832641645779}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0

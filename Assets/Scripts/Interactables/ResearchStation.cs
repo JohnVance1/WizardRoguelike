@@ -20,10 +20,10 @@ public class ResearchStation : Interactable_Base
     {
         if (CanInteract)
         {
-            if(player.IsInteractButtonDown && !IsResearching)
+            if(playerInteract.IsInteractButtonDown && !IsResearching)
             {
                 IsResearching = true;
-                player.OpenResearchInventory(this);
+                playerInteract.OpenResearchInventory(this);
             }
 
         }
@@ -31,7 +31,7 @@ public class ResearchStation : Interactable_Base
 
     public void OpenResearchGame(Herb herb)
     {
-        player.CloseInventory();
+        playerInteract.CloseInventory();
         researchCanvas.SetActive(true);
         
     }

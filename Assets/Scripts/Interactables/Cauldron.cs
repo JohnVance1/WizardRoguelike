@@ -21,12 +21,12 @@ public class Cauldron : Interactable_Base
     {
         if(CanInteract)
         {            
-            if (player.IsInteractButtonDown && player.inventory.DoesInventoryContainItemType<Item_Base>())
+            if (playerInteract.IsInteractButtonDown)// && player.inventory.DoesInventoryContainItemType<Item_Base>())
             {
                 //player.inventory.GetItemFromInventory<Item_Base>();
                 //player.AddItemToInventory(potion);
                 OpenCauldronUI();
-                player.OpenCauldronInventory(this);
+                playerInteract.OpenCauldronInventory(this);
 
 
             }
@@ -50,7 +50,7 @@ public class Cauldron : Interactable_Base
 
     public void CloseCauldronUI()
     {
-        player.CloseInventory();
+        playerInteract.CloseInventory();
         cauldronUI.SetActive(false);
     }
 
