@@ -10,6 +10,7 @@ public class ResearchStation : Interactable_Base
     public GameObject researchCanvas;
     [SerializeField]
     private GameObject[] miniGames;
+   
 
     void Start()
     {
@@ -25,6 +26,14 @@ public class ResearchStation : Interactable_Base
                 IsResearching = true;
                 playerInteract.OpenResearchInventory(this);
             }
+            if(IsResearching && miniGames[0].GetComponent<Research_MiniGame>().PathFound)
+            {
+                if(currentHerb != null)
+                {
+                    currentHerb.IsResearched = true;
+
+                }
+            }
 
         }
     }
@@ -33,12 +42,14 @@ public class ResearchStation : Interactable_Base
     {
         playerInteract.CloseInventory();
         researchCanvas.SetActive(true);
-        
+        currentHerb = herb;
     }
 
     public void CloseResearchGame()
     {
         researchCanvas.SetActive(false);
+        IsResearching = false;
+        currentHerb = null;
 
     }
 }

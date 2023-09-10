@@ -70,13 +70,27 @@ public class Inventory_UI : MonoBehaviour
                 case OpenState.Research:
                     if (selected.storedItem.item is Herb)
                     {
-                        ((ResearchStation)interactable).OpenResearchGame((Herb)selected.storedItem.item);
+                        if (!((Herb)selected.storedItem.item).IsResearched)
+                        {
+                            ((ResearchStation)interactable).OpenResearchGame((Herb)selected.storedItem.item);
+                        }
+                        else
+                        {
+                            Debug.Log("This Herb has been researched already!");
+                        }
                     }
                     break;
                 case OpenState.Cauldron:
                     if (selected.storedItem.item is Herb)
                     {
-                        ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
+                        if (((Herb)selected.storedItem.item).IsResearched)
+                        {
+                            ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
+                        }
+                        else
+                        {
+                            Debug.Log("This Herb needs to be researched!!");
+                        }
                     }
                     break;
                 case OpenState.None:

@@ -24,6 +24,8 @@ public class Herb : Item_Base
 
     public int researchNum;
 
+    public bool IsResearched = false;
+
     public ProcessType processType = ProcessType.Raw;
 
 

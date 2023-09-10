@@ -22,6 +22,7 @@ public class Research_MiniGame : SerializedMonoBehaviour
 
     private int UILayer;
     private bool IsMouseDown;
+    public bool PathFound;
 
     private General_Grid grid;
 
@@ -30,8 +31,9 @@ public class Research_MiniGame : SerializedMonoBehaviour
         UILayer = LayerMask.NameToLayer("UI");
         grid = new General_Grid();
         IsMouseDown = false;
+        PathFound = false;
 
-        for(int i = 0; i < width; i++)
+        for (int i = 0; i < width; i++)
         {
             for(int j = 0; j < height; j++)
             {
@@ -118,6 +120,12 @@ public class Research_MiniGame : SerializedMonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        ResetGame();
+    }
+
+
     public void CheckCompletePath(Space start, Space end)
     {
         Dictionary<Space, bool> visited = new Dictionary<Space, bool>();
@@ -152,23 +160,15 @@ public class Research_MiniGame : SerializedMonoBehaviour
                 Debug.Log(startEnd + ": " + end);
                 end = path[end];
             }
+            PathFound = true;
         }
     }
 
     public void ResetGame()
     {
-        grid = new General_Grid();
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                // Adds all of the grid spaces to the grid
-                grid.grid[i, j] = spaces[i, j].GetComponent<Space>();
-            }
-        }
+        grid.RemoveAllEdges();
+        PathFound = false;
 
-        // Sets up the info about each space's relation to the others
-        grid.PopulateGrid();
     }
 
     public Vector3 GetMousePos()

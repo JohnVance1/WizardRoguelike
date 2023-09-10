@@ -49,13 +49,23 @@ public class General_Grid
     }
 
     /// <summary>
+    /// Removes all of the Edge's on each Space
+    /// </summary>
+    public void RemoveAllEdges()
+    {
+        foreach(Space sp in AdjacencyList)
+        {
+            sp.Edges.Clear();
+        }
+    }
+
+    /// <summary>
     /// Adds a new vertex to the graph
     /// </summary>
     /// <param name="newVertex">Name of the new vertex</param>
     /// <returns>Returns the success of the operation</returns>
     public bool AddVertex(Space newVertex)
     {
-        // We will keep the implementation simple and focus on the concepts
         // Ignore duplicate vertices.
         if (AdjacencyList.Find(v => v == newVertex) != null) return true;
 

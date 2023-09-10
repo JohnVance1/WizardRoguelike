@@ -18,7 +18,7 @@ public class Cauldron_UI : MonoBehaviour
 
     public Player player;
 
-    
+
 
     private void Update()
     {
@@ -120,6 +120,11 @@ public class Cauldron_UI : MonoBehaviour
                 d.selectedHerb = null;
             }
         }
+
+    }
+
+    public void ChangeStoredUI()
+    {
 
     }
 

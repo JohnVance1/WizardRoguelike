@@ -1,0 +1,25 @@
+.slotContainer {
+    width: 128px;
+    height: 128px;
+    margin: 5px;
+    border-left-color: rgb(48, 48, 48);
+    border-right-color: rgb(48, 48, 48);
+    border-top-color: rgb(48, 48, 48);
+    border-bottom-color: rgb(48, 48, 48);
+    background-color: rgb(9, 19, 21);
+    background-image: url('project://database/Assets/Sprites/WUG/Sprites/ItemSlotBackground.png?fileID=21300000&guid=9775dedc597859d4e8a501720a97fac4&type=3#ItemSlotBackground');
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    min-width: auto;
+    min-height: auto;
+    flex-grow: 0;
+    flex-wrap: wrap;
+}
+
+.slotIcon {
+    padding: 15px;
+    flex-shrink: 0;
+    flex-grow: 1;
+}
