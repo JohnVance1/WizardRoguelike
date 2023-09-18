@@ -1,8 +1,31 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="Container" style="flex-grow: 1; align-items: center; justify-content: center;">
-        <ui:VisualElement name="Inventory" style="flex-grow: 1; width: 50%; height: 75%; max-width: 50%; max-height: 75%; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; background-color: rgba(28, 32, 36, 255); border-top-color: rgba(255, 197, 0, 255); border-top-width: 5px;">
-            <ui:Label text="Inventory" display-tooltip-when-elided="true" name="header" style="font-size: 24px; color: rgba(255, 197, 0, 255); margin-bottom: 10px; border-bottom-color: rgba(64, 74, 82, 255); border-bottom-width: 1px;" />
-            <ui:VisualElement name="SlotContainer" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; justify-content: center;" />
+    <Style src="project://database/Assets/UI/Inventory.uss?fileID=7433441132597879392&amp;guid=9c43b8824acfc6346871d56130b0c303&amp;type=3#Inventory" />
+    <ui:VisualElement name="Container" style="flex-grow: 1; align-items: flex-start; justify-content: center; left: auto;">
+        <ui:VisualElement name="Inventory" style="flex-grow: 1; width: 40%; height: 80%; max-width: 40%; max-height: 80%; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; background-color: rgb(28, 32, 36); border-top-color: rgb(255, 197, 0); border-top-width: 5px; left: 25px; align-items: flex-start;">
+            <ui:Label text="Inventory" display-tooltip-when-elided="true" name="header" enable-rich-text="true" style="font-size: 16px; color: rgb(255, 197, 0); margin-bottom: 10px; border-bottom-color: rgb(64, 74, 82); border-bottom-width: 1px; -unity-text-align: upper-left; align-items: stretch; width: auto;" />
+            <ui:VisualElement name="SlotContainer" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; justify-content: center; position: relative; align-items: stretch; width: 100%; height: 100%; overflow: hidden; visibility: visible; display: flex; flex-basis: auto; -unity-text-align: upper-left;">
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+                <InventorySlot_UI />
+            </ui:VisualElement>
         </ui:VisualElement>
+        <ui:VisualElement name="GhostIcon" style="position: absolute; width: 60px; height: 60px; visibility: hidden;" />
     </ui:VisualElement>
 </ui:UXML>

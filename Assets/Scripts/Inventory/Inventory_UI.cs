@@ -36,7 +36,7 @@ public class Inventory_UI : MonoBehaviour
 
         }
 
-        inv.onInventoryChanged += OnUpdateInventory;
+        //inv.onInventoryChanged += OnUpdateInventory;
     }
 
     private void Update()

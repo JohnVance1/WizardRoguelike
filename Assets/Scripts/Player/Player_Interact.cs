@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player_Interact : MonoBehaviour
 {
@@ -53,12 +54,13 @@ public class Player_Interact : MonoBehaviour
 
     public void OpenInventory()
     {
-        InventoryCanvas.gameObject.SetActive(true);
+        InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        InventoryCanvas.transform.GetComponent<InventoryUIController>().state = OpenState.General;
         IsInventoryOpen = true;
     }
     public void CloseInventory()
     {
-        InventoryCanvas.gameObject.SetActive(false);
+        InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
         IsInventoryOpen = false;
 
     }
@@ -77,25 +79,25 @@ public class Player_Interact : MonoBehaviour
 
     public void OpenFarmInventory(FarmPlot plot)
     {
-        InventoryCanvas.gameObject.SetActive(true);
-        InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().state = OpenState.Farm;
-        InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().interactable = plot;
+        InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        InventoryCanvas.transform.GetComponent<InventoryUIController>().state = OpenState.Farm;
+        InventoryCanvas.transform.GetComponent<InventoryUIController>().interactable = plot;
         IsInventoryOpen = true;
     }
 
     public void OpenResearchInventory(ResearchStation research)
     {
-        InventoryCanvas.gameObject.SetActive(true);
-        InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().state = OpenState.Research;
-        InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().interactable = research;
+        InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        InventoryCanvas.transform.GetComponent<InventoryUIController>().state = OpenState.Research;
+        InventoryCanvas.transform.GetComponent<InventoryUIController>().interactable = research;
         IsInventoryOpen = true;
     }
 
     public void OpenCauldronInventory(Cauldron cauldron)
     {
-        InventoryCanvas.gameObject.SetActive(true);
-        InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().state = OpenState.Cauldron;
-        InventoryCanvas.transform.GetChild(0).GetComponent<Inventory_UI>().interactable = cauldron;
+        InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        InventoryCanvas.transform.GetComponent<InventoryUIController>().state = OpenState.Cauldron;
+        InventoryCanvas.transform.GetComponent<InventoryUIController>().interactable = cauldron;
         IsInventoryOpen = true;
     }
 }

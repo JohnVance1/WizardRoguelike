@@ -3021,7 +3021,7 @@ Camera:
   far clip plane: 5000
   field of view: 60
   orthographic: 1
-  orthographic size: 6.3333335
+  orthographic size: 5.125
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3045,7 +3045,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.96013594, y: 0.6915336, z: -10}
+  m_LocalPosition: {x: -0.960135, y: 0.6915336, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4385,6 +4385,63 @@ MonoBehaviour:
   x: 2
   y: 5
   type: 0
+--- !u!1001 &724461821
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 9149177777963875289, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
+      propertyPath: m_RootOrder
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149177777963875289, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149177777963875289, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149177777963875289, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149177777963875289, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149177777963875289, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149177777963875289, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149177777963875289, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149177777963875289, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149177777963875289, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149177777963875289, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9149177777963875295, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
+      propertyPath: m_Name
+      value: Herb (4)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 802a66bc9e1038e49bc97b7f2c504db1, type: 3}
 --- !u!1 &726230177
 GameObject:
   m_ObjectHideFlags: 0
@@ -11110,6 +11167,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f0ba8363420e194d81a170225dc261c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: InventoryItems
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[InventorySlot_UI, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: selected
+      Entry: 6
+      Data: 
+  inv: {fileID: 11400000, guid: 2b479184f7dc470468a1d0ae83da7c88, type: 2}
+  state: 1
+  interactable: {fileID: 0}
 --- !u!114 &1534581716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16501,6 +16586,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3691949204260807872, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
+      propertyPath: InventoryCanvas
+      value: 
+      objectReference: {fileID: 1534581714}
     - target: {fileID: 4147429663675344487, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_Size.x
       value: 0.4690873

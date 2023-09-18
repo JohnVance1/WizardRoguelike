@@ -6,4 +6,6 @@ using UnityEngine;
 public class Item_Base : ScriptableObject
 {
     public Sprite sprite;
+    public string GUID;
+    public string Name;
 }

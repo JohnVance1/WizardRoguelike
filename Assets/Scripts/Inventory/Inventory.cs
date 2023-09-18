@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 
@@ -26,7 +27,10 @@ public class Inventory : ScriptableObject
 
     public delegate void OnInventoryChanged();
     public OnInventoryChanged onInventoryChanged;
-
+    public delegate void OnInventoryAdd(InventoryItem item);
+    public OnInventoryAdd onInventoryAdd;
+    public delegate void OnInventoryRemove(InventoryItem item);
+    public OnInventoryRemove onInventoryRemove;
 
     /// <summary>
     /// Checks if the Inventory contains a specific Item_Base
@@ -81,27 +85,43 @@ public class Inventory : ScriptableObject
 
     }
 
+    public InventoryItem ReturnItemFromInventory(InventoryItem item)
+    {
+        if (inventory.Contains(item))
+        {
+            return item;
+        }
+
+        return null;
+
+    }
+
     /// <summary>
     /// Adds Item to the player's Inventory
     /// </summary>
     /// <param name="reference"></param>
     public void Add(Item_Base reference)
     {
+        InventoryItem item;
         if(itemDictionary.TryGetValue(reference, out InventoryItem value)) 
         {
             value.AddCount();
+            item = value;
         }
         else
         {
             InventoryItem newItem = new InventoryItem(reference);
             inventory.Add(newItem);
-            itemDictionary.Add(reference, newItem);            
+            itemDictionary.Add(reference, newItem);
+            item = newItem;
+
 
         }
-        if (onInventoryChanged != null)
+        if (onInventoryAdd != null)
         {
-            onInventoryChanged();
+            onInventoryAdd(item);
         }
+
     }
 
     /// <summary>
@@ -119,11 +139,12 @@ public class Inventory : ScriptableObject
                 inventory.Remove(value);
                 itemDictionary.Remove(reference);
             }
+            if (onInventoryRemove != null)
+            {
+                onInventoryRemove(value);
+            }
         }
-        if (onInventoryChanged != null)
-        {
-            onInventoryChanged();
-        }
+        
 
     }
 
