@@ -1,8 +1,8 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using static Device;
+using UnityEngine.UIElements;
 
 public class Device : MonoBehaviour
 {
@@ -22,6 +22,10 @@ public class Device : MonoBehaviour
     public float processTime = 2f;
     public float elapsedTime = 0f;
 
+
+   
+
+
     private void Start()
     {
         //ChangeOnClick();
@@ -32,7 +36,7 @@ public class Device : MonoBehaviour
     {
         if (IsActive)
         {
-            slider.gameObject.SetActive(true);
+            //slider.gameObject.SetActive(true);
             ProgressSlider();
         }
 
@@ -59,7 +63,7 @@ public class Device : MonoBehaviour
     {
         yield return new WaitForSeconds(processTime);
         IsActive = false;
-        slider.gameObject.SetActive(false);
+        //slider.gameObject.SetActive(false);
         elapsedTime = 0f;
         IsFinished = true;
         Herb temp = storedHerb;

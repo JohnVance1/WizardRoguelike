@@ -145,6 +145,8 @@ public class InventoryUIController : SerializedMonoBehaviour
                 case OpenState.Cauldron:
                     if (selected.storedItem.item is Herb)
                     {
+                        ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
+
                         if (((Herb)selected.storedItem.item).IsResearched)
                         {
                             ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Cauldron : Interactable_Base
 {
@@ -14,7 +15,9 @@ public class Cauldron : Interactable_Base
 
     void Start()
     {
-        
+        cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+
     }
 
     void Update()
@@ -45,19 +48,23 @@ public class Cauldron : Interactable_Base
 
     public void OpenCauldronUI()
     {
-        cauldronUI.SetActive(true);        
+        //cauldronUI.SetActive(true);
+        cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
     }
 
     public void CloseCauldronUI()
     {
         playerInteract.CloseInventory();
-        cauldronUI.SetActive(false);
+        cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        //cauldronUI.SetActive(false);
     }
 
     public void SelectCauldron(Herb herb)
     {
-        cauldronUI.GetComponentInChildren<Cauldron_UI>().UseDevice(herb);
-        cauldronUI.GetComponentInChildren<Cauldron_UI>().SetPlayer(player);
+        //cauldronUI.GetComponentInChildren<Cauldron_UI>().UseDevice(herb);
+        //cauldronUI.GetComponentInChildren<Cauldron_UI>().SetPlayer(player);
+        cauldronUI.GetComponentInChildren<PotionUIController>().UseDevice(herb);
+        cauldronUI.GetComponentInChildren<PotionUIController>().SetPlayer(player);
     }
 
 
