@@ -67,7 +67,7 @@ public class QuestGiver : NPC
         AssignedQuest = true;
         //quest = (Quest)gameManager.AddComponent<AskForPotion>();
         questLog.AddQuest(quest);
-        quest.Active = true;
+        //quest.Active = true;
     }
 
     public void CheckQuestStatus(Dialogue dialogue)

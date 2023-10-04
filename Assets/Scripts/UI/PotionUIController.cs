@@ -95,7 +95,7 @@ public class PotionUIController : SerializedMonoBehaviour
             bar.style.visibility = Visibility.Visible;
             IsFinished = false;
             storedHerb = Object.Instantiate(currentHerb);
-            currentHerb = null;
+            //currentHerb = null;
             if (storedHerb != null && !IsActive)
             {
                 IsActive = true;
@@ -212,10 +212,7 @@ public class PotionUIController : SerializedMonoBehaviour
         {
             player.RemoveItemFromInventory(currentHerb);
             currentHerb = null;
-            foreach (Device d in devices)
-            {
-                d.selectedHerb = null;
-            }
+            
         }
 
     }

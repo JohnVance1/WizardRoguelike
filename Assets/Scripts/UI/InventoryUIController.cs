@@ -194,10 +194,24 @@ public class InventoryUIController : SerializedMonoBehaviour
     private void OnInventoryRemove(InventoryItem item)
     {
         var emptySlot = InventoryItems.FirstOrDefault(x => x.storedItem == item);
-        if (emptySlot != null)
+
+        if(item.count == 1)
         {
-            emptySlot.Reset();
+            emptySlot.Count.style.visibility = Visibility.Hidden;
         }
+        else if(item.count <= 0)
+        {
+            if (emptySlot != null)
+            {
+                emptySlot.Reset();
+            }
+        }
+        else
+        {
+            emptySlot.Count.text = item.count.ToString();
+        }
+
+        
 
 
     }

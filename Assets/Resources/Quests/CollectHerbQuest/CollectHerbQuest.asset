@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6683f1b54e7bf1d43b9bba8ce8432c23, type: 3}
+  m_Name: CollectHerbQuest
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: CollectHerbQuest
+  displayName: Collect The Herbs!
+  levelRequirement: 1
+  questPrereqs: []
+  questStepPrefabs:
+  - {fileID: 5285862370153633570, guid: 761adc0107b93e843be949a8dae53727, type: 3}
+  goldReward: 10
+  expReward: 0

@@ -15,8 +15,8 @@ public class Cauldron : Interactable_Base
 
     void Start()
     {
-        cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-        cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        //cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        //cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
 
     }
 

@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/ResearchGame.uss?fileID=7433441132597879392&amp;guid=448b0983baa8d3749bf9459eb0203bfb&amp;type=3#ResearchGame" />
+    <ui:VisualElement name="Background" style="flex-grow: 1; justify-content: center; align-items: center;">
+        <ui:VisualElement name="BackgroundColor" style="flex-grow: 0; position: relative; left: auto; right: auto; -unity-slice-left: 0; padding-left: 50px; padding-right: 50px; padding-top: 50px; padding-bottom: 50px; height: 500px; width: 500px; justify-content: center; top: auto; align-items: center; background-color: rgba(108, 108, 108, 0.51);">
+            <ui:VisualElement name="Board" style="flex-grow: 1; position: relative; justify-content: center; align-items: center; width: 100%; height: 100%;">
+                <ui:VisualElement name="Row" style="width: 100%; height: 16.66667%; align-items: center; flex-direction: row;" />
+                <ui:VisualElement name="Row" style="width: 100%; height: 16.66666%; align-items: center; flex-direction: row;" />
+                <ui:VisualElement name="Row" style="width: 100%; height: 16.66666%; align-items: center; flex-direction: row;" />
+                <ui:VisualElement name="Row" style="width: 100%; height: 16.66666%; align-items: center; flex-direction: row;" />
+                <ui:VisualElement name="Row" style="width: 100%; height: 16.66666%; align-items: center; flex-direction: row;" />
+                <ui:VisualElement name="Row" style="width: 100%; height: 16.66666%; align-items: center; flex-direction: row;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

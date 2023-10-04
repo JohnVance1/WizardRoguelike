@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Scripting;
+using UnityEngine.UIElements;
+using static UnityEngine.Rendering.VolumeComponent;
 
 public enum SpaceType
 {
@@ -14,7 +19,7 @@ public enum SpaceType
 
 }
 
-public class Space : MonoBehaviour
+public class Space : VisualElement
 {
     public int x;
     public int y;
@@ -26,21 +31,117 @@ public class Space : MonoBehaviour
 
     public bool IsError { get; private set; }
 
-    private void Start()
+    public delegate void OnMouseDown(Vector3 pos, Space slot);
+    public OnMouseDown onMouseDown;
+    public delegate void OnMouseUp();
+    public OnMouseUp onMouseUp;
+
+    public Space()
     {
         Edges = new List<Space>();
         temp = new List<Space>();
-        //type = SpaceType.None;
+        AddToClassList("space");
 
+        generateVisualContent += DrawLine;
+
+        RegisterCallback<PointerDownEvent>(OnPointerDown);
+        RegisterCallback<PointerUpEvent>(OnPointerUp);
+
+    }
+
+    private void Start()
+    {
+
+        //type = SpaceType.None;
         
     }
 
-    private void Update()
+    private void OnPointerDown(PointerDownEvent evt)
     {
+        if (evt.button != 0)
+        {
+            return;
+        }
+
+        Vector3 center = this.transform.position;
+
+        onMouseDown(center, this);
+
         RemoveDiagonals();
 
         CheckNodeBehavior();
 
+    }
+
+    private void OnPointerUp(PointerUpEvent evt)
+    {
+        if (evt.button != 0)
+        {
+            return;
+        }
+
+        onMouseUp();
+
+        
+
+    }
+
+    private void Update()
+    {
+       
+
+    }
+
+    void DrawLine(MeshGenerationContext mgc)
+    {
+        var painter2D = mgc.painter2D;
+
+        
+        painter2D.strokeColor = Color.red;
+        painter2D.lineWidth = 5.0f;
+        painter2D.BeginPath();
+
+        foreach (Space e in Edges)
+        {
+            Vector2 baseVec = new Vector2(this.resolvedStyle.width / 2,
+                this.resolvedStyle.height / 2);
+
+            painter2D.MoveTo(baseVec);
+
+            Vector2 lineTo = e.worldBound.position - this.worldBound.position;
+
+            lineTo.Normalize();
+            //lineTo *= ClosestDirection(lineTo);
+            lineTo *= new Vector2(this.resolvedStyle.width,
+                this.resolvedStyle.height);
+
+            lineTo += baseVec;
+
+            painter2D.LineTo(lineTo);
+
+        }
+        //painter2D.ClosePath();
+        painter2D.Stroke();
+
+    }
+
+
+    public Vector3 ClosestDirection(Vector3 v)
+    {
+        Vector3[] compass = { Vector3.left, Vector3.right, Vector3.up, Vector3.down };
+
+        float maxDot = -Mathf.Infinity;
+        Vector3 ret = Vector3.zero;
+	
+	    foreach(Vector3 dir in compass) { 
+		    float t = Vector3.Dot(v, dir);
+		    if (t > maxDot) {
+			    ret = dir;
+			    maxDot = t;
+		    }
+	    }
+
+	    return ret;
     }
 
     /// <summary>
@@ -147,5 +248,13 @@ public class Space : MonoBehaviour
     {
         Debug.Log("Error with space X: " + x + " Y: " + y);
     }
+
+
+    #region UXML
+    [Preserve]
+    public new class UxmlFactory : UxmlFactory<Space, UxmlTraits> { }
+    [Preserve]
+    public new class UxmlTraits : VisualElement.UxmlTraits { }
+    #endregion
 
 }

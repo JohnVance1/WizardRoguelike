@@ -2,14 +2,57 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Quests/AskForPotion", order = 1)]
-public class Quest : ScriptableObject
+public class Quest
 {
-    public string Name;
-    public bool Completed;
-    public bool Active;
-    public NPC_Lines QuestCompleted;
-    public NPC_Lines QuestActive;
+    public QuestInfo_SO info;
+    public QuestState state;
+    private int currentQuestStepIndex;
+
+
+    public Quest(QuestInfo_SO questInfo) 
+    { 
+        this.info = questInfo;
+        state = QuestState.REQUIREMENTS_NOT_MET;
+        currentQuestStepIndex = 0;
+    }
+
+    public void MoveToNextStep()
+    {
+        currentQuestStepIndex++;
+    }
+
+    public bool CurrentStepExists()
+    {
+        return (currentQuestStepIndex < info.questStepPrefabs.Length);
+    }
+
+    public void InstantiateCurrentQuestStep(Transform parentTransform)
+    {
+        GameObject questStepPrefab = GetCurrentQuestStepPrefab();
+
+        if(questStepPrefab != null)
+        {
+            Object.Instantiate(questStepPrefab, parentTransform);
+        }
+
+    }
+
+    private GameObject GetCurrentQuestStepPrefab()
+    {
+        GameObject questStepPrefab = null;
+
+        if(CurrentStepExists())
+        {
+            questStepPrefab = info.questStepPrefabs[currentQuestStepIndex];
+            
+        }
+        else
+        {
+            Debug.LogWarning("Tried to get quest step prefab but stepIndex was out of range:: "
+                + "No current quest step: QuestID= " + info.id + ", stepIndex= " + currentQuestStepIndex);
+        }
+        return questStepPrefab;
+    }
 
 
 }

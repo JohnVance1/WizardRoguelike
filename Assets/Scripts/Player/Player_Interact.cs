@@ -25,6 +25,11 @@ public class Player_Interact : MonoBehaviour
     void Update()
     {
         IsInteractButtonDown = Input.GetMouseButtonDown(0) ? true : false;
+
+        if(IsInteractButtonDown)
+        {
+            GameEventsManager.instance.inputEvents.SubmitPressed();
+        }
         //Debug.Log(IsInteractButtonDown);
 
         if (Input.GetKeyDown(KeyCode.V))
