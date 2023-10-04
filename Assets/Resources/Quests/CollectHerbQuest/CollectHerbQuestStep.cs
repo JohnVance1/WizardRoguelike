@@ -25,11 +25,24 @@ public class CollectHerbQuestStep : QuestStep
         if(herbsCollected < herbsToCollect)
         {
             herbsCollected++;
+            UpdateState();
         }
 
         if(herbsCollected >= herbsToCollect)
         {
             FinishQuestStep();
         }
+    }
+
+    private void UpdateState()
+    {
+        string state = herbsCollected.ToString();
+        ChangeState(state);
+    }
+
+    protected override void SetQuestStepState(string state)
+    {
+        this.herbsCollected = System.Int32.Parse(state);
+        UpdateState();
     }
 }

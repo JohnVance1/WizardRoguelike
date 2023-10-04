@@ -9,7 +9,7 @@ public class GameEventsManager : MonoBehaviour
     public MiscEvents miscEvents;
     public QuestEvents questEvents;
     public InputEvents inputEvents;
-
+     
 
     private void Awake()
     {

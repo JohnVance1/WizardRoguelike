@@ -7,6 +7,7 @@ public class Quest
     public QuestInfo_SO info;
     public QuestState state;
     private int currentQuestStepIndex;
+    private QuestStepState[] questStepStates;
 
 
     public Quest(QuestInfo_SO questInfo) 
@@ -14,6 +15,24 @@ public class Quest
         this.info = questInfo;
         state = QuestState.REQUIREMENTS_NOT_MET;
         currentQuestStepIndex = 0;
+        questStepStates= new QuestStepState[info.questStepPrefabs.Length];
+        for(int i = 0; i < questStepStates.Length; i++)
+        {
+            questStepStates[i] = new QuestStepState();
+        }
+    }
+
+    public Quest(QuestInfo_SO questInfo, QuestState state, int currentQuestStepIndex, QuestStepState[] questStepStates)
+    {
+        this.info = questInfo;
+        this.state = state;
+        this.questStepStates = questStepStates;
+        this.questStepStates = questStepStates;
+
+        if(this.questStepStates.Length != this.info.questPrereqs.Length)
+        {
+            Debug.LogWarning("Quest Step Prefab and Quest Step States are of different lengths");
+        }
     }
 
     public void MoveToNextStep()
@@ -32,7 +51,8 @@ public class Quest
 
         if(questStepPrefab != null)
         {
-            Object.Instantiate(questStepPrefab, parentTransform);
+            QuestStep questStep = Object.Instantiate(questStepPrefab, parentTransform).GetComponent<QuestStep>();
+            questStep.InitilizeQuestStep(info.id, currentQuestStepIndex, questStepStates[currentQuestStepIndex].state);
         }
 
     }
@@ -52,6 +72,23 @@ public class Quest
                 + "No current quest step: QuestID= " + info.id + ", stepIndex= " + currentQuestStepIndex);
         }
         return questStepPrefab;
+    }
+
+    public void StoreQuestStepState(QuestStepState questStepState, int stepIndex)
+    {
+        if(stepIndex < questStepStates.Length)
+        {
+            questStepStates[stepIndex].state = questStepState.state;
+        }
+        else
+        {
+            Debug.LogWarning("Tried to access quest step data, but stepIndex was out of range: " + "Quest ID =" + info.id + ", Step Index= " + stepIndex);
+        }
+    }
+
+    public QuestData GetQuestData()
+    {
+        return new QuestData(state, currentQuestStepIndex, questStepStates);
     }
 
 
