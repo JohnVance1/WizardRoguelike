@@ -40,6 +40,9 @@ public class QuestPoint : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Runs whenever the 'Submit' button is pressed
+    /// </summary>
     private void SubmitPressed()
     {
         if(!playerIsNear)
@@ -47,10 +50,12 @@ public class QuestPoint : MonoBehaviour
             return;
         }
 
+        //  If the player is at the start point of a quest and the quest can be started
         if(currentQuestState.Equals(QuestState.CAN_START) && startPoint)
         {
             GameEventsManager.instance.questEvents.StartQuest(questID);
         }
+        // If the player is at the finish point and the quest can be finished
         else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
         {
             GameEventsManager.instance.questEvents.FinishQuest(questID);
@@ -58,6 +63,10 @@ public class QuestPoint : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Updates the state of the quest 
+    /// </summary>
+    /// <param name="quest"></param>
     private void QuestStateChange(Quest quest)
     {
         if(quest.info.id.EndsWith(questID))

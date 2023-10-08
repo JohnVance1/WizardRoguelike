@@ -8,6 +8,7 @@ public class QuestManager : MonoBehaviour
     [SerializeField]
     private bool loadQuestState = true;
 
+    // The Map of all of the quests in the game
     private Dictionary<string, Quest> questMap;
 
 
@@ -20,6 +21,11 @@ public class QuestManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Loads all of the quests into the Map from the Assets/Resources/Quests folder
+    /// All Quests need to be QuestInfo_SO ScriptableObjects
+    /// </summary>
+    /// <returns></returns>
     private Dictionary<string, Quest> CreateQuestMap()
     {
         // Loads all QuestInfo_SO objects under the Assets/Resoucres/Quests folder
@@ -32,11 +38,17 @@ public class QuestManager : MonoBehaviour
             {
                 Debug.LogWarning("Duplicate ID found when making questMap: " + questInfo.id);
             }
+            // Loads any quests that were saved in PlayerPerfs
             idToQuestMap.Add(questInfo.id, LoadQuest(questInfo));
         }
         return idToQuestMap;
     }
 
+    /// <summary>
+    /// Helper method for getting the quest by it's ID
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     private Quest GetQuestByID(string id)
     {
         Quest quest = questMap[id];
@@ -70,6 +82,7 @@ public class QuestManager : MonoBehaviour
     {
         foreach(Quest quest in questMap.Values)
         {
+            // Respawns the Quest if it was IN_PROGRESS when the game closed
             if(quest.state == QuestState.IN_PROGRESS)
             {
                 quest.InstantiateCurrentQuestStep(this.transform);
@@ -78,6 +91,11 @@ public class QuestManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Calls the QuestStateChange method whenever the 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="state"></param>
     private void ChangeQuestState(string id, QuestState state)
     {
         Quest quest = GetQuestByID(id);
@@ -126,6 +144,10 @@ public class QuestManager : MonoBehaviour
         ChangeQuestState(quest.info.id, QuestState.IN_PROGRESS);
     }
 
+    /// <summary>
+    /// Moves the quest from one step to the next and creates a GameObject based on that
+    /// </summary>
+    /// <param name="id"></param>
     private void AdvanceQuest(string id)
     {
         Quest quest = GetQuestByID(id);
@@ -143,6 +165,10 @@ public class QuestManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Finishs the quest and sends the rewards to the Player
+    /// </summary>
+    /// <param name="id"></param>
     private void FinishQuest(string id)
     {
         Quest quest = GetQuestByID(id);
@@ -150,6 +176,11 @@ public class QuestManager : MonoBehaviour
         ChangeQuestState(quest.info.id, QuestState.FINISHED);
     }
 
+    /// <summary>
+    /// Method for sending the rewards to the Player
+    /// Currently just throws a Debug.Log statement
+    /// </summary>
+    /// <param name="quest"></param>
     private void ClaimRewards(Quest quest)
     {
         Debug.Log("Rewards Gained from Quest: " + quest.info.displayName);
@@ -157,6 +188,7 @@ public class QuestManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        // Saves the status of each quest in the game
         foreach(Quest quest in questMap.Values)
         {
             SaveQuest(quest);
@@ -167,6 +199,7 @@ public class QuestManager : MonoBehaviour
     {
         try
         {
+            // Serializes the quest and saves it to PlayerPerfs
             QuestData questData = quest.GetQuestData();
             string serializeData = JsonUtility.ToJson(questData);
 
@@ -179,6 +212,11 @@ public class QuestManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Loads each quest in PlayerPrefs from the QuestInfo_SO.id
+    /// </summary>
+    /// <param name="questInfo"></param>
+    /// <returns></returns>
     private Quest LoadQuest(QuestInfo_SO questInfo)
     {
         Quest quest = null;

@@ -9,6 +9,13 @@ public abstract class QuestStep : MonoBehaviour
     private string questID;
     private int stepIndex;
 
+    /// <summary>
+    /// Initilizes the quest step
+    /// Runs whenever a new Quest step starts
+    /// </summary>
+    /// <param name="questID"></param>
+    /// <param name="stepIndex"></param>
+    /// <param name="questStepState"></param>
     public void InitilizeQuestStep(string questID, int stepIndex, string questStepState)
     {
         this.questID = questID;

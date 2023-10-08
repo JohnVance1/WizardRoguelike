@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The manager for all of the game events(delegates) in the game
+/// </summary>
 public class GameEventsManager : MonoBehaviour
 {
     public static GameEventsManager instance { get; private set; }
