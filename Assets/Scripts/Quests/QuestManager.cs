@@ -103,6 +103,12 @@ public class QuestManager : MonoBehaviour
         GameEventsManager.instance.questEvents.QuestStateChange(quest);
     }
 
+    /// <summary>
+    /// Stores the quest for saving when the game Exits
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="stepIndex"></param>
+    /// <param name="questStepState"></param>
     private void QuestStepStateChange(string id, int stepIndex, QuestStepState questStepState)
     {
         Quest quest = GetQuestByID(id);
@@ -111,6 +117,11 @@ public class QuestManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Check to see if the requirements of the quest are met to start the quest and if so return 'true'
+    /// </summary>
+    /// <param name="quest"></param>
+    /// <returns></returns>
     private bool CheckRequirementsMet(Quest quest)
     {
         bool meetsRequirements = true;
@@ -128,6 +139,7 @@ public class QuestManager : MonoBehaviour
 
     private void Update()
     {
+        // Loop through each quest and check to see if it is able to be started
         foreach(Quest quest in questMap.Values)
         {
             if(quest.state == QuestState.REQUIREMENTS_NOT_MET && CheckRequirementsMet(quest))
@@ -137,6 +149,10 @@ public class QuestManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts the first quest in a questline
+    /// </summary>
+    /// <param name="id"></param>
     private void StartQuest(string id)
     {
         Quest quest = GetQuestByID(id);
@@ -195,6 +211,10 @@ public class QuestManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Saves the quest passed in
+    /// </summary>
+    /// <param name="quest">The quest to be saved on Exiting</param>
     private void SaveQuest(Quest quest)
     {
         try

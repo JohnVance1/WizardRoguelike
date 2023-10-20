@@ -16,12 +16,12 @@ public class InventoryUIController : SerializedMonoBehaviour
     public Inventory inv;
     private VisualElement m_GhostIcon;
     private bool m_IsDragging;
-    private InventorySlot_UI m_OriginalSlot;
+    private Slot_UI m_OriginalSlot;
     private Sprite m_OriginalSprite;
 
     public OpenState state;
     public Interactable_Base interactable;
-    public InventorySlot_UI selected;
+    public Slot_UI selected;
 
 
     private void Awake()
@@ -99,7 +99,7 @@ public class InventoryUIController : SerializedMonoBehaviour
         m_GhostIcon.style.visibility = Visibility.Hidden;
     }
 
-    public void StartDrag(Vector2 position, InventorySlot_UI originalSlot)
+    public void StartDrag(Vector2 position, Slot_UI originalSlot)
     {
         //Set tracking variables
         m_IsDragging = true;
@@ -116,7 +116,7 @@ public class InventoryUIController : SerializedMonoBehaviour
         m_GhostIcon.style.visibility = Visibility.Visible;
     }
   
-    public void ButtonCallback(Vector2 position, InventorySlot_UI slot)
+    public void ButtonCallback(Vector2 position, Slot_UI slot)
     {
         selected = slot;
         if (selected != null)
@@ -145,11 +145,13 @@ public class InventoryUIController : SerializedMonoBehaviour
                 case OpenState.Cauldron:
                     if (selected.storedItem.item is Herb)
                     {
-                        ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
+                        //((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
 
                         if (((Herb)selected.storedItem.item).IsResearched)
                         {
                             ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
+                            StartDrag(position, slot);
+
                         }
                         else
                         {

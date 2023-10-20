@@ -34,11 +34,54 @@
     border: none;
 }
 
-.crush-bar .unity-progress-bar__progress{
-    background-color: #D26B1F;
-
+.crush-bar .unity-progress-bar__progress {
+    background-color: rgb(210, 107, 31);
 }
 
-.smoke-bar .unity-progress-bar__progress{
-    background-color: #0070FF;
+.smoke-bar .unity-progress-bar__progress {
+    background-color: rgb(0, 112, 255);
+}
+
+.cauldron-slot {
+    width: 25%;
+    height: 22.5%;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    flex-shrink: initial;
+    flex-grow: initial;
+    top: 15%;
+    align-items: center;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+    background-color: rgba(255, 255, 255, 0.45);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+}
+
+.slotContainer {
+    width: 64px;
+    height: 64px;
+    margin: 5px;
+    border-left-color: rgb(48, 48, 48);
+    border-right-color: rgb(48, 48, 48);
+    border-top-color: rgb(48, 48, 48);
+    border-bottom-color: rgb(48, 48, 48);
+    background-color: rgb(9, 19, 21);
+    background-image: url('project://database/Assets/Sprites/WUG/Sprites/ItemSlotBackground.png?fileID=21300000&guid=9775dedc597859d4e8a501720a97fac4&type=3#ItemSlotBackground');
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    min-width: auto;
+    min-height: auto;
+    flex-grow: 0;
+    flex-wrap: wrap;
+    overflow: visible;
 }

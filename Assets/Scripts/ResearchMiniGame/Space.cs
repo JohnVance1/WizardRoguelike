@@ -36,6 +36,8 @@ public class Space : VisualElement
     public delegate void OnMouseUp();
     public OnMouseUp onMouseUp;
 
+    public event Action onEdgesChange;
+
     public Space()
     {
         Edges = new List<Space>();
@@ -43,6 +45,8 @@ public class Space : VisualElement
         AddToClassList("space");
 
         generateVisualContent += DrawLine;
+        onEdgesChange += RemoveDiagonals;
+        onEdgesChange += CheckNodeBehavior;
 
         RegisterCallback<PointerDownEvent>(OnPointerDown);
         RegisterCallback<PointerUpEvent>(OnPointerUp);
@@ -65,11 +69,12 @@ public class Space : VisualElement
 
         Vector3 center = this.transform.position;
 
-        onMouseDown(center, this);
-
         RemoveDiagonals();
 
         CheckNodeBehavior();
+
+        onMouseDown(center, this);
+
 
     }
 
@@ -80,6 +85,10 @@ public class Space : VisualElement
             return;
         }
 
+        RemoveDiagonals();
+
+        CheckNodeBehavior();
+
         onMouseUp();
 
         
@@ -88,7 +97,7 @@ public class Space : VisualElement
 
     private void Update()
     {
-       
+        
 
     }
 
@@ -142,6 +151,13 @@ public class Space : VisualElement
 	    }
 
 	    return ret;
+    }
+
+    public void UpdateSpace()
+    {
+        RemoveDiagonals();
+        CheckNodeBehavior();
+        MarkDirtyRepaint();
     }
 
     /// <summary>

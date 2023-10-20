@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Linq;
 
 
 public class PotionUIController : SerializedMonoBehaviour
@@ -30,6 +31,16 @@ public class PotionUIController : SerializedMonoBehaviour
     private ProgressBar m_SmokeBar;
 
     private Button m_Exit;
+    private Button m_Make;
+
+    private List<VisualElement> m_CauldronSlots;
+    [SerializeField]
+    public List<CauldronSlot> CauldronSlots = new List<CauldronSlot>();
+    private VisualElement m_GhostIcon;
+
+    private Slot_UI m_OriginalSlot;
+    private Sprite m_OriginalSprite;
+
 
 
     public bool IsActive;
@@ -37,6 +48,8 @@ public class PotionUIController : SerializedMonoBehaviour
     public Herb storedHerb;
     //public Herb selectedHerb;
     public ProcessType type;
+    public PotionManager potionManager;
+
 
     public delegate void OnFinishedDevice(Herb herb, ProcessType type);
     public OnFinishedDevice onFinishedDevice;
@@ -47,6 +60,7 @@ public class PotionUIController : SerializedMonoBehaviour
     public Slider slider;
     public float processTime = 2f;
     public float elapsedTime = 0f;
+    private bool m_IsDragging;
 
 
 
@@ -63,9 +77,23 @@ public class PotionUIController : SerializedMonoBehaviour
         m_SmokeBar = m_Root.Q<ProgressBar>("Smoke_Bar");
 
         m_Exit = m_Root.Q<Button>("ExitButton");
+        m_Make = m_Root.Q<Button>("MakePotion");
+
+        m_CauldronSlots = m_Root.Q<VisualElement>("Cauldron").hierarchy.Children().ToList();
+        m_GhostIcon = m_Root.Query<VisualElement>("GhostIcon");
+
+
+        foreach (CauldronSlot slot in m_CauldronSlots)
+        {
+            CauldronSlots.Add(slot);
+            slot.onMouseDown += ButtonCallback;
+        }
+
+        m_GhostIcon.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+        m_GhostIcon.RegisterCallback<PointerUpEvent>(OnPointerUp);
 
         m_Exit.RegisterCallback<ClickEvent>(CloseUI);
-
+        m_Make.RegisterCallback<ClickEvent>(MakePotion);
         m_Distiller.RegisterCallback<ClickEvent, ProgressBar>(ActivateDevice, m_DistilBar);
         m_Crusher.RegisterCallback<ClickEvent, ProgressBar>(ActivateDevice, m_CrushBar);
         m_Smoker.RegisterCallback<ClickEvent, ProgressBar>(ActivateDevice, m_SmokeBar);
@@ -73,19 +101,94 @@ public class PotionUIController : SerializedMonoBehaviour
 
     }
 
+
+
     // Update is called once per frame
     void Update()
     {
         
     }
 
+    public void ButtonCallback(Vector2 position, Slot_UI slot)
+    {
+        StartDrag(position, slot);
+
+    }
+
+    private void OnPointerMove(PointerMoveEvent evt)
+    {
+        //Only take action if the player is dragging an item around the screen
+        if (!m_IsDragging)
+        {
+            return;
+        }
+        //Set the new position
+        m_GhostIcon.style.top = evt.position.y - m_GhostIcon.layout.height / 2;
+        m_GhostIcon.style.left = evt.position.x - m_GhostIcon.layout.width / 2;
+    }
+    private void OnPointerUp(PointerUpEvent evt)
+    {
+        if (!m_IsDragging)
+        {
+            return;
+        }
+        //Check to see if they are dropping the ghost icon over any inventory slots.
+        IEnumerable<Slot_UI> slots = CauldronSlots.Where(x =>
+               x.worldBound.Overlaps(m_GhostIcon.worldBound));
+        //Found at least one
+        if (slots.Count() != 0)
+        {
+            Slot_UI closestSlot = slots.OrderBy(x => Vector2.Distance
+               (x.worldBound.position, m_GhostIcon.worldBound.position)).First();
+
+            //Set the new inventory slot with the data
+            closestSlot.Set(m_OriginalSlot.storedItem);
+            //closestSlot.HoldItem(GameController.GetItemByGuid(m_OriginalSlot.ItemGuid));
+
+            //Clear the original slot
+            m_OriginalSlot.Reset();
+            //m_OriginalSlot.DropItem();
+
+        }
+        //Didn't find any (dragged off the window)
+        else
+        {
+            //m_OriginalSlot.Icon.image =
+            //      GameController.GetItemByGuid(m_OriginalSlot.ItemGuid).Icon.texture;
+            m_OriginalSlot.Icon.sprite = m_OriginalSprite;
+        }
+        //Clear dragging related visuals and data
+        m_IsDragging = false;
+        m_OriginalSlot = null;
+        m_GhostIcon.style.visibility = Visibility.Hidden;
+    }
+
+    public void StartDrag(Vector2 position, Slot_UI originalSlot)
+    {
+        //Set tracking variables
+        m_IsDragging = true;
+        m_OriginalSlot = originalSlot;
+        m_OriginalSprite = originalSlot.Icon.sprite;
+        //Set the new position
+        m_GhostIcon.style.top = position.y - m_GhostIcon.layout.height / 2;
+        m_GhostIcon.style.left = position.x - m_GhostIcon.layout.width / 2;
+        //Set the image
+        //m_GhostIcon.style.backgroundImage = GameController.GetItemByGuid(originalSlot.ItemGuid).Icon.texture;
+        m_GhostIcon.style.backgroundImage = originalSlot.Icon.sprite.texture;
+        originalSlot.Icon.sprite = null;
+        //Flip the visibility on
+        m_GhostIcon.style.visibility = Visibility.Visible;
+    }
+
     private void CloseUI(ClickEvent evt)
     {
         if (evt.propagationPhase != PropagationPhase.AtTarget)
             return;
-        // Assign a random new color
-        var targetBox = evt.target as VisualElement;
-        targetBox.style.backgroundColor = Color.green;
+        // Assign a new color
+        //var targetBox = evt.target as VisualElement;
+        //targetBox.style.backgroundColor = Color.green;
+        CancelPotion();
+        m_Root.style.display = DisplayStyle.None;
     }
 
     private void ActivateDevice(ClickEvent evt, ProgressBar bar)
@@ -157,11 +260,13 @@ public class PotionUIController : SerializedMonoBehaviour
         }
     }
 
-    public void MakePotion()
+    public void MakePotion(ClickEvent evt)
     {
         if (cauldron.storedHerbs.Count > 0)
         {
-            player.AddItemToInventory(potion);
+            Potion p = potionManager.CalculatePotion(cauldron.storedHerbs);
+            player.AddItemToInventory(p.info);
+            //player.AddItemToInventory(potion.info);
 
             cauldron.storedHerbs.Clear();
             currentHerb = null;

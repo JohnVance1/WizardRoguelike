@@ -75,17 +75,17 @@ public class Fountain : Interactable_Base
 
     private void PotionTimer()
     {
-        if(storage != null)
-        {
-            timer += Time.deltaTime;
-            if(timer >= storage.usageTime)
-            {
-                storage = null;
-                reclaim = true;
-                timer = 0;
-            }
+        //if(storage != null)
+        //{
+        //    timer += Time.deltaTime;
+        //    if(timer >= storage.usageTime)
+        //    {
+        //        storage = null;
+        //        reclaim = true;
+        //        timer = 0;
+        //    }
 
-        }
+        //}
     }
 
 

@@ -44,15 +44,18 @@ public class Research_MiniGame : SerializedMonoBehaviour
     private List<VisualElement> m_Rows;
 
     private VisualElement temp;
+    private Button m_Exit;
 
     [SerializeField]
     private Camera mainCamera;
+
+    public event Action OnExit;
 
     private void Awake()
     {
         m_Root = GetComponent<UIDocument>().rootVisualElement;
         m_Rows = m_Root.Query<VisualElement>("Row").ToList();
-
+        m_Exit = m_Root.Query<Button>("Exit");
         m_Root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
     }
 
@@ -100,8 +103,23 @@ public class Research_MiniGame : SerializedMonoBehaviour
                     startSpace = sp;
                 }
 
+                if (i == 2 && j == 4)
+                {
+                    sp.style.backgroundColor = Color.black;
+                    sp.type = SpaceType.Black;
+                }
+                if (i == 3 && j == 1)
+                {
+                    sp.style.backgroundColor = Color.white;
+                    sp.type = SpaceType.White;
+                }
+
             }
         }
+
+        m_Exit.clicked += () => {
+            OnExit();
+        };
 
         // Sets up the info about each space's relation to the others
         grid.PopulateGrid();       
@@ -109,49 +127,10 @@ public class Research_MiniGame : SerializedMonoBehaviour
 
     }
 
+    
     private void Update()
     {
-        //print(IsPointerOverUIElement() ? "Over UI" : "Not over UI");
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    IsMouseDown = true;
-
-        //    Space square = GetMousedOverSquare(GetEventSystemRaycastResults()).GetComponent<Space>();
-        //    if (square != null)
-        //    {
-        //        tempSpace = square;
-
-        //    }
-        //}
-
-        //if (IsMouseDown && Input.GetMouseButton(0))
-        //{
-        //    Space square = GetMousedOverSquare(GetEventSystemRaycastResults()).GetComponent<Space>();
-
-        //    if (square != tempSpace && square != null)
-        //    {
-        //        //Debug.DrawLine(startSpace.transform.position, square.transform.position);
-        //        if(grid.DoesEdgeExist(tempSpace, square))
-        //        {
-        //            grid.RemoveAnEdge(tempSpace, square);
-
-        //        }
-        //        else
-        //        {
-        //            grid.AddAnEdge(tempSpace, square);
-
-        //        }
-
-        //        tempSpace = square;
-        //    }
-            
-        //}
-
-        //if(IsMouseDown && Input.GetMouseButtonUp(0))
-        //{
-        //    IsMouseDown = false;
-        //    tempSpace = null;
-        //}
+        
 
         foreach (Space end in endSpace)
         {
@@ -197,48 +176,17 @@ public class Research_MiniGame : SerializedMonoBehaviour
                 if (grid.DoesEdgeExist(tempSpace, closestSlot))
                 {
                     grid.RemoveAnEdge(tempSpace, closestSlot);
-                    tempSpace.MarkDirtyRepaint();
-                    closestSlot.MarkDirtyRepaint();
+                    tempSpace.UpdateSpace();
+                    closestSlot.UpdateSpace();
 
                 }
                 else
                 {
                     grid.AddAnEdge(tempSpace, closestSlot);
-                    tempSpace.MarkDirtyRepaint();
-                    closestSlot.MarkDirtyRepaint();
+                    tempSpace.UpdateSpace();
+                    closestSlot.UpdateSpace();
 
-                    //DrawLine();
-
-                    //Vector3 temp1 = Camera.main.ScreenToWorldPoint(tempSpace.worldBound.center);
-                    //Vector3 temp2 = Camera.main.ScreenToWorldPoint(closestSlot.worldBound.center);
-
-                    ////Debug.Log(tempSpace.worldBound.center);
-                    ////Debug.Log(closestSlot.worldBound.center);
-
-                    //temp1 = tempSpace.worldBound.center;
-                    //temp2 = closestSlot.worldBound.center;
-
-
-                    ////  Look up Vector API for this
-                    //temp1.z = 0;
-                    //temp1.x /= Screen.width;
-                    //temp1.y /= Screen.height;
-                    //temp1.y = 1 - temp1.y;
-
-                    //temp2.z = 0;
-                    //temp2.x /= Screen.width;
-                    //temp2.y /= Screen.height;
-                    //temp2.y = 1 - temp2.y;
-
-                    //Debug.Log(temp1);
-                    //Debug.Log(temp2);
-                    //Debug.Log(evt.position);
-
-                    //temp1 = Camera.main.ScreenToWorldPoint(temp1);
-                    //temp2 = Camera.main.ScreenToWorldPoint(temp2);
-
-                    //lineController.SetUpLine(0, temp1);
-                    //lineController.SetUpLine(1, temp2);
+                    
 
                 }
 
@@ -354,7 +302,9 @@ public class Research_MiniGame : SerializedMonoBehaviour
             Space startEnd = end;
             while (end != start)
             {
-                Debug.Log(startEnd + ": " + end);
+                //Debug.Log(startEnd + ": " + end);
+                Debug.Log("Path Found!!!");
+
                 end = path[end];
             }
             PathFound = true;

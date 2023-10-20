@@ -1757,6 +1757,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2136863377}
+  - {fileID: 400474673}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &391843261
@@ -1970,6 +1971,62 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!1 &400474672
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 400474673}
+  - component: {fileID: 400474674}
+  m_Layer: 0
+  m_Name: PotionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400474673
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400474672}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 334464374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &400474674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400474672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77ba64e84e971274d91cee4d56ad4483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: potionMap
+      Entry: 6
+      Data: 
 --- !u!1 &402624030
 GameObject:
   m_ObjectHideFlags: 3
@@ -2583,12 +2640,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selected: {fileID: 0}
   cauldron: {fileID: 391843262}
+  potionManager: {fileID: 0}
   currentHerb: {fileID: 0}
   devices:
   - {fileID: 629277944}
   - {fileID: 1687344488}
   - {fileID: 950298867}
-  potion: {fileID: 11400000, guid: f933b4598071f204cbf6af98cb57b22f, type: 2}
   player: {fileID: 0}
 --- !u!1 &503755055
 GameObject:
@@ -2853,7 +2910,7 @@ Camera:
   far clip plane: 5000
   field of view: 60
   orthographic: 1
-  orthographic size: 3.46875
+  orthographic size: 4.7708335
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4554,9 +4611,9 @@ MonoBehaviour:
     SerializationNodes: []
   currentHerb: {fileID: 0}
   IsResearching: 0
-  researchCanvas: {fileID: 0}
+  researchCanvas: {fileID: 1001344097}
   miniGames:
-  - {fileID: 0}
+  - {fileID: 1001344097}
 --- !u!1 &852930022
 GameObject:
   m_ObjectHideFlags: 0
@@ -5557,7 +5614,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1001344098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5565,7 +5622,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1001344097}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
@@ -9383,7 +9440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1446986272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9436,6 +9493,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: potion
+      Entry: 6
+      Data: 
     - Name: onFinishedDevice
       Entry: 6
       Data: 
@@ -9446,12 +9506,12 @@ MonoBehaviour:
   cauldron: {fileID: 391843262}
   currentHerb: {fileID: 0}
   devices: []
-  potion: {fileID: 0}
   player: {fileID: 0}
   IsActive: 0
   IsFinished: 0
   storedHerb: {fileID: 0}
   type: 0
+  potionManager: {fileID: 400474674}
   processTime: 2
   elapsedTime: 0
 --- !u!1 &1459421627
@@ -9860,7 +9920,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1534581715
 MonoBehaviour:
   m_ObjectHideFlags: 0

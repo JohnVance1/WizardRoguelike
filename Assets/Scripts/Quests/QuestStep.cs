@@ -6,8 +6,8 @@ public abstract class QuestStep : MonoBehaviour
 {
     private bool isFinished = false;
 
-    private string questID;
-    private int stepIndex;
+    private string questID; //  The ID of the quest
+    private int stepIndex;  //  Which step the quest is currently on in the array of quest steps
 
     /// <summary>
     /// Initilizes the quest step
@@ -26,6 +26,9 @@ public abstract class QuestStep : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Runs whenever the quest step finishes
+    /// </summary>
     protected void FinishQuestStep()
     {
         if (!isFinished)
@@ -39,11 +42,20 @@ public abstract class QuestStep : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Saves the quest state whever it updates
+    /// Used for saving after the game exits
+    /// </summary>
+    /// <param name="newState"></param>
     protected void ChangeState(string newState)
     {
         GameEventsManager.instance.questEvents.QuestStepStateChange(questID, stepIndex, new QuestStepState(newState));
     }
 
+    /// <summary>
+    /// Sets the quest's state when the game loads
+    /// </summary>
+    /// <param name="state"></param>
     protected abstract void SetQuestStepState(string state);
 
 }

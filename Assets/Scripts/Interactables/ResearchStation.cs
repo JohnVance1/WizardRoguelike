@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ResearchStation : Interactable_Base
 {
@@ -15,6 +16,19 @@ public class ResearchStation : Interactable_Base
     void Start()
     {
         IsResearching = false;
+        researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+    }
+
+    private void OnEnable()
+    {
+        researchCanvas.GetComponent<Research_MiniGame>().OnExit += CloseResearchGame;
+    }
+
+    private void OnDisable()
+    {
+        researchCanvas.GetComponent<Research_MiniGame>().OnExit -= CloseResearchGame;
+
     }
 
     void Update()
@@ -41,13 +55,14 @@ public class ResearchStation : Interactable_Base
     public void OpenResearchGame(Herb herb)
     {
         playerInteract.CloseInventory();
-        researchCanvas.SetActive(true);
+        researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+
         currentHerb = herb;
     }
 
     public void CloseResearchGame()
     {
-        researchCanvas.SetActive(false);
+        researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
         IsResearching = false;
         currentHerb = null;
 

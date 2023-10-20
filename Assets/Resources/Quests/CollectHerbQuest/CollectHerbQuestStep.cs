@@ -20,6 +20,9 @@ public class CollectHerbQuestStep : QuestStep
 
     }
 
+    /// <summary>
+    /// Adds up the Herbs collected until the amount needed is reached
+    /// </summary>
     private void HerbCollected()
     {
         if(herbsCollected < herbsToCollect)
@@ -34,12 +37,19 @@ public class CollectHerbQuestStep : QuestStep
         }
     }
 
+    /// <summary>
+    /// Updates the state of the quest for saving after the game exits
+    /// </summary>
     private void UpdateState()
     {
         string state = herbsCollected.ToString();
         ChangeState(state);
     }
 
+    /// <summary>
+    /// Sets the state of the quest when the game loads
+    /// </summary>
+    /// <param name="state"></param>
     protected override void SetQuestStepState(string state)
     {
         this.herbsCollected = System.Int32.Parse(state);

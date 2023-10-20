@@ -9,6 +9,7 @@ public class Cauldron_UI : MonoBehaviour
     public GameObject selected;
 
     public Cauldron cauldron;
+    public PotionManager potionManager;
 
     //public List<Herb> storedHerbs;
     public Herb currentHerb;
@@ -64,7 +65,9 @@ public class Cauldron_UI : MonoBehaviour
     {
         if (cauldron.storedHerbs.Count > 0)
         {
-            player.AddItemToInventory(potion);
+            Potion p = potionManager.CalculatePotion(cauldron.storedHerbs);
+            player.AddItemToInventory(p.info);
+            //player.AddItemToInventory(potion.info);
 
             cauldron.storedHerbs.Clear();
             currentHerb = null;

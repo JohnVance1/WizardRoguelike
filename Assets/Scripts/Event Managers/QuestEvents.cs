@@ -52,6 +52,12 @@ public class QuestEvents
 
     public event Action<string, int, QuestStepState> onQuestStepStateChange;
 
+    /// <summary>
+    /// Used for saving the quest when game exits
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="stepIndex"></param>
+    /// <param name="questStepState"></param>
     public void QuestStepStateChange(string id, int stepIndex, QuestStepState questStepState)
     {
         //onStartQuest?.Invoke(id);

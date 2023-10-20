@@ -6,15 +6,13 @@ using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.UIElements;
 
-public class InventorySlot_UI : VisualElement
+public class InventorySlot_UI : Slot_UI
 {
-    public Image Icon;
     public Label Count;
 
     public string ItemGuid = "";
 
-    [SerializeField]
-    private Sprite defaultIcon;
+
     //[SerializeField]
     //private Image icon;
     [SerializeField]
@@ -28,9 +26,8 @@ public class InventorySlot_UI : VisualElement
     public MouseOver mouseOverComp;
 
     public OpenState openState;
-    public InventoryItem storedItem;
 
-    public delegate void OnMouseDown(Vector2 pos, InventorySlot_UI slot);
+    public delegate void OnMouseDown(Vector2 pos, Slot_UI slot);
     public OnMouseDown onMouseDown;
 
     public InventorySlot_UI()
@@ -68,7 +65,7 @@ public class InventorySlot_UI : VisualElement
 
 
 
-    public void Set(InventoryItem item)
+    public override void Set(InventoryItem item)
     {        
         if(storedItem == null)
         {
@@ -97,7 +94,7 @@ public class InventorySlot_UI : VisualElement
         }
     }
 
-    public void Reset()
+    public override void Reset()
     {
         Icon.sprite = null;
         storedItem = null;

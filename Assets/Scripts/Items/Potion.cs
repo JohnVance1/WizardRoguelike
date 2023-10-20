@@ -1,10 +1,35 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Potion", order = 1)]
-public class Potion : Item_Base
+
+[Flags]
+public enum PotionEffect
 {
-    public float usageTime;
-    public int radius;
+    None = 0,
+    Light = 1,
+    Shadow = 2,
+    Fire = 4,
+    Ice = 8,
+    Earth = 16,
+    Air = 32,
+
+}
+
+
+
+//[CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Potion", order = 1)]
+public class Potion
+{
+    
+    public PotionInfo_SO info;
+    
+    public Potion(PotionInfo_SO potionInfo)
+    {
+        info = potionInfo;
+        
+    }
+
+
 }

@@ -7,13 +7,13 @@ public class QuestPoint : MonoBehaviour
 {
     [Header("Quest")]
     [SerializeField]
-    private QuestInfo_SO questInfoForPoint;
+    private QuestInfo_SO questInfoForPoint; //  Info about the quest that the NPC can give
 
     [Header("Config")]
     [SerializeField]
-    private bool startPoint = true;
+    private bool startPoint = true; //  Set to true if this is the start point of a quest
     [SerializeField]
-    private bool finishPoint = true;
+    private bool finishPoint = true;//  Set to true if this is the end point of a quest
 
     private bool playerIsNear = false;
 

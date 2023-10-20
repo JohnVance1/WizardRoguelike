@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Serializable form for quests
+/// Serializable form for quests to be saved and loaded
 /// </summary>
 [System.Serializable]
 public class QuestData

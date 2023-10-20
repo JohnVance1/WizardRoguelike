@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f1bbbe537fc96e4583a888f6101a7d0, type: 3}
-  m_Name: Herb
+  m_Script: {fileID: 11500000, guid: 39c23520740e1f842927130f0de45e59, type: 3}
+  m_Name: FirePotion
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,7 +21,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: elements
+    - Name: elementsNeeded
       Entry: 7
       Data: 0|System.Collections.Generic.Dictionary`2[[Element, Assembly-CSharp],[System.Int32,
         mscorlib]], mscorlib
@@ -85,7 +85,7 @@ MonoBehaviour:
       Data: 4
     - Name: $v
       Entry: 3
-      Data: 1
+      Data: 2
     - Name: 
       Entry: 8
       Data: 
@@ -131,14 +131,10 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  sprite: {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
-  Name: 
-  herbStages:
-  - {fileID: -1589588616, guid: 37af949e270a43540a02fa733360e32b, type: 3}
-  - {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
-  defaultSprite: {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
-  timeToGrow: 3
-  timeToProcess: 0
-  researchNum: 0
-  IsResearched: 1
-  processType: 0
+  sprite: {fileID: 21300000, guid: 57a87035364045d4ab424df0cbd5e155, type: 3}
+  Name: Fire Potion
+  <id>k__BackingField: FirePotion
+  displayName: Fire Potion
+  potionEffect: 4
+  usageTime: 0
+  radius: 0

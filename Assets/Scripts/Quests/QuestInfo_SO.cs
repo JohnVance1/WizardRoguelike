@@ -6,23 +6,23 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "QuestInfo_SO", menuName = "ScriptableObjects/QuestInfo_SO", order = 1)]
 public class QuestInfo_SO : ScriptableObject
 {
-    [field: SerializeField] public string id { get; private set; }
+    [field: SerializeField] public string id { get; private set; }  // The ID of the quest
 
     [Header("General")]
-    public string displayName;
+    public string displayName;  // The name displayed to the player as to which quest this is
 
     [Header("Requirements")]
-    public int levelRequirement;
+    public int levelRequirement;    // The level requirement (set to 0 if none)
 
-    public QuestInfo_SO[] questPrereqs;
+    public QuestInfo_SO[] questPrereqs; // Any quests that need to be completed first before this one is available
 
     [Header("Steps")]
-    public GameObject[] questStepPrefabs;
+    public GameObject[] questStepPrefabs;   // The steps in the quest that are needed to complete it (There needs to be at least 1)
 
 
     [Header("Rewards")]
-    public int goldReward;
-    public int expReward;
+    public int goldReward;  // The reward in gold for completing the quest
+    public int expReward;   // The reward in experience for completing the quest
 
 
 
