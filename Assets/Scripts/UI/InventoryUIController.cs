@@ -11,6 +11,8 @@ public class InventoryUIController : SerializedMonoBehaviour
 {
     [SerializeField]
     public List<InventorySlot_UI> InventoryItems = new List<InventorySlot_UI>();
+    public List<Slot_UI> AllSlots = new List<Slot_UI>();
+
     private VisualElement m_Root;
     private VisualElement m_SlotContainer;
     public Inventory inv;
@@ -38,6 +40,7 @@ public class InventoryUIController : SerializedMonoBehaviour
         foreach (InventorySlot_UI item in items)
         {            
             InventoryItems.Add(item);
+            AllSlots.Add(item);
             m_SlotContainer.Add(item);
             item.onMouseDown += ButtonCallback;
 
@@ -50,6 +53,9 @@ public class InventoryUIController : SerializedMonoBehaviour
         m_GhostIcon.RegisterCallback<PointerMoveEvent>(OnPointerMove);
         m_GhostIcon.RegisterCallback<PointerUpEvent>(OnPointerUp);
     }
+
+    
+    
 
     private void OnPointerMove(PointerMoveEvent evt)
     {
@@ -69,12 +75,12 @@ public class InventoryUIController : SerializedMonoBehaviour
             return;
         }
         //Check to see if they are dropping the ghost icon over any inventory slots.
-        IEnumerable<InventorySlot_UI> slots = InventoryItems.Where(x =>
+        IEnumerable<Slot_UI> slots = AllSlots.Where(x =>
                x.worldBound.Overlaps(m_GhostIcon.worldBound));
         //Found at least one
         if (slots.Count() != 0)
         {
-            InventorySlot_UI closestSlot = slots.OrderBy(x => Vector2.Distance
+            Slot_UI closestSlot = slots.OrderBy(x => Vector2.Distance
                (x.worldBound.position, m_GhostIcon.worldBound.position)).First();
 
             //Set the new inventory slot with the data
@@ -150,7 +156,13 @@ public class InventoryUIController : SerializedMonoBehaviour
                         if (((Herb)selected.storedItem.item).IsResearched)
                         {
                             ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
-                            StartDrag(position, slot);
+                            //List<CauldronSlot> slots = ((Cauldron)interactable).GetCauldronSlots();
+                            //foreach(CauldronSlot calSlot in slots)
+                            //{
+                            //    AllSlots.Add(calSlot);
+                            //    calSlot.onMouseDown += ButtonCallback;
+                            //}
+                            //StartDrag(position, slot);
 
                         }
                         else
@@ -160,7 +172,7 @@ public class InventoryUIController : SerializedMonoBehaviour
                     }
                     break;
                 case OpenState.General:
-                    StartDrag(position, slot);
+                    //StartDrag(position, slot);
                     break;
                 case OpenState.None:
                     Debug.Log("Not open in a valid state!");

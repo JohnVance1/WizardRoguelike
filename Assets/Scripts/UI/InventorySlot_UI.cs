@@ -47,6 +47,9 @@ public class InventorySlot_UI : Slot_UI
 
     }
 
+
+
+
     private void OnPointerDown(PointerDownEvent evt)
     {
         //Not the left mouse button

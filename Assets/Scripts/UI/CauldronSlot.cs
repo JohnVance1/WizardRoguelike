@@ -6,10 +6,11 @@ using UnityEngine.UIElements;
 
 public class CauldronSlot : Slot_UI
 {
-    public delegate void OnMouseDown(Vector2 pos, Slot_UI slot);
+    public delegate void OnMouseDown(Vector2 pos, InventoryItem slot);
     public OnMouseDown onMouseDown;
 
-
+    public delegate void OnNoStoredHerb(Slot_UI slot);
+    public OnNoStoredHerb onNoStoredHerb;
 
 
 
@@ -27,15 +28,25 @@ public class CauldronSlot : Slot_UI
     private void OnPointerDown(PointerDownEvent evt)
     {
         //Not the left mouse button
-        if (evt.button != 0 || storedItem == null)
+        if (evt.button != 0)
         {
             return;
+        }
+        if(storedItem == null)
+        {
+            onNoStoredHerb(this);
+        }
+        else
+        {
+            onMouseDown(evt.position, storedItem);
+            Reset();
+
         }
         //Clear the image
         //Icon.image = null;
         //Start the drag
         //InventoryUIController.StartDrag(evt.position, this);
-        onMouseDown(evt.position, this);
+
         //InventoryUIController.ButtonCallback(evt.position, this);
 
     }
@@ -53,7 +64,7 @@ public class CauldronSlot : Slot_UI
     {
         defaultIcon = null;
         storedItem = null;
-        
+        Icon.sprite = null;
         //icon.sprite = defaultIcon;
         //countObj.SetActive(false);
         //countLabel.text = null;

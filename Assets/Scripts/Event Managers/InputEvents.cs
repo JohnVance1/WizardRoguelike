@@ -15,4 +15,17 @@ public class InputEvents
         }
 
     }
+
+    public event Action onHerbSelected;
+
+    public void HerbSelected()
+    {
+        if (onHerbSelected != null)
+        {
+            onHerbSelected();
+        }
+
+    }
+
+
 }

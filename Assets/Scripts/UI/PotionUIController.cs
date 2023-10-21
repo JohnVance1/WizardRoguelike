@@ -82,15 +82,15 @@ public class PotionUIController : SerializedMonoBehaviour
         m_CauldronSlots = m_Root.Q<VisualElement>("Cauldron").hierarchy.Children().ToList();
         m_GhostIcon = m_Root.Query<VisualElement>("GhostIcon");
 
-
         foreach (CauldronSlot slot in m_CauldronSlots)
         {
             CauldronSlots.Add(slot);
-            slot.onMouseDown += ButtonCallback;
+           
         }
 
-        m_GhostIcon.RegisterCallback<PointerMoveEvent>(OnPointerMove);
-        m_GhostIcon.RegisterCallback<PointerUpEvent>(OnPointerUp);
+
+        // m_GhostIcon.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+        //m_GhostIcon.RegisterCallback<PointerUpEvent>(OnPointerUp);
 
         m_Exit.RegisterCallback<ClickEvent>(CloseUI);
         m_Make.RegisterCallback<ClickEvent>(MakePotion);
@@ -101,18 +101,51 @@ public class PotionUIController : SerializedMonoBehaviour
 
     }
 
-
-
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        foreach (CauldronSlot slot in m_CauldronSlots)
+        {
+            slot.onMouseDown += ButtonCallback;
+            slot.onNoStoredHerb += SetSlotHerb;
+        }
     }
 
-    public void ButtonCallback(Vector2 position, Slot_UI slot)
+    private void OnDisable()
     {
-        StartDrag(position, slot);
+        foreach (CauldronSlot slot in m_CauldronSlots)
+        {
+            slot.onMouseDown -= ButtonCallback;
+            slot.onNoStoredHerb -= SetSlotHerb;
+        }
+    }
 
+
+
+
+    public void ButtonCallback(Vector2 position, InventoryItem item)
+    {
+        player.AddItemToInventory(cauldron.AddBackHerb((Herb)item.item));
+        cauldron.RemoveHerb((Herb)item.item);
+
+    }
+
+    public void SetSlotHerb(Slot_UI slot)
+    {
+        if (cauldron.storedHerbs.Count >= 4)
+        {
+            Debug.Log("Cauldron Storage Reached!!!");
+            return;
+        }
+        if(currentHerb == null)
+        {
+            return;
+        }
+        player.RemoveItemFromInventory(currentHerb);
+        cauldron.storedHerbs.Add(currentHerb);
+
+        InventoryItem newItem = new InventoryItem(currentHerb);
+
+        slot.Set(newItem);
     }
 
     private void OnPointerMove(PointerMoveEvent evt)
@@ -193,6 +226,12 @@ public class PotionUIController : SerializedMonoBehaviour
 
     private void ActivateDevice(ClickEvent evt, ProgressBar bar)
     {
+        if(cauldron.storedHerbs.Count >= 4)
+        {
+            Debug.Log("Cauldron Storage Reached!!!");
+            return;
+        }
+
         if (currentHerb != null && IsFinished)
         {
             bar.style.visibility = Visibility.Visible;
@@ -255,8 +294,23 @@ public class PotionUIController : SerializedMonoBehaviour
         {
             cauldron.storedHerbs.Add(herb);
             cauldron.storedHerbs[cauldron.storedHerbs.Count - 1].processType = type;
+            AddToSlots(herb);
             //currentHerb = null;
 
+        }
+    }
+
+    public void AddToSlots(Herb herb)
+    {
+        foreach(CauldronSlot slot in CauldronSlots)
+        {
+            if(slot.storedItem == null)
+            {
+                InventoryItem newItem = new InventoryItem(herb);
+
+                slot.Set(newItem);
+                break;
+            }
         }
     }
 

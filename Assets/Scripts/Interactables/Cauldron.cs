@@ -40,10 +40,15 @@ public class Cauldron : Interactable_Base
         
     }
 
-    public Herb AddBackHerb(Herb herb)
+    public Item_Base AddBackHerb(Herb herb)
     {
         allHerbs.TryGetValue(herb.GetType(), out herb);
         return herb;
+    }
+
+    public void RemoveHerb(Herb herb)
+    {
+        storedHerbs.Remove(herb);
     }
 
     public void OpenCauldronUI()
