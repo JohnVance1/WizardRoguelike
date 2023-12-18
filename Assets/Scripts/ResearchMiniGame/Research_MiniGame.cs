@@ -23,6 +23,8 @@ public class Research_MiniGame : SerializedMonoBehaviour
     [SerializeField]
     private LineController lineController;
 
+    public ResearchStation researchStation;
+
     public Space tempSpace;
 
     public Space startSpace;
@@ -118,7 +120,8 @@ public class Research_MiniGame : SerializedMonoBehaviour
         }
 
         m_Exit.clicked += () => {
-            OnExit();
+            //OnExit();
+            researchStation.CloseResearchGame();
         };
 
         // Sets up the info about each space's relation to the others

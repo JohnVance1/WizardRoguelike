@@ -51,12 +51,20 @@ public class CauldronSlot : Slot_UI
 
     }
 
-    public override void Set(InventoryItem item)
+    public override void Set(InventoryItem item, ProcessType type = ProcessType.Raw)
     {
         if (storedItem == null)
         {
             storedItem = item;
-            Icon.sprite = item.item.sprite;
+            if(type != ProcessType.Raw)
+            {
+                Icon.sprite = ((Herb)item.item).processSprites[type];
+            }
+            else
+            {
+                Icon.sprite = item.item.sprite;
+            }
+
         }
     }
 

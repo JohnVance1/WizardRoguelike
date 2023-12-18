@@ -104,10 +104,10 @@ public class Player : Character
         inventory.Add(item);
         if (item is Herb)
         {
-            if (!journal.Contains((Herb)item))
-            {
-                journal.AddHerb((Herb)item);
-            }
+            //if (!journal.Contains((Herb)item))
+            //{
+            //    journal.AddHerb((Herb)item);
+            //}
         }
     }
 

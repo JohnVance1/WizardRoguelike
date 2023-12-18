@@ -5,12 +5,17 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Sirenix.OdinInspector;
-
+using UnityEngine.InputSystem;
+using UnityEngine.Windows;
+using Unity.Mathematics;
+using UnityEngine.EventSystems;
 
 public class InventoryUIController : SerializedMonoBehaviour
 {
     [SerializeField]
-    public List<InventorySlot_UI> InventoryItems = new List<InventorySlot_UI>();
+    //public List<InventorySlot_UI> InventoryItems = new List<InventorySlot_UI>();
+    public List<List<InventorySlot_UI>> InventoryItems;
+    public List<InventorySlot_UI> ItemList = new List<InventorySlot_UI>();
     public List<Slot_UI> AllSlots = new List<Slot_UI>();
 
     private VisualElement m_Root;
@@ -25,37 +30,249 @@ public class InventoryUIController : SerializedMonoBehaviour
     public Interactable_Base interactable;
     public Slot_UI selected;
 
+    public Player player;
+
+    private PlayerControls input;
+    private InputAction nav;
+
+    private int currentX;
+    private int currentY;
+
 
     private void Awake()
     {
+        currentX = 0;
+        currentY = 0;
         //Store the root from the UI Document component
         m_Root = GetComponent<UIDocument>().rootVisualElement;
         m_GhostIcon = m_Root.Query<VisualElement>("GhostIcon");
-
+        InventoryItems = new List<List<InventorySlot_UI>>();
         //Search the root for the SlotContainer Visual Element
         m_SlotContainer = m_Root.Q<VisualElement>("SlotContainer");
         //Create InventorySlots and add them as children to the SlotContainer
         List<VisualElement> items = m_SlotContainer.hierarchy.Children().ToList();
-
-        foreach (InventorySlot_UI item in items)
-        {            
-            InventoryItems.Add(item);
-            AllSlots.Add(item);
-            m_SlotContainer.Add(item);
-            item.onMouseDown += ButtonCallback;
-
+        int index = 1;
+        for(int i = 0; i < items.Count; i++)
+        {
+            List<VisualElement> buttons = items[i].hierarchy.Children().ToList();
+            int yCount = 0;
+            List<InventorySlot_UI> temp = new List<InventorySlot_UI>();
+            InventoryItems.Add(temp);
+            foreach (InventorySlot_UI item in buttons)
+            {
+                InventoryItems[i].Add(item);
+                ItemList.Add(item);
+                AllSlots.Add(item);
+                m_SlotContainer.Add(item);
+                item.tabIndex = index++;
+                //item.RegisterCallback<NavigationMoveEvent, Vector2>(Navigate, new Vector2(i, yCount));
+                yCount++;
+            }
         }
 
+        //m_Root.RegisterCallback<NavigationMoveEvent>(e =>
+        //{
+        //    if (e.direction == NavigationMoveEvent.Direction.Next || e.direction == NavigationMoveEvent.Direction.Previous)
+        //    {
+        //        e.PreventDefault(); // prevent focus controller from processing the event
+        //        e.StopPropagation(); // consume the event to hide it from further callbacks
+        //    }
+        //});
+        m_Root.RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
+        m_Root.RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
+        m_Root.RegisterCallback<NavigationSubmitEvent>(OnNavSubmitEvent);
+        //InventoryItems[0][0].Focus();
 
-        inv.onInventoryAdd += OnInventoryAdd;
-        inv.onInventoryRemove += OnInventoryRemove;
+
+
+        //m_Root.RegisterCallback<NavigationMoveEvent>(e =>
+        //{
+        //    if (e.direction == NavigationMoveEvent.Direction.Next || e.direction == NavigationMoveEvent.Direction.Previous)
+        //    {
+        //        e.PreventDefault(); // prevent focus controller from processing the event
+        //        e.StopPropagation(); // consume the event to hide it from further callbacks
+        //    }
+        //}, TrickleDown.TrickleDown);
+
+
 
         m_GhostIcon.RegisterCallback<PointerMoveEvent>(OnPointerMove);
         m_GhostIcon.RegisterCallback<PointerUpEvent>(OnPointerUp);
     }
+    private void OnNavSubmitEvent(NavigationSubmitEvent evt)
+    {
+        Debug.Log($"OnNavSubmitEvent {evt.propagationPhase}");
+    }
 
-    
-    
+    private void OnNavMoveEvent(NavigationMoveEvent evt)
+    {
+        Debug.Log($"OnNavMoveEvent {evt.propagationPhase} - move {evt.move} - direction {evt.direction}");
+    }
+
+    private void OnNavCancelEvent(NavigationCancelEvent evt)
+    {
+        Debug.Log($"OnNavCancelEvent {evt.propagationPhase}");
+    }
+
+    private void Start()
+    {
+        this.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        this.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+    }
+
+    private void OnEnable()
+    {
+        input = player.GetComponent<Player_Interact>().input;
+
+        inv.onInventoryAdd += OnInventoryAdd;
+        inv.onInventoryRemove += OnInventoryRemove;
+
+        List<InventorySlot_UI> items = ItemList;
+        foreach (InventorySlot_UI item in items)
+        {
+            item.onMouseDown += ButtonCallback;
+        }
+
+        input.UI.Cancel.performed += Cancel;
+        input.UI.Navigate.Enable();
+        input.UI.Cancel.Enable();
+        //EventSystem.current.SetSelectedGameObject(gameObject);
+        //EventSystem.current.SetSelectedGameObject(gameObject);
+
+    }
+
+    private void OnDisable()
+    {
+        inv.onInventoryAdd -= OnInventoryAdd;
+        inv.onInventoryRemove -= OnInventoryRemove;
+        List<InventorySlot_UI> items = ItemList;
+        foreach (InventorySlot_UI item in items)
+        {
+            item.onMouseDown -= ButtonCallback;
+
+        }
+        input.UI.Navigate.Disable();
+    }
+
+    private void Update()
+    {
+        //Debug.Log("X: " + currentX);
+        //Debug.Log("Y: " + currentY);
+
+    }
+
+    public void OnOpen()
+    {
+        ItemList[0].Focus();
+
+    }
+
+    public void Navigate(InputAction.CallbackContext context)
+    {
+        Debug.Log("Hello!!");
+
+        Vector2 nav = context.ReadValue<Vector2>();
+
+
+        if(nav.x == 1)
+        {
+            currentX = (currentX + 1 >= InventoryItems[currentY].Count) ? 0 : (currentX + 1);
+            
+        }
+        else if (nav.x == -1)
+        {
+            currentX = (currentX - 1 < 0) ? (InventoryItems[currentY].Count - 1) : (currentX - 1);
+                        
+        }
+        else if (nav.y == -1)
+        {
+            currentY = (currentY + 1 >= InventoryItems.Count) ? 0 : (currentY + 1);
+            
+        }
+        else if (nav.y == 1)
+        {
+            currentY = (currentY - 1 < 0) ? (InventoryItems.Count - 1) : (currentY - 1);
+            
+        }
+
+        InventoryItems[currentY][currentX].Focus();
+
+
+    }
+
+    public void Cancel(InputAction.CallbackContext context)
+    {
+        if(state == OpenState.Cauldron)
+        {
+            GameObject cauldron = GameObject.FindGameObjectWithTag("Cauldron");
+            cauldron.GetComponent<Cauldron>().CloseCauldronUI();
+        }
+        player.GetComponent<Player_Interact>().CloseOpenUI();
+    }
+
+    //private void Navi(Vector2 vec)
+    //{
+    //    //Vector2 navigate = nav.ReadValue<Vector2>();
+
+    //    int x = (int)vec.x;
+    //    int y = (int)vec.y;
+
+    //    if (evt.direction == NavigationMoveEvent.Direction.Right)
+    //    {
+    //        if (x + 1 >= InventoryItems.Count)
+    //        {
+    //            InventoryItems[0][y].Focus();
+
+    //        }
+    //        else
+    //        {
+    //            InventoryItems[x + 1][y].Focus();
+
+    //        }
+    //    }
+    //    else if (evt.direction == NavigationMoveEvent.Direction.Down)
+    //    {
+    //        if (y - 1 <= 0)
+    //        {
+    //            InventoryItems[x][InventoryItems[x].Count - 1].Focus();
+
+    //        }
+    //        else
+    //        {
+    //            InventoryItems[x][y - 1].Focus();
+
+    //        }
+
+    //    }
+    //    else if (evt.direction == NavigationMoveEvent.Direction.Left)
+    //    {
+    //        if (x - 1 <= 0)
+    //        {
+    //            InventoryItems[InventoryItems.Count - 1][y].Focus();
+
+    //        }
+    //        else
+    //        {
+    //            InventoryItems[x - 1][y].Focus();
+
+    //        }
+
+    //    }
+    //    else if (evt.direction == NavigationMoveEvent.Direction.Up)
+    //    {
+    //        if (y + 1 >= InventoryItems[x].Count)
+    //        {
+    //            InventoryItems[x][0].Focus();
+
+    //        }
+    //        else
+    //        {
+    //            InventoryItems[x][y + 1].Focus();
+
+    //        }
+    //    }
+    //}
+
 
     private void OnPointerMove(PointerMoveEvent evt)
     {
@@ -122,7 +339,7 @@ public class InventoryUIController : SerializedMonoBehaviour
         m_GhostIcon.style.visibility = Visibility.Visible;
     }
   
-    public void ButtonCallback(Vector2 position, Slot_UI slot)
+    public void ButtonCallback(/*Vector2 position,*/ Slot_UI slot)
     {
         selected = slot;
         if (selected != null)
@@ -151,7 +368,7 @@ public class InventoryUIController : SerializedMonoBehaviour
                 case OpenState.Cauldron:
                     if (selected.storedItem.item is Herb)
                     {
-                        //((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
+                        ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
 
                         if (((Herb)selected.storedItem.item).IsResearched)
                         {
@@ -184,7 +401,7 @@ public class InventoryUIController : SerializedMonoBehaviour
 
     private void OnInventoryAdd(InventoryItem item)
     {
-        var emptySlot = InventoryItems.FirstOrDefault(x => x.storedItem == item);
+        var emptySlot = ItemList.FirstOrDefault(x => x.storedItem == item);
 
         if (emptySlot != null)
         {
@@ -193,7 +410,7 @@ public class InventoryUIController : SerializedMonoBehaviour
         }
         else
         {
-            emptySlot = InventoryItems.FirstOrDefault(x => x.storedItem == null);
+            emptySlot = ItemList.FirstOrDefault(x => x.storedItem == null);
             if (emptySlot != null)
             {
                 emptySlot.Set(item);
@@ -207,7 +424,7 @@ public class InventoryUIController : SerializedMonoBehaviour
 
     private void OnInventoryRemove(InventoryItem item)
     {
-        var emptySlot = InventoryItems.FirstOrDefault(x => x.storedItem == item);
+        var emptySlot = ItemList.FirstOrDefault(x => x.storedItem == item);
 
         if(item.count == 1)
         {

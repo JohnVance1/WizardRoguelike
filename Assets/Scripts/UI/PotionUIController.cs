@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Linq;
-
+using UnityEngine.InputSystem.Interactions;
 
 public class PotionUIController : SerializedMonoBehaviour
 {
@@ -92,11 +92,14 @@ public class PotionUIController : SerializedMonoBehaviour
         // m_GhostIcon.RegisterCallback<PointerMoveEvent>(OnPointerMove);
         //m_GhostIcon.RegisterCallback<PointerUpEvent>(OnPointerUp);
 
-        m_Exit.RegisterCallback<ClickEvent>(CloseUI);
+        //m_Exit.RegisterCallback<ClickEvent>(CloseUI);
+        m_Exit.clicked += CloseUI;
         m_Make.RegisterCallback<ClickEvent>(MakePotion);
-        m_Distiller.RegisterCallback<ClickEvent, ProgressBar>(ActivateDevice, m_DistilBar);
-        m_Crusher.RegisterCallback<ClickEvent, ProgressBar>(ActivateDevice, m_CrushBar);
-        m_Smoker.RegisterCallback<ClickEvent, ProgressBar>(ActivateDevice, m_SmokeBar);
+        m_Distiller.clicked += ActivateDistil;
+        m_Crusher.clicked += ActivateCrush;
+        m_Smoker.clicked += ActivateSmoke;
+
+       
         IsFinished = true;
 
     }
@@ -213,18 +216,36 @@ public class PotionUIController : SerializedMonoBehaviour
         m_GhostIcon.style.visibility = Visibility.Visible;
     }
 
-    private void CloseUI(ClickEvent evt)
+    private void CloseUI()
     {
-        if (evt.propagationPhase != PropagationPhase.AtTarget)
-            return;
+        //if (evt.propagationPhase != PropagationPhase.AtTarget)
+        //    return;
         // Assign a new color
         //var targetBox = evt.target as VisualElement;
         //targetBox.style.backgroundColor = Color.green;
         CancelPotion();
-        m_Root.style.display = DisplayStyle.None;
+        cauldron.CloseCauldronUI();
     }
 
-    private void ActivateDevice(ClickEvent evt, ProgressBar bar)
+    private void ActivateDistil()
+    {
+        type = ProcessType.Distilled;
+        ActivateDevice(m_DistilBar);
+    }
+    private void ActivateCrush()
+    {
+        type = ProcessType.Crush;
+        ActivateDevice(m_CrushBar);
+
+    }
+    private void ActivateSmoke()
+    {
+        type = ProcessType.Smoker;
+        ActivateDevice(m_SmokeBar);
+
+    }
+
+    private void ActivateDevice(ProgressBar bar)
     {
         if(cauldron.storedHerbs.Count >= 4)
         {
@@ -294,13 +315,13 @@ public class PotionUIController : SerializedMonoBehaviour
         {
             cauldron.storedHerbs.Add(herb);
             cauldron.storedHerbs[cauldron.storedHerbs.Count - 1].processType = type;
-            AddToSlots(herb);
+            AddToSlots(herb, type);
             //currentHerb = null;
 
         }
     }
 
-    public void AddToSlots(Herb herb)
+    public void AddToSlots(Herb herb, ProcessType type = ProcessType.Raw)
     {
         foreach(CauldronSlot slot in CauldronSlots)
         {
@@ -308,7 +329,7 @@ public class PotionUIController : SerializedMonoBehaviour
             {
                 InventoryItem newItem = new InventoryItem(herb);
 
-                slot.Set(newItem);
+                slot.Set(newItem, type);
                 break;
             }
         }
@@ -335,6 +356,12 @@ public class PotionUIController : SerializedMonoBehaviour
             player.AddItemToInventory(cauldron.AddBackHerb(h));
         }
         cauldron.storedHerbs.Clear();
+
+        foreach (CauldronSlot slot in m_CauldronSlots)
+        {
+            slot.Reset();
+
+        }
         currentHerb = null;
     }
 

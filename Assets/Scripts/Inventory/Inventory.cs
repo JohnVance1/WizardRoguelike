@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
-
+using Sirenix.Serialization;
+using Sirenix.OdinInspector;
 
 public enum OpenState
 {
@@ -23,6 +24,7 @@ public enum OpenState
 public class Inventory : ScriptableObject
 {
     public Dictionary<Item_Base, InventoryItem> itemDictionary = new Dictionary<Item_Base, InventoryItem>();
+    [SerializeField]
     public List<InventoryItem> inventory = new List<InventoryItem>();
 
     public delegate void OnInventoryChanged();

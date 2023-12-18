@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/QuestLog.uss?fileID=7433441132597879392&amp;guid=8dd50f409f3089c489cda1ca1c131d0f&amp;type=3#QuestLog" />
+    <ui:VisualElement name="Background" style="flex-grow: 1; align-self: auto; flex-direction: column; justify-content: center;">
+        <ui:ScrollView name="Container" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" style="width: 80%; height: 80%; align-self: center; background-color: rgb(103, 103, 103);">
+            <ui:VisualElement name="ActiveQuests" style="flex-grow: 1; width: 100%; height: 50%; align-self: auto;">
+                <ui:Foldout text="Active Quests" name="Active" value="true" />
+            </ui:VisualElement>
+            <ui:VisualElement name="CompletedQuests" style="flex-grow: 1;">
+                <ui:Foldout text="Completed Quests" name="Complete" />
+            </ui:VisualElement>
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

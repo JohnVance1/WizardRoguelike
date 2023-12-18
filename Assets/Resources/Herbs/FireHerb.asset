@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f1bbbe537fc96e4583a888f6101a7d0, type: 3}
-  m_Name: Herb
+  m_Name: FireHerb
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: -761498123, guid: 1ba5740f56e4ecf45978c6c2244ef770, type: 3}
+    - {fileID: -245480796, guid: 1ba5740f56e4ecf45978c6c2244ef770, type: 3}
+    - {fileID: 1520951905, guid: 1ba5740f56e4ecf45978c6c2244ef770, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -131,14 +134,79 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  sprite: {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
-  Name: 
-  herbStages:
-  - {fileID: -1589588616, guid: 37af949e270a43540a02fa733360e32b, type: 3}
-  - {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
-  defaultSprite: {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
+    - Name: processSprites
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[ProcessType, Assembly-CSharp],[UnityEngine.Sprite,
+        UnityEngine.CoreModule]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[ProcessType, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  sprite: {fileID: 21300000, guid: 99f031c14a56d434aa47320809208144, type: 3}
+  Name: Fire Herb
+  <id>k__BackingField: FireHerb
+  displayName: 
   timeToGrow: 3
   timeToProcess: 0
   researchNum: 0
-  IsResearched: 1
+  IsResearched: 0
+  IsFound: 1
   processType: 0
+  defaultSprite: {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
+  herbStages:
+  - {fileID: -1589588616, guid: 37af949e270a43540a02fa733360e32b, type: 3}
+  - {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}

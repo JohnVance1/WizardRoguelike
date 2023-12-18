@@ -9,12 +9,21 @@ public class QuestManager : MonoBehaviour
     private bool loadQuestState = true;
 
     // The Map of all of the quests in the game
-    private Dictionary<string, Quest> questMap;
+    public Dictionary<string, Quest> questMap { get; private set; }
+
+    public static QuestManager instance { get; private set; }
 
 
 
     private void Awake()
     {
+        if (instance != null)
+        {
+            Debug.LogError("More than 1 Game Events Manager in Scene");
+
+        }
+        instance = this;
+
         questMap = CreateQuestMap();
 
         
@@ -49,7 +58,7 @@ public class QuestManager : MonoBehaviour
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    private Quest GetQuestByID(string id)
+    public Quest GetQuestByID(string id)
     {
         Quest quest = questMap[id];
         if(quest== null)

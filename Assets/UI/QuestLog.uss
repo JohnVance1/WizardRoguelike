@@ -1,0 +1,6 @@
+.questName {
+}
+
+.questSlot {
+    height: 40px;
+}

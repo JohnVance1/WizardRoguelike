@@ -6,19 +6,15 @@ using UnityEngine;
 
 public class Journal : ScriptableObject
 {
-    public List<Herb> foundHerbs = new List<Herb>();
-    public Journal_UI ui;
+    public Dictionary<string, Herb> herbMap = new Dictionary<string, Herb>();
+    public List<Herb> herbOrder = new List<Herb>();
 
-    public void AddHerb(Herb herb)
-    {
-        if (!foundHerbs.Contains(herb))
-        {
-            foundHerbs.Add(herb);
-        }
-    }
 
-    public bool Contains(Herb herb)
-    {
-        return foundHerbs.Contains(herb);
-    }
+    
+
+
+
+    
+
+    
 }

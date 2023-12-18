@@ -13,10 +13,13 @@ public class Cauldron : Interactable_Base
     [SerializeField]
     public Dictionary<Type, Herb> allHerbs;
 
+    private bool IsCauldronOpen;
+
     void Start()
     {
         cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
         cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        IsCauldronOpen = false;
 
     }
 
@@ -24,12 +27,13 @@ public class Cauldron : Interactable_Base
     {
         if(CanInteract)
         {            
-            if (playerInteract.IsInteractButtonDown)// && player.inventory.DoesInventoryContainItemType<Item_Base>())
+            if (playerInteract.IsInteractButtonDown && !IsCauldronOpen)// && player.inventory.DoesInventoryContainItemType<Item_Base>())
             {
+                //Debug.Log(playerInteract.IsInteractButtonDown);
+
                 //player.inventory.GetItemFromInventory<Item_Base>();
                 //player.AddItemToInventory(potion);
                 OpenCauldronUI();
-                playerInteract.OpenCauldronInventory(this);
 
 
             }
@@ -54,13 +58,19 @@ public class Cauldron : Interactable_Base
     public void OpenCauldronUI()
     {
         //cauldronUI.SetActive(true);
+        playerInteract.OpenCauldronInventory(this);
         cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        IsCauldronOpen = true;
+
+
     }
 
     public void CloseCauldronUI()
     {
-        playerInteract.CloseInventory();
         cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        IsCauldronOpen = false;
+        //playerInteract.CloseInventory();
+
         //cauldronUI.SetActive(false);
     }
 

@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/HerbJournal.uss?fileID=7433441132597879392&amp;guid=2c3d8ab622b84c942b5ccdddf1218804&amp;type=3#HerbJournal" />
+    <ui:VisualElement name="Background" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.24); justify-content: center; align-items: center; flex-direction: row;">
+        <ui:VisualElement name="PageLeft" class="page-background">
+            <ui:VisualElement name="HerbImage" style="flex-grow: 1; position: absolute; width: 100px; height: 100px; background-color: rgba(0, 0, 0, 0.39); top: 80px; left: 80px; align-items: auto; flex-direction: row; justify-content: center; align-self: auto;">
+                <ui:Label tabindex="-1" text="???" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HerbName" style="position: absolute; top: 100px; left: auto; align-self: flex-end; justify-content: flex-end; align-items: center;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="HerbElements" style="flex-grow: 1; position: absolute; width: 150px; height: 150px; top: 60px; left: auto; right: 40px; background-color: rgb(255, 255, 255);" />
+            <ui:Button text="&#10;" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PreviousButton" class="journal-prev-btn" style="background-color: rgb(123, 0, 112);" />
+            <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TextBoxWhereToFind" style="position: absolute; bottom: 5px; width: 80%; align-items: auto; align-self: center; height: 40%; background-color: rgba(0, 0, 118, 0.28);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="PageRight" class="page-background">
+            <ui:Button text="&#10;" parse-escape-sequences="true" display-tooltip-when-elided="true" name="NextButton" class="journal-buttons journal-next-btn" style="background-color: rgb(123, 0, 112);" />
+            <ui:VisualElement name="HerbImage" style="flex-grow: 1; position: absolute; width: 100px; height: 100px; background-color: rgba(0, 0, 0, 0.39); top: 80px; left: 80px; flex-direction: row; align-self: auto; align-items: auto; justify-content: center;">
+                <ui:Label tabindex="-1" text="???" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HerbName" style="position: absolute; top: 100px; left: auto; align-self: auto; justify-content: flex-end; align-items: auto;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="HerbElements" style="flex-grow: 1; position: absolute; width: 150px; height: 150px; background-color: rgb(11, 67, 0); top: 60px; left: auto; right: 40px;" />
+            <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TextBoxWhereToFind" style="position: absolute; bottom: 5px; width: 80%; align-items: auto; align-self: center; height: 40%; background-color: rgba(0, 0, 118, 0.28);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

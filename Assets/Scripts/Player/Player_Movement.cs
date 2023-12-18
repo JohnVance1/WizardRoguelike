@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
+using UnityEngine.InputSystem;
 
 public class Player_Movement : MonoBehaviour
 {
@@ -31,69 +32,70 @@ public class Player_Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Movement();
+        //Movement();
 
     }
 
-    public void Movement()
+    public void Movement(InputAction.CallbackContext context)
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
+        Vector2 move = context.ReadValue<Vector2>();
+        //horizontal = Input.GetAxisRaw("Horizontal");
 
-        vertical = Input.GetAxisRaw("Vertical");
-        if (horizontal != 0 && vertical != 0)
+        //vertical = Input.GetAxisRaw("Vertical");
+        if (move.x != 0 && move.y != 0)
         {
-            prevHorizontal = horizontal;
-            prevVertical = vertical;
+            prevHorizontal = move.x;
+            prevVertical = move.y;
 
         }
-        else if (horizontal != 0)
+        else if (move.x != 0)
         {
-            prevHorizontal = horizontal;
+            prevHorizontal = move.y;
             prevVertical = 0;
 
         }
-        else if (vertical != 0)
+        else if (move.y != 0)
         {
-            prevVertical = vertical;
+            prevVertical = move.y;
             prevHorizontal = 0;
 
         }
 
-        if (horizontal < 0 && vertical < 0)
+        if (move.x < 0 && move.y < 0)
         {
             GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontLeft];
         }
 
-        if (horizontal > 0 && vertical < 0)
+        if (move.x > 0 && move.y < 0)
         {
             GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontRight];
         }
 
-        if (horizontal < 0 && vertical > 0)
+        if (move.x < 0 && move.y > 0)
         {
             GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackLeft];
         }
 
-        if (horizontal > 0 && vertical > 0)
+        if (move.x > 0 && move.y > 0)
         {
             GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackRight];
         }
 
-        if (horizontal > 0 && vertical == 0)
+        if (move.x > 0 && move.y == 0)
         {
             GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontRight];
         }
 
-        if (horizontal < 0 && vertical == 0)
+        if (move.x < 0 && move.y == 0)
         {
             GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontLeft];
         }
 
-        if (horizontal == 0 && vertical > 0)
+        if (move.x == 0 && move.y > 0)
         {
             GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackRight];
         }
-        rb.velocity = new Vector3(horizontal, vertical, 0).normalized * speed;
+        rb.velocity = move.normalized * speed;
 
         if (rb.velocity != Vector2.zero)
         {

@@ -27,7 +27,7 @@ public class PotionManager : SerializedMonoBehaviour
     /// <returns></returns>
     private Dictionary<string, Potion> CreatePotionMap()
     {
-        // Loads all QuestInfo_SO objects under the Assets/Resoucres/Quests folder
+        // Loads all PotionInfo_SO objects under the Assets/Resoucres/Potions folder
         PotionInfo_SO[] allPotions = Resources.LoadAll<PotionInfo_SO>("Potions");
 
         Dictionary<string, Potion> idToPotionMap = new Dictionary<string, Potion>();
@@ -35,9 +35,9 @@ public class PotionManager : SerializedMonoBehaviour
         {
             if (idToPotionMap.ContainsKey(potionInfo.id))
             {
-                Debug.LogWarning("Duplicate ID found when making questMap: " + potionInfo.id);
+                Debug.LogWarning("Duplicate ID found when making potionMap: " + potionInfo.id);
             }
-            // Loads any quests that were saved in PlayerPerfs
+            // Loads any potions that were saved in PlayerPerfs
             idToPotionMap.Add(potionInfo.id, LoadPotion(potionInfo));
         }
         return idToPotionMap;

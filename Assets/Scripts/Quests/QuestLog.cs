@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
+[CreateAssetMenu(fileName = "QuestLog", menuName = "ScriptableObjects/QuestLog", order = 1)]
 public class QuestLog : ScriptableObject
 {
-    public List<Quest> ActiveQuests;
-    public List<Quest> CompletedQuests;
+    public List<Quest> ActiveQuests = new List<Quest>();
+    public List<Quest> CompletedQuests = new List<Quest>();
     public Dictionary<string, Quest> AllQuests;
 
+    
 
     void ActivateQuest(string quest)
     {

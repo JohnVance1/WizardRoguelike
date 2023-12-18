@@ -22,12 +22,12 @@ public class ResearchStation : Interactable_Base
 
     private void OnEnable()
     {
-        researchCanvas.GetComponent<Research_MiniGame>().OnExit += CloseResearchGame;
+        //researchCanvas.GetComponent<Research_MiniGame>().OnExit += CloseResearchGame;
     }
 
     private void OnDisable()
     {
-        researchCanvas.GetComponent<Research_MiniGame>().OnExit -= CloseResearchGame;
+        //researchCanvas.GetComponent<Research_MiniGame>().OnExit -= CloseResearchGame;
 
     }
 

@@ -27,10 +27,11 @@ public enum Element
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Herb", order = 1)]
 public class Herb : Item_Base
 {
-    [SerializeField]
-    public Sprite[] herbStages;
+    [field: SerializeField] public string id { get; private set; }  // The ID of the herb
 
-    public Sprite defaultSprite;
+    [Header("General")]
+    public string displayName;  // The name displayed to the player as to which herb this is
+
 
     public float timeToGrow;
     public float timeToProcess;
@@ -38,11 +39,30 @@ public class Herb : Item_Base
     public int researchNum;
 
     public bool IsResearched = false;
+    public bool IsFound = false;
 
     public ProcessType processType = ProcessType.Raw;
 
     [SerializeField]
     public Dictionary<Element, int> elements = new Dictionary<Element, int>();
+
+    [Header("Sprites")]
+    public Sprite defaultSprite;
+
+    [SerializeField]
+    public Sprite[] herbStages;
+
+    [SerializeField]
+    public Dictionary<ProcessType, Sprite> processSprites = new Dictionary<ProcessType, Sprite>();
+
+    // Makes sure that the id is always the name of the ScriptableObject asset
+    private void OnValidate()
+    {
+    #if UNITY_EDITOR
+            id = this.name;
+            UnityEditor.EditorUtility.SetDirty(this);
+    #endif
+    }
 
 
 }
