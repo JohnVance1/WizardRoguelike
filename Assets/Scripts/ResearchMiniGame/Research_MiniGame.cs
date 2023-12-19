@@ -11,6 +11,7 @@ using System.Linq;
 using static UnityEditor.VersionControl.Asset;
 using static UnityEngine.ParticleSystem;
 using UnityEngine.Rendering;
+using UnityEngine.InputSystem;
 
 public class Research_MiniGame : SerializedMonoBehaviour
 {
@@ -58,7 +59,8 @@ public class Research_MiniGame : SerializedMonoBehaviour
         m_Root = GetComponent<UIDocument>().rootVisualElement;
         m_Rows = m_Root.Query<VisualElement>("Row").ToList();
         m_Exit = m_Root.Query<Button>("Exit");
-        m_Root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+        m_Root.RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
+
     }
 
 
@@ -74,8 +76,6 @@ public class Research_MiniGame : SerializedMonoBehaviour
         //m_Row3 = m_Root.Q<VisualElement>("Row3");
         //m_Row4 = m_Root.Q<VisualElement>("Row4");
         //m_Row5 = m_Root.Q<VisualElement>("Row5");
-
-
 
         for (int i = 0; i < height; i++)
         {
@@ -120,7 +120,6 @@ public class Research_MiniGame : SerializedMonoBehaviour
         }
 
         m_Exit.clicked += () => {
-            //OnExit();
             researchStation.CloseResearchGame();
         };
 
@@ -133,8 +132,6 @@ public class Research_MiniGame : SerializedMonoBehaviour
     
     private void Update()
     {
-        
-
         foreach (Space end in endSpace)
         {
             CheckCompletePath(startSpace, end);
@@ -143,36 +140,60 @@ public class Research_MiniGame : SerializedMonoBehaviour
 
     }
 
+    
+
     public void ButtonCall(Vector3 center, Space space)
     {
-        IsMouseDown = true;
+        //IsMouseDown = IsMouseDown ? false : true;
+
+        if (IsMouseDown)
+        {
+            IsMouseDown = false;
+            tempSpace = null;
+        }
+        else
+        {
+            IsMouseDown = true;
+            if (space != null)
+            {
+                tempSpace = space;
+
+            }
+        }
+
+
+        
 
         //GameObject square = GetMousedOverSquare(GetEventSystemRaycastResults());
-        if (space != null)
-        {
-            tempSpace = space;
-
-        }
+        
 
     }
 
-    private void OnPointerMove(PointerMoveEvent evt)
+    public Space GetSpace(Vector2 move)
+    {
+        return grid.grid[tempSpace.x - (int)move.y, tempSpace.y + (int)move.x];
+
+    }
+
+    private void OnNavMoveEvent(NavigationMoveEvent evt)
     {
         //Only take action if the player is dragging an item around the screen
         if (!IsMouseDown)
         {
             return;
         }
+        Debug.Log($"OnNavMoveEvent {evt.propagationPhase} - move {evt.move} - direction {evt.direction}");
 
-        IEnumerable <Space> space = spaces.Where(x =>
-               x.worldBound.Contains(evt.position));
+        Space space = GetSpace(evt.move);
+        //IEnumerable<Space> space = spaces.Where(x =>
+        //       x.worldBound.Contains(evt.position));
 
         // Space square = GetMousedOverSquare(GetEventSystemRaycastResults()).GetComponent<Space>();
-        if (space.Count() != 0)
+        if (space != null)
         {
-            Space closestSlot = space.OrderBy(x => Vector2.Distance
-               (x.worldBound.position, evt.position)).First();
-
+            //Space closestSlot = space.OrderBy(x => Vector2.Distance
+            //   (x.worldBound.position, evt.position)).First();
+            Space closestSlot = space;
             if (closestSlot != tempSpace && closestSlot != null)
             {
                 //Debug.DrawLine(startSpace.transform.position, square.transform.position);
@@ -189,15 +210,16 @@ public class Research_MiniGame : SerializedMonoBehaviour
                     tempSpace.UpdateSpace();
                     closestSlot.UpdateSpace();
 
-                    
+
 
                 }
 
                 tempSpace = closestSlot;
             }
         }
-
     }
+
+    
 
     void DrawLine()
     {

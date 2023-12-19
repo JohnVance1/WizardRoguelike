@@ -35,6 +35,7 @@ public class Space : VisualElement
     public OnMouseDown onMouseDown;
     public delegate void OnMouseUp();
     public OnMouseUp onMouseUp;
+    private Color c;
 
     public event Action onEdgesChange;
 
@@ -43,13 +44,23 @@ public class Space : VisualElement
         Edges = new List<Space>();
         temp = new List<Space>();
         AddToClassList("space");
-
+        focusable= true;
         generateVisualContent += DrawLine;
         onEdgesChange += RemoveDiagonals;
         onEdgesChange += CheckNodeBehavior;
+        c = this.style.backgroundColor.value;
 
-        RegisterCallback<PointerDownEvent>(OnPointerDown);
+        
+
+        //RegisterCallback<PointerDownEvent>(OnPointerDown);
         RegisterCallback<PointerUpEvent>(OnPointerUp);
+        RegisterCallback<FocusInEvent>(OnFocusInSlot);
+        RegisterCallback<FocusOutEvent>(OnFocusOutSlot);
+
+        RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
+        RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
+        RegisterCallback<NavigationSubmitEvent>(OnNavSubmitEvent);
+
 
     }
 
@@ -60,12 +71,48 @@ public class Space : VisualElement
         
     }
 
-    private void OnPointerDown(PointerDownEvent evt)
+    public void OnFocusInSlot(FocusInEvent evt)
     {
-        if (evt.button != 0)
-        {
-            return;
-        }
+        this.style.backgroundColor = Color.white;
+    }
+
+    public void OnFocusOutSlot(FocusOutEvent evt)
+    {
+        this.style.backgroundColor = c;
+
+    }
+
+    private void OnNavSubmitEvent(NavigationSubmitEvent evt)
+    {
+        Debug.Log($"OnNavSubmitEvent {evt.propagationPhase}");
+
+        Vector3 center = this.transform.position;
+
+        RemoveDiagonals();
+
+        CheckNodeBehavior();
+
+        onMouseDown(center, this);
+
+
+    }
+
+    private void OnNavMoveEvent(NavigationMoveEvent evt)
+    {
+        Debug.Log($"OnNavMoveEvent {evt.propagationPhase} - move {evt.move} - direction {evt.direction}");
+    }
+
+    private void OnNavCancelEvent(NavigationCancelEvent evt)
+    {
+        Debug.Log($"OnNavCancelEvent {evt.propagationPhase}");
+    }
+
+    private void OnPointerDown(/*PointerDownEvent evt*/)
+    {
+        //if (evt.button != 0)
+        //{
+        //    return;
+        //}
 
         Vector3 center = this.transform.position;
 
