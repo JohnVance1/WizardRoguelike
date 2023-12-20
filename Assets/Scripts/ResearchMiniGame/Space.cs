@@ -57,8 +57,8 @@ public class Space : VisualElement
         RegisterCallback<FocusInEvent>(OnFocusInSlot);
         RegisterCallback<FocusOutEvent>(OnFocusOutSlot);
 
-        RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
-        RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
+        //RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
+        //RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
         RegisterCallback<NavigationSubmitEvent>(OnNavSubmitEvent);
 
 
@@ -97,15 +97,8 @@ public class Space : VisualElement
 
     }
 
-    private void OnNavMoveEvent(NavigationMoveEvent evt)
-    {
-        Debug.Log($"OnNavMoveEvent {evt.propagationPhase} - move {evt.move} - direction {evt.direction}");
-    }
-
-    private void OnNavCancelEvent(NavigationCancelEvent evt)
-    {
-        Debug.Log($"OnNavCancelEvent {evt.propagationPhase}");
-    }
+   
+    
 
     private void OnPointerDown(/*PointerDownEvent evt*/)
     {

@@ -81,7 +81,7 @@ public class InventoryUIController : SerializedMonoBehaviour
         m_Root.RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
         m_Root.RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
         m_Root.RegisterCallback<NavigationSubmitEvent>(OnNavSubmitEvent);
-        //InventoryItems[0][0].Focus();
+        InventoryItems[0][0].Focus();
 
 
 

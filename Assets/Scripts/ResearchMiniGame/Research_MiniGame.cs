@@ -60,7 +60,7 @@ public class Research_MiniGame : SerializedMonoBehaviour
         m_Rows = m_Root.Query<VisualElement>("Row").ToList();
         m_Exit = m_Root.Query<Button>("Exit");
         m_Root.RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
-
+        m_Root.RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
     }
 
 
@@ -124,12 +124,18 @@ public class Research_MiniGame : SerializedMonoBehaviour
         };
 
         // Sets up the info about each space's relation to the others
-        grid.PopulateGrid();       
+        grid.PopulateGrid();
 
 
     }
 
-    
+    public void OpenUI()
+    {
+        grid.grid[0, 0].Focus();
+
+    }
+
+
     private void Update()
     {
         foreach (Space end in endSpace)
@@ -173,6 +179,12 @@ public class Research_MiniGame : SerializedMonoBehaviour
     {
         return grid.grid[tempSpace.x - (int)move.y, tempSpace.y + (int)move.x];
 
+    }
+
+    private void OnNavCancelEvent(NavigationCancelEvent evt)
+    {
+        Debug.Log($"OnNavCancelEvent {evt.propagationPhase}");
+        researchStation.CloseResearchGame();
     }
 
     private void OnNavMoveEvent(NavigationMoveEvent evt)

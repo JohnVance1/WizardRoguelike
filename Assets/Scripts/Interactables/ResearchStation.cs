@@ -22,12 +22,13 @@ public class ResearchStation : Interactable_Base
         IsResearching = false;
         researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
         researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
-        player = Player.Instance;
     }
 
     private void OnEnable()
     {
-        input = player.GetComponent<Player_Interact>().input;
+        //player = Player.Instance;
+
+        input = player.gameObject.GetComponent<Player_Interact>().input;
 
         input.UI.Cancel.performed += Cancel;
         input.UI.Cancel.Enable();
@@ -37,7 +38,7 @@ public class ResearchStation : Interactable_Base
 
     private void OnDisable()
     {
-        input.UI.Cancel.performed -= Cancel;
+        //input.UI.Cancel.performed -= Cancel;
         input.UI.Cancel.Disable();
         //researchCanvas.GetComponent<Research_MiniGame>().OnExit -= CloseResearchGame;
 
@@ -65,6 +66,8 @@ public class ResearchStation : Interactable_Base
 
     public void Cancel(InputAction.CallbackContext context)
     {
+        Debug.Log("OnCancel");
+
         CloseResearchGame();
 
     }
@@ -73,6 +76,7 @@ public class ResearchStation : Interactable_Base
     {
         playerInteract.CloseInventory();
         researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        researchCanvas.GetComponent<Research_MiniGame>().OpenUI();
         IsResearching = true;
         currentHerb = herb;
     }

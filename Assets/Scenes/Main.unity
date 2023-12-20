@@ -4972,6 +4972,7 @@ MonoBehaviour:
   researchCanvas: {fileID: 1001344097}
   miniGames:
   - {fileID: 1001344097}
+  player: {fileID: 885995105255548536}
 --- !u!1 &852930022
 GameObject:
   m_ObjectHideFlags: 0
@@ -14448,7 +14449,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 592860764454734180, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 885995106198875496, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14628,7 +14629,7 @@ PrefabInstance:
       objectReference: {fileID: 6590473472521320628, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
     - target: {fileID: 7108709253766555370, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7293488517518995663, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_Enabled

@@ -270,7 +270,7 @@ public class Player_Interact : MonoBehaviour
     {
         //JournalCanvas.gameObject.SetActive(true);
         JournalCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-
+        JournalCanvas.GetComponent<Journal_UI>().OpenUI();
         IsJournalOpen = true;
         EnableUI();
     }
