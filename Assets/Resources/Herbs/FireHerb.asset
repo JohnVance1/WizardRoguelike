@@ -203,7 +203,7 @@ MonoBehaviour:
   timeToGrow: 3
   timeToProcess: 0
   researchNum: 0
-  IsResearched: 0
+  IsResearched: 1
   IsFound: 1
   processType: 0
   defaultSprite: {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
