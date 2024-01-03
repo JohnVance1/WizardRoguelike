@@ -42,6 +42,12 @@ public class QuestLog_UI : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        this.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        this.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+    }
+
     private void StartQuest(string id)
     {
         Quest quest = QuestManager.instance.GetQuestByID(id);

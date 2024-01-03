@@ -81,7 +81,7 @@ public class InventoryUIController : SerializedMonoBehaviour
         m_Root.RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
         m_Root.RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
         m_Root.RegisterCallback<NavigationSubmitEvent>(OnNavSubmitEvent);
-        //InventoryItems[0][0].Focus();
+        InventoryItems[0][0].Focus();
 
 
 
@@ -151,6 +151,8 @@ public class InventoryUIController : SerializedMonoBehaviour
             item.onMouseDown -= ButtonCallback;
 
         }
+        input.UI.Cancel.performed -= Cancel;
+        input.UI.Cancel.Disable();
         input.UI.Navigate.Disable();
     }
 
@@ -206,6 +208,11 @@ public class InventoryUIController : SerializedMonoBehaviour
         {
             GameObject cauldron = GameObject.FindGameObjectWithTag("Cauldron");
             cauldron.GetComponent<Cauldron>().CloseCauldronUI();
+        }
+        if (state == OpenState.Research)
+        {
+            GameObject research = GameObject.FindGameObjectWithTag("ResearchStation");
+            research.GetComponent<ResearchStation>().CloseResearchGame();
         }
         player.GetComponent<Player_Interact>().CloseOpenUI();
     }

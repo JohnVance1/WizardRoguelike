@@ -20,7 +20,7 @@ public class Journal_UI : SerializedMonoBehaviour
     private VisualElement herbElements_L;
     private Label herbName_L;
     private Label whereToFind_L;
-    private VisualElement prevBtn_L;
+    private Button prevBtn_L;
 
 
     private VisualElement pageRight;
@@ -28,11 +28,13 @@ public class Journal_UI : SerializedMonoBehaviour
     private VisualElement herbElements_R;
     private Label herbName_R;
     private Label whereToFind_R;
-    private VisualElement nextBtn_R;
+    private Button nextBtn_R;
+    private Color c;
 
 
     void Awake()
     {
+
         m_Root = GetComponent<UIDocument>().rootVisualElement;
         pageLeft = m_Root.Q<VisualElement>("PageLeft");
         pageRight = m_Root.Q<VisualElement>("PageRight");
@@ -41,17 +43,28 @@ public class Journal_UI : SerializedMonoBehaviour
         herbElements_L = pageLeft.Q<VisualElement>("HerbElements");
         herbName_L = pageLeft.Q<Label>("HerbName");
         whereToFind_L = pageLeft.Q<Label>("TextBoxWhereToFind");
-        prevBtn_L = pageLeft.Q<VisualElement>("PreviousButton");
+        prevBtn_L = pageLeft.Q<Button>("PreviousButton");
 
         herbImage_R = pageRight.Q<VisualElement>("HerbImage");
         herbElements_R = pageRight.Q<VisualElement>("HerbElements");
         herbName_R = pageRight.Q<Label>("HerbName");
         whereToFind_R = pageRight.Q<Label>("TextBoxWhereToFind");
-        nextBtn_R = pageRight.Q<VisualElement>("NextButton");
+        nextBtn_R = pageRight.Q<Button>("NextButton");
 
+        c = prevBtn_L.style.backgroundColor.value;
 
-        prevBtn_L.RegisterCallback<ClickEvent>(TurnLeftPage);
-        nextBtn_R.RegisterCallback<ClickEvent>(TurnRightPage);
+        prevBtn_L.clicked += TurnLeftPage;
+        nextBtn_R.clicked += TurnRightPage;
+
+        prevBtn_L.focusable = true;
+        nextBtn_R.focusable = true;
+
+        prevBtn_L.RegisterCallback<FocusInEvent>(OnFocusInSlot);
+        prevBtn_L.RegisterCallback<FocusOutEvent>(OnFocusOutSlot);
+        nextBtn_R.RegisterCallback<FocusInEvent>(OnFocusInSlotRight);
+        nextBtn_R.RegisterCallback<FocusOutEvent>(OnFocusOutSlotRight);
+        //prevBtn_L.RegisterCallback<ClickEvent>(TurnLeftPage);
+        //nextBtn_R.RegisterCallback<ClickEvent>(TurnRightPage);
         herbIndex = 0;
         SetPageInfo(journalOBJ.herbOrder[0], herbImage_L, herbElements_L, herbName_L, whereToFind_L);
         SetPageInfo(journalOBJ.herbOrder[1], herbImage_R, herbElements_R, herbName_R, whereToFind_R);
@@ -61,10 +74,43 @@ public class Journal_UI : SerializedMonoBehaviour
 
     }
 
+    public void OnFocusInSlot(FocusInEvent evt)
+    {
+        prevBtn_L.style.backgroundColor = Color.white;
+    }
+
+    public void OnFocusOutSlot(FocusOutEvent evt)
+    {
+        prevBtn_L.style.backgroundColor = c;
+
+    }
+
+    public void OnFocusInSlotRight(FocusInEvent evt)
+    {
+        nextBtn_R.style.backgroundColor = Color.white;
+    }
+
+    public void OnFocusOutSlotRight(FocusOutEvent evt)
+    {
+        nextBtn_R.style.backgroundColor = c;
+
+    }
+
+    public void OpenUI()
+    {
+        prevBtn_L.Focus();
+
+    }
+
+    private void Start()
+    {
+        this.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        this.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+    }
+
     private void OnEnable()
     {
         GameEventsManager.instance.journalEvents.onFirstherbCollected += HerbCollected;
-
     }
 
     private void OnDisable()
@@ -94,11 +140,11 @@ public class Journal_UI : SerializedMonoBehaviour
 
     }
 
-    private void TurnLeftPage(ClickEvent evt)
+    private void TurnLeftPage(/*ClickEvent evt*/)
     {
         herbIndex -= 2;
 
-        if (evt.button != 0 || herbIndex < 0 || herbIndex >= journalOBJ.herbOrder.Count)
+        if (/*evt.button != 0 || */herbIndex < 0 || herbIndex >= journalOBJ.herbOrder.Count)
         { 
             herbIndex= 0;
             return;
@@ -107,10 +153,10 @@ public class Journal_UI : SerializedMonoBehaviour
 
     }
 
-    private void TurnRightPage(ClickEvent evt)
+    private void TurnRightPage(/*ClickEvent evt*/)
     {
         herbIndex += 2;
-        if (evt.button != 0 || herbIndex < 0 || herbIndex >= journalOBJ.herbOrder.Count)
+        if (/*evt.button != 0 ||*/ herbIndex < 0 || herbIndex >= journalOBJ.herbOrder.Count)
         {
             herbIndex = journalOBJ.herbOrder.Count - 2;
             return;

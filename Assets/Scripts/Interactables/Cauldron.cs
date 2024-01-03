@@ -69,7 +69,7 @@ public class Cauldron : Interactable_Base
     {
         cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
         IsCauldronOpen = false;
-        //playerInteract.CloseInventory();
+        playerInteract.CloseInventory();
 
         //cauldronUI.SetActive(false);
     }
