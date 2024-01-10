@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 public class Player_Interact : MonoBehaviour
 {
@@ -50,6 +51,7 @@ public class Player_Interact : MonoBehaviour
         move.Enable();
 
         input.Player.Interact.performed += Interact;
+        input.Player.Interact.canceled += RemovePress;
         input.Player.Interact.Enable();
 
         input.Player.OpenInventory.performed += InventoryInput;
@@ -65,6 +67,13 @@ public class Player_Interact : MonoBehaviour
     private void OnDisable()
     {
         move.Disable();
+        input.Player.Interact.canceled -= RemovePress;
+        input.Player.Interact.performed -= Interact;
+
+        input.Player.OpenInventory.performed -= InventoryInput;
+        input.Player.OpenJournal.performed -= JournalInput;
+        input.Player.OpenQuestLog.performed -= QuestLogInput;
+
         input.Player.Interact.Disable();
         input.Player.OpenJournal.Disable();
         input.Player.OpenQuestLog.Disable();
@@ -177,11 +186,12 @@ public class Player_Interact : MonoBehaviour
         IsInteractButtonDown = true;
         GameEventsManager.instance.inputEvents.SubmitPressed();
 
-        if (context.canceled)
-        {
-            IsInteractButtonDown = false;
+       
+    }
 
-        }
+    public void RemovePress(InputAction.CallbackContext context)
+    {
+        IsInteractButtonDown = false;
     }
 
     public void JournalInput(InputAction.CallbackContext context)
@@ -327,6 +337,16 @@ public class Player_Interact : MonoBehaviour
         InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
         InventoryCanvas.transform.GetComponent<InventoryUIController>().state = OpenState.Cauldron;
         InventoryCanvas.transform.GetComponent<InventoryUIController>().interactable = cauldron;
+        IsInventoryOpen = true;
+        InventoryCanvas.transform.GetComponent<InventoryUIController>().OnOpen();
+        EnableUI();
+    }
+
+    public void OpenFountainInventory(Fountain fountain)
+    {
+        InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        InventoryCanvas.transform.GetComponent<InventoryUIController>().state = OpenState.Fountain;
+        InventoryCanvas.transform.GetComponent<InventoryUIController>().interactable = fountain;
         IsInventoryOpen = true;
         InventoryCanvas.transform.GetComponent<InventoryUIController>().OnOpen();
         EnableUI();

@@ -395,6 +395,13 @@ public class InventoryUIController : SerializedMonoBehaviour
                         }
                     }
                     break;
+                case OpenState.Fountain:
+                    if (selected.storedItem.item is PotionInfo_SO)
+                    {
+                        ((Fountain)interactable).SelectFountain((PotionInfo_SO)selected.storedItem.item);
+                                                
+                    }
+                    break;
                 case OpenState.General:
                     //StartDrag(position, slot);
                     break;

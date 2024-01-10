@@ -47,16 +47,16 @@ public class CorruptionManager : MonoBehaviour
     {
         foreach(Fountain fount in spawnedFountains)
         {
-            if(fount.storage == null && fount.reclaim)
-            {
-                StartCoroutine(ReduceCorruptedRoutine());
-                fount.reclaim = false;
-            }
-            else if(fount.toHeal)
-            {
-                //AddCorruption(fount.transform.position, 10, fount.storage.radius);
-                fount.toHeal = false;
-            }
+            //if(fount.storage == null && fount.reclaim)
+            //{
+            //    StartCoroutine(ReduceCorruptedRoutine());
+            //    fount.reclaim = false;
+            //}
+            //else if(fount.toHeal)
+            //{
+            //    //AddCorruption(fount.transform.position, 10, fount.storage.radius);
+            //    fount.toHeal = false;
+            //}
         }
     }
 

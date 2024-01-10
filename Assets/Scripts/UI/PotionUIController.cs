@@ -94,7 +94,7 @@ public class PotionUIController : SerializedMonoBehaviour
 
         //m_Exit.RegisterCallback<ClickEvent>(CloseUI);
         m_Exit.clicked += CloseUI;
-        m_Make.RegisterCallback<ClickEvent>(MakePotion);
+        m_Make.clicked += MakePotion;
         m_Distiller.clicked += ActivateDistil;
         m_Crusher.clicked += ActivateCrush;
         m_Smoker.clicked += ActivateSmoke;
@@ -335,7 +335,7 @@ public class PotionUIController : SerializedMonoBehaviour
         }
     }
 
-    public void MakePotion(ClickEvent evt)
+    public void MakePotion()
     {
         if (cauldron.storedHerbs.Count > 0)
         {
