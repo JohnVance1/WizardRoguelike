@@ -13,7 +13,8 @@ public enum OpenState
     Farm,
     Cauldron,
     Storage,
-    Research
+    Research,
+    Fountain
 
 }
 

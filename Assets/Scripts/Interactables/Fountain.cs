@@ -4,48 +4,64 @@ using System.Data.SqlTypes;
 using System.Linq;
 using System.Security.Claims;
 using UnityEditor.SceneManagement;
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
+using UnityEngine.Windows;
 
 public class Fountain : Interactable_Base
 {
-    public Potion storage;
-    public int range = 2;
-    public GameObject healedPrefab;
-    public Tilemap tilemap;
-    public bool toHeal;
-    public bool reclaim;
-    private float timer;
-    public List<Vector3Int> healedTiles = new List<Vector3Int>();
+    public List<PotionInfo_SO> storageNeeded;
+    public List<PotionInfo_SO> storageCurrent;
 
-    private void Start()
+    public int storageNum = 4;
+
+    private bool IsFountainOpen;
+    public GameObject fountainUI;
+    private PlayerControls input;
+
+    [SerializeField]
+    public List<PotionInfo_SO> allPotions;
+    
+    PotionInfo_SO currentPotion;
+
+    private void Awake()
     {
-        tilemap = FindObjectOfType<Tilemap>();
-        reclaim = false;
-        timer = 0;
+        storageCurrent = new List<PotionInfo_SO>();
+    }
+    private void OnEnable()
+    {
+        input = Player.Instance.gameObject.GetComponent<Player_Interact>().input;
+
+        input.UI.Cancel.performed += Cancel;
+        input.UI.Cancel.Enable();
+
+    }
+
+    private void OnDisable()
+    {
+        input.UI.Cancel.performed -= Cancel;
+        input.UI.Cancel.Disable();
+
     }
 
     private void Update()
     {
         Interact();
-        PotionTimer();
+        if(CheckPotions())
+        {
+            HealLand();
+        }
     }
 
+    /// <summary>
+    /// Runs when all of the potions meet the storage requirements
+    /// </summary>
     private void HealLand()
     {
-        Vector3Int centertile = tilemap.WorldToCell(transform.position);
-        Debug.Log(centertile.ToString());
-
-        for(int i = -range; i <= range; i++)
-        {
-            for (int j = -range; j <= range; j++)
-            {
-                if (i != 0 || j != 0)
-                {
-                    Instantiate(healedPrefab, tilemap.GetCellCenterWorld(new Vector3Int(centertile.x + i, centertile.y + j, centertile.z)), Quaternion.identity);
-                }
-            }
-        }
+        Debug.Log("All Potions Correct");
 
     }
 
@@ -53,6 +69,10 @@ public class Fountain : Interactable_Base
     {
         if (CanInteract)
         {
+            if (playerInteract.IsInteractButtonDown && !IsFountainOpen)// && player.inventory.DoesInventoryContainItemType<Item_Base>())
+            {
+                OpenFountainUI();
+            }
             //if (player.IsInteractButtonDown && player.inventory.inventory.OfType<Potion>().Any())
             //{
             //    for (int i = 0; i < player.inventory.inventory.Count; i++)
@@ -73,20 +93,55 @@ public class Fountain : Interactable_Base
         }
     }
 
-    private void PotionTimer()
+    public void Cancel(InputAction.CallbackContext context)
     {
-        //if(storage != null)
-        //{
-        //    timer += Time.deltaTime;
-        //    if(timer >= storage.usageTime)
-        //    {
-        //        storage = null;
-        //        reclaim = true;
-        //        timer = 0;
-        //    }
-
-        //}
+        CloseFountainUI();
     }
+
+    public void OpenFountainUI()
+    {
+        playerInteract.OpenFountainInventory(this);
+        fountainUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        IsFountainOpen = true;
+    }
+
+    public void CloseFountainUI()
+    {
+        fountainUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        IsFountainOpen = false;
+        playerInteract.CloseInventory();
+    }
+
+    public void SelectFountain(PotionInfo_SO potion)
+    {
+        currentPotion = potion;
+        fountainUI.GetComponentInChildren<Fountain_UI>().SetPotion(potion, player);
+    }
+
+    public Item_Base AddBackPotion(PotionInfo_SO potion)
+    {
+        //allPotions.Find(potion);
+        return potion;
+    }
+
+    public void RemovePotion(PotionInfo_SO potion)
+    {
+        storageCurrent.Remove(potion);
+    }
+
+    public bool CheckPotions()
+    {
+        bool allCorrect = true;
+        foreach(var potion in storageCurrent)
+        {
+            if(!storageNeeded.Contains(potion))
+            {
+                allCorrect = false;
+            }            
+        }
+        return allCorrect;
+    }
+
 
 
 }

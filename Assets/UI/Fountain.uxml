@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Container" style="flex-grow: 1; align-items: flex-end; align-self: auto;">
+        <ui:VisualElement name="Background" style="flex-grow: 1; flex-direction: row; align-self: auto; justify-content: space-around; align-items: center; background-color: rgb(36, 38, 51); top: 5%; bottom: 5%; position: absolute; left: auto; right: 2%; width: 40%;">
+            <FountainSlotUI focusable="true" name="Slot1" style="align-items: stretch; align-self: auto; justify-content: flex-start; width: 64px; height: 64px;" />
+            <FountainSlotUI focusable="true" name="Slot2" style="width: 64px; height: 64px;" />
+            <FountainSlotUI focusable="true" name="Slot3" style="width: 64px; height: 64px;" />
+            <FountainSlotUI focusable="true" name="Slot4" style="width: 64px; height: 64px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
