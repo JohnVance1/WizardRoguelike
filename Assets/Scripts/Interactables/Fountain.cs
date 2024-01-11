@@ -131,14 +131,19 @@ public class Fountain : Interactable_Base
 
     public bool CheckPotions()
     {
-        bool allCorrect = true;
-        foreach(var potion in storageCurrent)
+        bool allCorrect = false;
+        if(storageCurrent.Count > 0)
         {
-            if(!storageNeeded.Contains(potion))
+            foreach (var potion in storageCurrent)
             {
-                allCorrect = false;
-            }            
+                if (!storageNeeded.Contains(potion))
+                {
+                    allCorrect = false;
+                }
+
+            }
         }
+        
         return allCorrect;
     }
 
