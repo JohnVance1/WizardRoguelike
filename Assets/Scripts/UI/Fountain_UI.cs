@@ -22,10 +22,10 @@ public class Fountain_UI : MonoBehaviour
     {
         storageSlots = new List<FountainSlotUI>();
         m_Root = GetComponent<UIDocument>().rootVisualElement;
-        Slot1 = m_Root.Q<FountainSlotUI>("Slot1");
-        Slot2 = m_Root.Q<FountainSlotUI>("Slot2");
-        Slot3 = m_Root.Q<FountainSlotUI>("Slot3");
-        Slot4 = m_Root.Q<FountainSlotUI>("Slot4");
+        //Slot1 = m_Root.Q<FountainSlotUI>("Slot1");
+        //Slot2 = m_Root.Q<FountainSlotUI>("Slot2");
+        //Slot3 = m_Root.Q<FountainSlotUI>("Slot3");
+        //Slot4 = m_Root.Q<FountainSlotUI>("Slot4");
         storageSlots.Add(Slot1);
         storageSlots.Add(Slot2);
         storageSlots.Add(Slot3);
@@ -76,7 +76,7 @@ public class Fountain_UI : MonoBehaviour
     {
         if (fountain.storageCurrent.Count >= 4)
         {
-            Debug.Log("Cauldron Storage Reached!!!");
+            Debug.Log("Shrine Storage Reached!!!");
             return;
         }
         if (currentPotion == null)

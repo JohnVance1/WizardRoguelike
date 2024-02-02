@@ -19,7 +19,8 @@ public class Player : Character
     private GameObject weapon1;
     [SerializeField]
     private Transform weapon1Spawn;
-
+    public delegate void OnUpdateInventory();
+    public static OnUpdateInventory updateInv;
 
     public Player_Interact interact;
     public Player_Movement move;

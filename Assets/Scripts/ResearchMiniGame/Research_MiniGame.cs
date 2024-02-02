@@ -37,6 +37,12 @@ public class Research_MiniGame : SerializedMonoBehaviour
 
     private General_Grid grid;
 
+    public List<Sprite> defaultTiles;
+    public List<Sprite> startTiles;
+    public List<Sprite> endTiles;
+    public List<Sprite> straightTiles;
+    public List<Sprite> turnTiles;
+
     private VisualElement m_Root;
     //private VisualElement m_Row1;
     //private VisualElement m_Row2;
@@ -86,33 +92,82 @@ public class Research_MiniGame : SerializedMonoBehaviour
                 Space sp = new Space();
 
                 grid.grid[i, j] = sp;
+                sp.Icon.sprite = defaultTiles[0];
 
                 m_Rows[i].Add(sp);
                 spaces.Add(sp);
                 sp.onMouseDown += ButtonCall;
                 sp.onMouseUp += MouseUp;
 
-                if(i == 3 && j == 3)
+                if (i == 0 && j == 0)
                 {
-                    sp.style.backgroundColor = Color.red;
+                    sp.Icon.sprite = defaultTiles[8];
+
+                }
+                else if (i == height - 1 && j == width - 1)
+                {
+                    sp.Icon.sprite = defaultTiles[2];
+
+                }
+                else if (i == 0 && j == width - 1)
+                {
+                    sp.Icon.sprite = defaultTiles[9];
+
+                }
+                else if (i == height - 1 && j == 0)
+                {
+                    sp.Icon.sprite = defaultTiles[1];
+
+                }
+                else if (i == 0)
+                {
+                    sp.Icon.sprite = defaultTiles[6];
+
+                }
+                else if (j == 0)
+                {
+                    sp.Icon.sprite = defaultTiles[5];
+
+                }
+                else if (i == height - 1)
+                {
+                    sp.Icon.sprite = defaultTiles[7];
+                }
+                else if (j == width - 1)
+                {
+                    sp.Icon.sprite = defaultTiles[3];
+                }
+                else
+                {
+                    sp.Icon.sprite = defaultTiles[0];
+                }
+
+
+                if (i == 3 && j == 3)
+                {
+                    //sp.style.backgroundColor = Color.red;
+                    sp.Icon.sprite = endTiles[0];
                     sp.type = SpaceType.End;
                     endSpace.Add(sp);
                 }
                 if (i == 1 && j == 1)
                 {
-                    sp.style.backgroundColor = Color.green;
+                    //sp.style.backgroundColor = Color.green;
+                    sp.Icon.sprite = startTiles[0];
                     sp.type = SpaceType.Start;
                     startSpace = sp;
                 }
 
                 if (i == 2 && j == 4)
                 {
-                    sp.style.backgroundColor = Color.black;
+                    //sp.style.backgroundColor = Color.black;
+                    sp.Icon.sprite = turnTiles[0];
                     sp.type = SpaceType.Black;
                 }
                 if (i == 3 && j == 1)
                 {
-                    sp.style.backgroundColor = Color.white;
+                    //sp.style.backgroundColor = Color.white;
+                    sp.Icon.sprite = straightTiles[0];
                     sp.type = SpaceType.White;
                 }
 

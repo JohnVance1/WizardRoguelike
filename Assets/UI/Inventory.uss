@@ -6,12 +6,10 @@
     border-right-color: rgb(48, 48, 48);
     border-top-color: rgb(48, 48, 48);
     border-bottom-color: rgb(48, 48, 48);
-    background-color: rgb(9, 19, 21);
-    background-image: url('project://database/Assets/Sprites/WUG/Sprites/ItemSlotBackground.png?fileID=21300000&guid=9775dedc597859d4e8a501720a97fac4&type=3#ItemSlotBackground');
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
     min-width: auto;
     min-height: auto;
     flex-grow: 1;
@@ -19,12 +17,24 @@
     overflow: visible;
     position: relative;
     flex-direction: column;
+    background-color: rgba(9, 19, 21, 0);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    background-image: url('project://database/Assets/Sprites/Inventory_Slot_Sprite.png?fileID=21300000&guid=32b17d2cc0afaa140b3480446d9b9911&type=3#Inventory_Slot_Sprite');
 }
 
 .slotIcon {
     padding: 15px;
     flex-shrink: 0;
     flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
 }
 
 .slotCount {

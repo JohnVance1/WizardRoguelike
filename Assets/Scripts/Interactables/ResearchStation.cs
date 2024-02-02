@@ -20,8 +20,8 @@ public class ResearchStation : Interactable_Base
     void Start()
     {
         IsResearching = false;
-        researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-        researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        //researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        //researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
     }
 
     private void OnEnable()
@@ -67,8 +67,11 @@ public class ResearchStation : Interactable_Base
     public void Cancel(InputAction.CallbackContext context)
     {
         Debug.Log("OnCancel");
+        if(IsResearching)
+        {
+            CloseResearchGame();
 
-        CloseResearchGame();
+        }
 
     }
 

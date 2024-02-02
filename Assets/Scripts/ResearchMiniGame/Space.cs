@@ -28,6 +28,7 @@ public class Space : VisualElement
 
     [SerializeField]
     public SpaceType type;
+    public Image Icon;
 
     public bool IsError { get; private set; }
 
@@ -43,6 +44,8 @@ public class Space : VisualElement
     {
         Edges = new List<Space>();
         temp = new List<Space>();
+        Icon = new Image();
+        Add(Icon);
         AddToClassList("space");
         focusable= true;
         generateVisualContent += DrawLine;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject InventoryCanvas;
+    public PotionUIController InventoryCanvas;
     private bool IsInventoryOpen;
 
     public GameObject JournalCanvas;
