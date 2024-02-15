@@ -27,7 +27,7 @@ public class InventorySlot_UI : Slot_UI
 
     private void Awake()
     {
-        Clear();
+        //Clear();
     }
 
 

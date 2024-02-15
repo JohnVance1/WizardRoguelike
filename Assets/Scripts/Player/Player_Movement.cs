@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 public class Player_Movement : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class Player_Movement : MonoBehaviour
     public Sprite[] directionSprites;
     private Animator animator;
     public float speed;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +27,8 @@ public class Player_Movement : MonoBehaviour
         animator = GetComponent<Animator>();
         speed = 5f;
     }
+
+    
 
     // Update is called once per frame
     void Update()
@@ -35,6 +40,8 @@ public class Player_Movement : MonoBehaviour
         //Movement();
 
     }
+
+    
 
     public void Movement(InputAction.CallbackContext context)
     {
@@ -95,6 +102,9 @@ public class Player_Movement : MonoBehaviour
         {
             GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackRight];
         }
+
+        
+
         rb.velocity = move.normalized * speed;
 
         if (rb.velocity != Vector2.zero)

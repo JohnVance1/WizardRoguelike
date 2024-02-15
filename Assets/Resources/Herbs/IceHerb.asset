@@ -206,7 +206,7 @@ MonoBehaviour:
   IsResearched: 1
   IsFound: 1
   processType: 0
-  defaultSprite: {fileID: -1951391425, guid: da166271d1977be42acd237ed4005a6c, type: 3}
+  defaultSprite: {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
   herbStages:
-  - {fileID: 109833265, guid: da166271d1977be42acd237ed4005a6c, type: 3}
-  - {fileID: -1951391425, guid: da166271d1977be42acd237ed4005a6c, type: 3}
+  - {fileID: 0}
+  - {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}

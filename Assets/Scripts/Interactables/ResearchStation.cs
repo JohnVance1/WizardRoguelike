@@ -79,6 +79,7 @@ public class ResearchStation : Interactable_Base
     {
         playerInteract.CloseInventory();
         researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        //researchCanvas.SetActive(true);
         researchCanvas.GetComponent<Research_MiniGame>().OpenUI();
         IsResearching = true;
         currentHerb = herb;
@@ -87,6 +88,7 @@ public class ResearchStation : Interactable_Base
     public void CloseResearchGame()
     {
         researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        //researchCanvas.SetActive(false);
         IsResearching = false;
         currentHerb = null;
 

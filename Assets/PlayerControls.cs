@@ -71,6 +71,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Sneak"",
+                    ""type"": ""Button"",
+                    ""id"": ""e76301b2-a723-4830-a14f-ed62ee269244"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -324,6 +333,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""OpenQuestLog"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5bd7cfd6-ec65-4d9b-8a9c-aa0a3de41d81"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sneak"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f3c0b422-1894-4ba3-be7c-716975eed727"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sneak"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -916,6 +947,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_OpenJournal = m_Player.FindAction("OpenJournal", throwIfNotFound: true);
         m_Player_OpenInventory = m_Player.FindAction("OpenInventory", throwIfNotFound: true);
         m_Player_OpenQuestLog = m_Player.FindAction("OpenQuestLog", throwIfNotFound: true);
+        m_Player_Sneak = m_Player.FindAction("Sneak", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -994,6 +1026,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_OpenJournal;
     private readonly InputAction m_Player_OpenInventory;
     private readonly InputAction m_Player_OpenQuestLog;
+    private readonly InputAction m_Player_Sneak;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1003,6 +1036,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @OpenJournal => m_Wrapper.m_Player_OpenJournal;
         public InputAction @OpenInventory => m_Wrapper.m_Player_OpenInventory;
         public InputAction @OpenQuestLog => m_Wrapper.m_Player_OpenQuestLog;
+        public InputAction @Sneak => m_Wrapper.m_Player_Sneak;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1027,6 +1061,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @OpenQuestLog.started += instance.OnOpenQuestLog;
             @OpenQuestLog.performed += instance.OnOpenQuestLog;
             @OpenQuestLog.canceled += instance.OnOpenQuestLog;
+            @Sneak.started += instance.OnSneak;
+            @Sneak.performed += instance.OnSneak;
+            @Sneak.canceled += instance.OnSneak;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1046,6 +1083,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @OpenQuestLog.started -= instance.OnOpenQuestLog;
             @OpenQuestLog.performed -= instance.OnOpenQuestLog;
             @OpenQuestLog.canceled -= instance.OnOpenQuestLog;
+            @Sneak.started -= instance.OnSneak;
+            @Sneak.performed -= instance.OnSneak;
+            @Sneak.canceled -= instance.OnSneak;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1233,6 +1273,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnOpenJournal(InputAction.CallbackContext context);
         void OnOpenInventory(InputAction.CallbackContext context);
         void OnOpenQuestLog(InputAction.CallbackContext context);
+        void OnSneak(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

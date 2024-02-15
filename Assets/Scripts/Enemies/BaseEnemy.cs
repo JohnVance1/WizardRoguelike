@@ -4,11 +4,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum EnemyStatus
+{
+    None = 0,
+    Sleep = 1,
+    OnFire = 2,
+};
+
+
 public class BaseEnemy : Character
 {
     protected NavMeshAgent agent;
     [SerializeField]
     protected GameObject player;
+    protected EnemyStatus status; 
 
     public void Awake()
     {
@@ -25,6 +34,11 @@ public class BaseEnemy : Character
     virtual public void Update()
     {
 
+    }
+
+    public void SetStatus(EnemyStatus s)
+    {
+        status = s;
     }
 
     public bool InRange(Vector3 self, Vector3 target, float dist)

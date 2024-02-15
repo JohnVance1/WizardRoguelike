@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 public class Player_Interact : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class Player_Interact : MonoBehaviour
     private InventoryUIController inventoryController;
     public bool IsInteractButtonDown { get; private set; }
     public Player player;
+    public bool IsCrouched;
 
     #region Movement Variables
     [SerializeField]
@@ -43,7 +45,8 @@ public class Player_Interact : MonoBehaviour
     private void Awake()
     {
         input = new PlayerControls();
-        inventoryController = InventoryCanvas.GetComponentInParent<InventoryUIController>();
+        IsCrouched = false;
+
     }
 
     private void OnEnable()
@@ -63,6 +66,9 @@ public class Player_Interact : MonoBehaviour
 
         input.Player.OpenQuestLog.performed += QuestLogInput;
         input.Player.OpenQuestLog.Enable();
+
+        input.Player.Sneak.performed += Crouch;
+        input.Player.Sneak.Enable();
     }
 
     private void OnDisable()
@@ -74,7 +80,9 @@ public class Player_Interact : MonoBehaviour
         input.Player.OpenInventory.performed -= InventoryInput;
         input.Player.OpenJournal.performed -= JournalInput;
         input.Player.OpenQuestLog.performed -= QuestLogInput;
+        input.Player.Sneak.performed -= Crouch;
 
+        input.Player.Sneak.Disable();
         input.Player.Interact.Disable();
         input.Player.OpenJournal.Disable();
         input.Player.OpenQuestLog.Disable();
@@ -93,6 +101,7 @@ public class Player_Interact : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         speed = 5f;
+        inventoryController = InventoryCanvas.GetComponent<InventoryUIController>();
 
     }
 
@@ -168,7 +177,15 @@ public class Player_Interact : MonoBehaviour
         {
             GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackRight];
         }
-        rb.velocity = movement.normalized * speed;
+
+        float newSpeed = speed;
+
+        if (IsCrouched)
+        {
+            newSpeed *= 0.7f;
+        }
+
+        rb.velocity = movement.normalized * newSpeed;
 
         if (rb.velocity != Vector2.zero)
         {
@@ -181,6 +198,10 @@ public class Player_Interact : MonoBehaviour
 
     }
 
+    public void Crouch(InputAction.CallbackContext context)
+    {
+        IsCrouched = !IsCrouched;
+    }
 
     public void Interact(InputAction.CallbackContext context)
     {

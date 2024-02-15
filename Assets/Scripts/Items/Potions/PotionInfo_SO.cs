@@ -27,4 +27,6 @@ public class PotionInfo_SO : Item_Base
         #endif
     }
 
+    protected virtual void UsePotion(){ }
+
 }
