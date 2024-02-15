@@ -2,21 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
+using System;
+using UnityEngine.EventSystems;
 
-public abstract class Slot_UI : Button
+public abstract class Slot_UI : MonoBehaviour
 {
     public InventoryItem storedItem;
     protected Sprite defaultIcon;
-    public Image Icon;
+    [SerializeField]
+    protected Image icon;
     private Color c;
 
-    public Slot_UI()
-    {
-        RegisterCallback<FocusInEvent>(OnFocusInSlot);
-        RegisterCallback<FocusOutEvent>(OnFocusOutSlot);
-        c = this.style.backgroundColor.value;
-    }
+    //public Slot_UI()
+    //{
+    //    //RegisterCallback<FocusInEvent>(OnFocusInSlot);
+    //    //RegisterCallback<FocusOutEvent>(OnFocusOutSlot);
+
+
+    //    c = new Color(0.3f, 0.4f, 0.6f, 0.3f);
+
+    //}
+
 
   
 
@@ -24,16 +31,6 @@ public abstract class Slot_UI : Button
     public abstract void Set(InventoryItem item, ProcessType type = ProcessType.Raw);
 
 
-    public abstract void Reset();
-
-    public void OnFocusInSlot(FocusInEvent evt)
-    {
-        this.style.backgroundColor = Color.white;
-    }
-
-    public void OnFocusOutSlot(FocusOutEvent evt)
-    {
-        this.style.backgroundColor = c;
-
-    }
+    public abstract void Clear();
+        
 }

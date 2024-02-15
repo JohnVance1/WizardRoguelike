@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class FirePotion : PotionInfo_SO
 {
-    
+    protected override void UsePotion()
+    {
+
+    }
 }

@@ -22,6 +22,7 @@ public class FarmPlot : Interactable_Base
     private void Start()
     {
         CanHarvest = false;
+        SetHerb(storedHerb);
     }
 
     private void Update()
@@ -32,7 +33,7 @@ public class FarmPlot : Interactable_Base
             {
                 //Herb playerHerb = (Herb)player.inventory.GetItemFromInventory<Herb>();
                 //SetHerb(playerHerb);
-                playerInteract.OpenFarmInventory(this);
+                //playerInteract.OpenFarmInventory(this);
 
             }
 
@@ -47,21 +48,18 @@ public class FarmPlot : Interactable_Base
 
     public void HarvestHerb()
     {
-        if(CanHarvest)
-        {
-            player.AddItemToInventory(storedHerb);
-            storedHerb = null;
-            herbGO.GetComponent<SpriteRenderer>().sprite = null;
-            CanHarvest = false;
-        }
+        player.AddItemToInventory(storedHerb);
+        herbGO.GetComponent<SpriteRenderer>().sprite = null;
+        CanHarvest = false;
+        StartGrowing();
     }
 
     public override void SetHerb(Herb herb)
     {
         storedHerb = herb;
         herbStages = herb.herbStages;
-        player.RemoveItemFromInventory(herb);
-        playerInteract.CloseInventory();
+        //player.RemoveItemFromInventory(herb);
+        //playerInteract.CloseInventory();
         StartGrowing();
     }
 

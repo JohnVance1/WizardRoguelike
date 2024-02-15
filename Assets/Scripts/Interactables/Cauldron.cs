@@ -15,10 +15,12 @@ public class Cauldron : Interactable_Base
 
     private bool IsCauldronOpen;
 
+    
+
     void Start()
     {
-        cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-        cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        //cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        //cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
         IsCauldronOpen = false;
 
     }
@@ -47,6 +49,7 @@ public class Cauldron : Interactable_Base
     public Item_Base AddBackHerb(Herb herb)
     {
         allHerbs.TryGetValue(herb.GetType(), out herb);
+
         return herb;
     }
 
@@ -57,9 +60,9 @@ public class Cauldron : Interactable_Base
 
     public void OpenCauldronUI()
     {
-        //cauldronUI.SetActive(true);
         playerInteract.OpenCauldronInventory(this);
-        cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        cauldronUI.SetActive(true);
+        //cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
         IsCauldronOpen = true;
 
 
@@ -67,19 +70,18 @@ public class Cauldron : Interactable_Base
 
     public void CloseCauldronUI()
     {
-        cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        //cauldronUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        cauldronUI.SetActive(false);
+
         IsCauldronOpen = false;
         playerInteract.CloseInventory();
 
-        //cauldronUI.SetActive(false);
     }
 
     public void SelectCauldron(Herb herb)
     {
-        //cauldronUI.GetComponentInChildren<Cauldron_UI>().UseDevice(herb);
-        //cauldronUI.GetComponentInChildren<Cauldron_UI>().SetPlayer(player);
-        cauldronUI.GetComponentInChildren<PotionUIController>().UseDevice(herb);
-        cauldronUI.GetComponentInChildren<PotionUIController>().SetPlayer(player);
+        cauldronUI.GetComponentInChildren<PotionUIController>().UseDevice(herb, player);
+        //cauldronUI.GetComponentInChildren<PotionUIController>().SetPlayer(player);
     }
 
 

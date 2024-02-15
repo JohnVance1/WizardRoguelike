@@ -95,7 +95,10 @@ public class Fountain : Interactable_Base
 
     public void Cancel(InputAction.CallbackContext context)
     {
-        CloseFountainUI();
+        if (IsFountainOpen)
+        {
+            CloseFountainUI();
+        }
     }
 
     public void OpenFountainUI()

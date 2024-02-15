@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 public class Player_Interact : MonoBehaviour
 {
@@ -22,9 +23,10 @@ public class Player_Interact : MonoBehaviour
     public PlayerControls input;
     private InputAction move;
     private InputAction interact;
-
+    private InventoryUIController inventoryController;
     public bool IsInteractButtonDown { get; private set; }
     public Player player;
+    public bool IsCrouched;
 
     #region Movement Variables
     [SerializeField]
@@ -43,6 +45,8 @@ public class Player_Interact : MonoBehaviour
     private void Awake()
     {
         input = new PlayerControls();
+        IsCrouched = false;
+
     }
 
     private void OnEnable()
@@ -62,6 +66,9 @@ public class Player_Interact : MonoBehaviour
 
         input.Player.OpenQuestLog.performed += QuestLogInput;
         input.Player.OpenQuestLog.Enable();
+
+        input.Player.Sneak.performed += Crouch;
+        input.Player.Sneak.Enable();
     }
 
     private void OnDisable()
@@ -73,7 +80,9 @@ public class Player_Interact : MonoBehaviour
         input.Player.OpenInventory.performed -= InventoryInput;
         input.Player.OpenJournal.performed -= JournalInput;
         input.Player.OpenQuestLog.performed -= QuestLogInput;
+        input.Player.Sneak.performed -= Crouch;
 
+        input.Player.Sneak.Disable();
         input.Player.Interact.Disable();
         input.Player.OpenJournal.Disable();
         input.Player.OpenQuestLog.Disable();
@@ -92,6 +101,7 @@ public class Player_Interact : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         speed = 5f;
+        inventoryController = InventoryCanvas.GetComponent<InventoryUIController>();
 
     }
 
@@ -167,7 +177,15 @@ public class Player_Interact : MonoBehaviour
         {
             GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackRight];
         }
-        rb.velocity = movement.normalized * speed;
+
+        float newSpeed = speed;
+
+        if (IsCrouched)
+        {
+            newSpeed *= 0.7f;
+        }
+
+        rb.velocity = movement.normalized * newSpeed;
 
         if (rb.velocity != Vector2.zero)
         {
@@ -180,6 +198,10 @@ public class Player_Interact : MonoBehaviour
 
     }
 
+    public void Crouch(InputAction.CallbackContext context)
+    {
+        IsCrouched = !IsCrouched;
+    }
 
     public void Interact(InputAction.CallbackContext context)
     {
@@ -263,15 +285,17 @@ public class Player_Interact : MonoBehaviour
 
     public void OpenInventory()
     {
-        InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().state = OpenState.General;
+        //InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        InventoryCanvas.SetActive(true);
+        inventoryController.state = OpenState.General;
         IsInventoryOpen = true;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().OnOpen();
+        inventoryController.OnOpen();
         EnableUI();
     }
     public void CloseInventory()
     {
-        InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        //InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        InventoryCanvas.SetActive(false);
         IsInventoryOpen = false;
         EnablePlayer();
     }
@@ -314,41 +338,42 @@ public class Player_Interact : MonoBehaviour
 
     public void OpenFarmInventory(FarmPlot plot)
     {
-        InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().state = OpenState.Farm;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().interactable = plot;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().OnOpen();
+        InventoryCanvas.SetActive(true);
+        inventoryController.state = OpenState.Farm;
+        inventoryController.interactable = plot;
+        inventoryController.OnOpen();
         IsInventoryOpen = true;
         EnableUI();
     }
 
     public void OpenResearchInventory(ResearchStation research)
     {
-        InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().state = OpenState.Research;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().interactable = research;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().OnOpen();
+        InventoryCanvas.SetActive(true);
+        inventoryController.state = OpenState.Research;
+        inventoryController.interactable = research;
+        inventoryController.OnOpen();
         IsInventoryOpen = true;
         EnableUI();
     }
 
     public void OpenCauldronInventory(Cauldron cauldron)
     {
-        InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().state = OpenState.Cauldron;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().interactable = cauldron;
+        //InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        InventoryCanvas.SetActive(true);
+        inventoryController.state = OpenState.Cauldron;
+        inventoryController.interactable = cauldron;
         IsInventoryOpen = true;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().OnOpen();
+        //InventoryCanvas.transform.GetComponent<InventoryUIController>().OnOpen();
         EnableUI();
     }
 
     public void OpenFountainInventory(Fountain fountain)
     {
-        InventoryCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().state = OpenState.Fountain;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().interactable = fountain;
+        InventoryCanvas.SetActive(true);
+        inventoryController.state = OpenState.Fountain;
+        inventoryController.interactable = fountain;
         IsInventoryOpen = true;
-        InventoryCanvas.transform.GetComponent<InventoryUIController>().OnOpen();
+        inventoryController.OnOpen();
         EnableUI();
     }
 }

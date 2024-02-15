@@ -12,15 +12,15 @@ public class FountainSlotUI : Slot_UI
     public delegate void OnNoStoredHerb(Slot_UI slot);
     public OnNoStoredHerb onNoStoredPotion;
 
-    public FountainSlotUI()
-    {
-        Icon = new Image();
-        Add(Icon);
-        Icon.AddToClassList("slotIcon");
+    //public FountainSlotUI()
+    //{
+    //    Icon = new Image();
+    //    Add(Icon);
+    //    Icon.AddToClassList("slotIcon");
 
-        clicked += OnPointerDown;
+    //    clicked += OnPointerDown;
 
-    }
+    //}
 
 
     private void OnPointerDown()
@@ -34,7 +34,7 @@ public class FountainSlotUI : Slot_UI
         else
         {
             onMouseDown(storedItem);
-            Reset();
+            Clear();
 
         }
        
@@ -46,22 +46,22 @@ public class FountainSlotUI : Slot_UI
         if (storedItem == null)
         {
             storedItem = item;
-            Icon.sprite = item.item.sprite;
+            icon.sprite = item.item.sprite;
         }
     }
 
-    public override void Reset()
+    public override void Clear()
     {
-        Icon.sprite = null;
+        icon.sprite = null;
         storedItem = null;
     }
 
     
 
-    #region UXML
-    [Preserve]
-    public new class UxmlFactory : UxmlFactory<FountainSlotUI, UxmlTraits> { }
-    [Preserve]
-    public new class UxmlTraits : VisualElement.UxmlTraits { }
-    #endregion
+    //#region UXML
+    //[Preserve]
+    //public new class UxmlFactory : UxmlFactory<FountainSlotUI, UxmlTraits> { }
+    //[Preserve]
+    //public new class UxmlTraits : VisualElement.UxmlTraits { }
+    //#endregion
 }

@@ -1,18 +1,20 @@
 .slider-cauldron {
     display: flex;
-    min-height: 5px;
+    min-height: auto;
     position: relative;
     top: auto;
-    min-width: 100%;
-    width: 100%;
-    height: 5px;
+    min-width: auto;
+    width: 60px;
+    height: 60px;
     left: auto;
-    max-width: 100%;
+    max-width: none;
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
     flex-basis: auto;
-    flex-shrink: 0;
+    flex-shrink: 1;
+    background-color: rgb(0, 0, 0);
+    background-image: url('project://database/Assets/Sprites/Cauldron_Slot_UI.png?fileID=21300000&guid=8f579d6bf261f804886dc208ce4bc3b0&type=3#Cauldron_Slot_UI');
 }
 
 .distil-bar .unity-progress-bar__progress {
@@ -43,8 +45,8 @@
 }
 
 .cauldron-slot {
-    width: 25%;
-    height: 22.5%;
+    width: 60px;
+    height: 60px;
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -58,11 +60,20 @@
     top: 15%;
     align-items: center;
     -unity-background-image-tint-color: rgba(255, 255, 255, 0);
-    background-color: rgba(255, 255, 255, 0.45);
+    background-color: rgba(255, 255, 255, 0);
     border-left-color: rgb(0, 0, 0);
     border-right-color: rgb(0, 0, 0);
     border-top-color: rgb(0, 0, 0);
     border-bottom-color: rgb(0, 0, 0);
+    background-image: url('project://database/Assets/Sprites/Cauldron_Slot_UI.png?fileID=21300000&guid=8f579d6bf261f804886dc208ce4bc3b0&type=3#Cauldron_Slot_UI');
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 .slotContainer {

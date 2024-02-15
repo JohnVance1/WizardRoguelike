@@ -9,19 +9,23 @@ using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 using Unity.Mathematics;
 using UnityEngine.EventSystems;
+using static Player;
 
 public class InventoryUIController : SerializedMonoBehaviour
 {
     [SerializeField]
     //public List<InventorySlot_UI> InventoryItems = new List<InventorySlot_UI>();
     public List<List<InventorySlot_UI>> InventoryItems;
-    public List<InventorySlot_UI> ItemList = new List<InventorySlot_UI>();
-    public List<Slot_UI> AllSlots = new List<Slot_UI>();
+    public List<InventorySlot_UI> ItemSlots;
+    //public List<InventorySlot_UI> AllSlots;
 
-    private VisualElement m_Root;
-    private VisualElement m_SlotContainer;
+    private int xCount;
+    private int yCount;
+
+    //private VisualElement m_Root;
+    //private VisualElement m_SlotContainer;
     public Inventory inv;
-    private VisualElement m_GhostIcon;
+    //private VisualElement m_GhostIcon;
     private bool m_IsDragging;
     private Slot_UI m_OriginalSlot;
     private Sprite m_OriginalSprite;
@@ -29,6 +33,7 @@ public class InventoryUIController : SerializedMonoBehaviour
     public OpenState state;
     public Interactable_Base interactable;
     public Slot_UI selected;
+    public Slot_UI current;
 
     public Player player;
 
@@ -41,63 +46,37 @@ public class InventoryUIController : SerializedMonoBehaviour
 
     private void Awake()
     {
+        //ItemSlots = AllSlots;
         currentX = 0;
         currentY = 0;
+                
         //Store the root from the UI Document component
-        m_Root = GetComponent<UIDocument>().rootVisualElement;
-        m_GhostIcon = m_Root.Query<VisualElement>("GhostIcon");
+        //m_Root = GetComponent<UIDocument>().rootVisualElement;
+        //m_GhostIcon = m_Root.Query<VisualElement>("GhostIcon");
         InventoryItems = new List<List<InventorySlot_UI>>();
         //Search the root for the SlotContainer Visual Element
-        m_SlotContainer = m_Root.Q<VisualElement>("SlotContainer");
+        //m_SlotContainer = m_Root.Q<VisualElement>("SlotContainer");
         //Create InventorySlots and add them as children to the SlotContainer
-        List<VisualElement> items = m_SlotContainer.hierarchy.Children().ToList();
+        //List<VisualElement> items = m_SlotContainer.hierarchy.Children().ToList();
         int index = 1;
-        for(int i = 0; i < items.Count; i++)
+        for(int i = 0; i < 5; i++)
         {
-            List<VisualElement> buttons = items[i].hierarchy.Children().ToList();
+            //List<VisualElement> buttons = InventoryItems;
             int yCount = 0;
             List<InventorySlot_UI> temp = new List<InventorySlot_UI>();
             InventoryItems.Add(temp);
-            foreach (InventorySlot_UI item in buttons)
+            foreach (InventorySlot_UI item in ItemSlots)
             {
+                //item.RegisterCallback<FocusInEvent>(OnFocusInSlot);
                 InventoryItems[i].Add(item);
-                ItemList.Add(item);
-                AllSlots.Add(item);
-                m_SlotContainer.Add(item);
-                item.tabIndex = index++;
+                //m_SlotContainer.Add(item);
+                //item.tabIndex = index++;
                 //item.RegisterCallback<NavigationMoveEvent, Vector2>(Navigate, new Vector2(i, yCount));
                 yCount++;
             }
         }
 
-        //m_Root.RegisterCallback<NavigationMoveEvent>(e =>
-        //{
-        //    if (e.direction == NavigationMoveEvent.Direction.Next || e.direction == NavigationMoveEvent.Direction.Previous)
-        //    {
-        //        e.PreventDefault(); // prevent focus controller from processing the event
-        //        e.StopPropagation(); // consume the event to hide it from further callbacks
-        //    }
-        //});
-        m_Root.RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
-        m_Root.RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
-        m_Root.RegisterCallback<NavigationSubmitEvent>(OnNavSubmitEvent);
-        InventoryItems[0][0].Focus();
-
-
-
-        //m_Root.RegisterCallback<NavigationMoveEvent>(e =>
-        //{
-        //    if (e.direction == NavigationMoveEvent.Direction.Next || e.direction == NavigationMoveEvent.Direction.Previous)
-        //    {
-        //        e.PreventDefault(); // prevent focus controller from processing the event
-        //        e.StopPropagation(); // consume the event to hide it from further callbacks
-        //    }
-        //}, TrickleDown.TrickleDown);
-
-
-
-        m_GhostIcon.RegisterCallback<PointerMoveEvent>(OnPointerMove);
-        m_GhostIcon.RegisterCallback<PointerUpEvent>(OnPointerUp);
+        
     }
     private void OnNavSubmitEvent(NavigationSubmitEvent evt)
     {
@@ -107,17 +86,187 @@ public class InventoryUIController : SerializedMonoBehaviour
     private void OnNavMoveEvent(NavigationMoveEvent evt)
     {
         Debug.Log($"OnNavMoveEvent {evt.propagationPhase} - move {evt.move} - direction {evt.direction}");
+        
+        /* If there is an item that is selected */
+        //if (selected != null && !m_IsDragging) 
+        //{
+        //    /* Then set the item to the GhostIcon and move it with the movement of the controller */
+        //    StartDrag(selected.layout.position, selected);
+        //}
+
+        
+        //Set the new position
+        
+
+
     }
+
+    public void OnFocusInSlot(FocusInEvent evt)
+    {
+        current = (Slot_UI)evt.currentTarget;
+
+        if (m_IsDragging)
+        {
+            //m_GhostIcon.style.top = current.worldBound.position.y;// - m_GhostIcon.layout.height / 2;
+            //m_GhostIcon.style.left = current.worldBound.position.x;// - m_GhostIcon.layout.width / 2;
+        }
+    }
+
+    //public void DirectionToPosition(NavigationMoveEvent e)
+    //{
+    //    switch (e.direction)
+    //    {
+    //        case NavigationMoveEvent.Direction.Up: return ; break;
+    //        case NavigationMoveEvent.Direction.Down: D.Focus(); break;
+    //        case NavigationMoveEvent.Direction.Left: L.Focus(); break;
+    //        case NavigationMoveEvent.Direction.Right: R.Focus(); break;
+    //    }
+    //    e.PreventDefault();
+    //}
 
     private void OnNavCancelEvent(NavigationCancelEvent evt)
     {
         Debug.Log($"OnNavCancelEvent {evt.propagationPhase}");
+        current = null;
+        m_IsDragging = false;
+        m_OriginalSlot = null;
+        //m_GhostIcon.style.visibility = Visibility.Hidden;
+
     }
 
-    private void Start()
+    public static Focusable getFocusedElement()
     {
-        this.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-        this.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem == null)
+        {
+            return null;
+        }
+
+        GameObject selectedGameObject = eventSystem.currentSelectedGameObject;
+        if (selectedGameObject == null)
+        {
+            return null;
+        }
+
+        PanelEventHandler panelEventHandler = selectedGameObject.GetComponent<PanelEventHandler>();
+        if (panelEventHandler != null)
+        {
+            return panelEventHandler.panel.focusController.focusedElement;
+        }
+
+        return null;
+    }
+
+    //private void OnPointerMove(PointerMoveEvent evt)
+    //{
+    //    //Only take action if the player is dragging an item around the screen
+    //    if (!m_IsDragging)
+    //    {
+    //        return;
+    //    }
+    //    //Set the new position
+    //    m_GhostIcon.style.top = evt.position.y - m_GhostIcon.layout.height / 2;
+    //    m_GhostIcon.style.left = evt.position.x - m_GhostIcon.layout.width / 2;
+    //}
+    //private void OnPointerUp(PointerUpEvent evt)
+    //{
+    //    if (!m_IsDragging)
+    //    {
+    //        return;
+    //    }
+    //    //Check to see if they are dropping the ghost icon over any inventory slots.
+    //    IEnumerable<Slot_UI> slots = AllSlots.Where(x =>
+    //           x.worldBound.Overlaps(m_GhostIcon.worldBound));
+    //    //Found at least one
+    //    if (slots.Count() != 0)
+    //    {
+    //        Slot_UI closestSlot = slots.OrderBy(x => Vector2.Distance
+    //           (x.worldBound.position, m_GhostIcon.worldBound.position)).First();
+
+    //        //Set the new inventory slot with the data
+    //        closestSlot.Set(m_OriginalSlot.storedItem);
+    //        //closestSlot.HoldItem(GameController.GetItemByGuid(m_OriginalSlot.ItemGuid));
+
+    //        //Clear the original slot
+    //        m_OriginalSlot.Reset();
+    //        //m_OriginalSlot.DropItem();
+
+    //    }
+    //    //Didn't find any (dragged off the window)
+    //    else
+    //    {
+    //        //m_OriginalSlot.Icon.image =
+    //        //      GameController.GetItemByGuid(m_OriginalSlot.ItemGuid).Icon.texture;
+    //        m_OriginalSlot.Icon.sprite = m_OriginalSprite;
+    //    }
+    //    //Clear dragging related visuals and data
+    //    m_IsDragging = false;
+    //    m_OriginalSlot = null;
+    //    m_GhostIcon.style.visibility = Visibility.Hidden;
+    //}
+
+    //public void StartDrag(Vector2 position, Slot_UI originalSlot)
+    //{
+    //    //Set tracking variables
+    //    m_IsDragging = true;
+    //    m_OriginalSlot = originalSlot;
+    //    m_OriginalSprite = originalSlot.Icon.sprite;
+    //    //Set the new position
+    //    m_GhostIcon.style.top = position.y - m_GhostIcon.layout.height / 2;
+    //    m_GhostIcon.style.left = position.x - m_GhostIcon.layout.width / 2;
+    //    //Set the image
+    //    //m_GhostIcon.style.backgroundImage = GameController.GetItemByGuid(originalSlot.ItemGuid).Icon.texture;
+    //    m_GhostIcon.style.backgroundImage = originalSlot.Icon.sprite.texture;
+    //    originalSlot.Icon.sprite = null;
+    //    //Flip the visibility on
+    //    m_GhostIcon.style.visibility = Visibility.Visible;
+    //}
+
+    private void OnUpdateInventory()
+    {
+        xCount = 0;
+        yCount = 0;
+
+        DrawInventory();
+    }
+
+    public void DrawInventory()
+    {
+        //InventorySlot[] slotList = transform.GetComponentsInChildren<InventorySlot>();
+        foreach (InventorySlot_UI slot in ItemSlots)
+        {
+            slot.Clear();
+        }
+
+        //foreach (InventoryItem item in inv.inventory)
+        //{
+        //    AddInventorySlot(item);
+        //}
+        for(int i = 0; i < inv.inventory.Count; i++)
+        {
+            ItemSlots[i].GetComponent<InventorySlot_UI>().Set(inv.inventory[i]);
+
+        }
+
+
+    }
+
+    public void AddInventorySlot(InventoryItem item)
+    {
+        //inventorySlots[yCount, xCount].GetComponent<InventorySlot>().Set(item);
+        //ItemSlots.GetComponent<InventorySlot>().Set(item);
+
+        //xCount++;
+        //if (xCount >= height)
+        //{
+        //    xCount = 0;
+        //    yCount++;
+        //    if (yCount >= width)
+        //    {
+        //        yCount = 0;
+        //    }
+        //}
+
     }
 
     private void OnEnable()
@@ -127,7 +276,7 @@ public class InventoryUIController : SerializedMonoBehaviour
         inv.onInventoryAdd += OnInventoryAdd;
         inv.onInventoryRemove += OnInventoryRemove;
 
-        List<InventorySlot_UI> items = ItemList;
+        List<InventorySlot_UI> items = ItemSlots;
         foreach (InventorySlot_UI item in items)
         {
             item.onMouseDown += ButtonCallback;
@@ -136,8 +285,8 @@ public class InventoryUIController : SerializedMonoBehaviour
         input.UI.Cancel.performed += Cancel;
         input.UI.Navigate.Enable();
         input.UI.Cancel.Enable();
-        //EventSystem.current.SetSelectedGameObject(gameObject);
-        //EventSystem.current.SetSelectedGameObject(gameObject);
+        EventSystem.current.SetSelectedGameObject(ItemSlots[0].gameObject);
+        OnUpdateInventory();
 
     }
 
@@ -145,7 +294,7 @@ public class InventoryUIController : SerializedMonoBehaviour
     {
         inv.onInventoryAdd -= OnInventoryAdd;
         inv.onInventoryRemove -= OnInventoryRemove;
-        List<InventorySlot_UI> items = ItemList;
+        List<InventorySlot_UI> items = ItemSlots;
         foreach (InventorySlot_UI item in items)
         {
             item.onMouseDown -= ButtonCallback;
@@ -165,7 +314,7 @@ public class InventoryUIController : SerializedMonoBehaviour
 
     public void OnOpen()
     {
-        ItemList[0].Focus();
+        //ItemList[0].Focus();
 
     }
 
@@ -197,7 +346,7 @@ public class InventoryUIController : SerializedMonoBehaviour
             
         }
 
-        InventoryItems[currentY][currentX].Focus();
+        //InventoryItems[currentY][currentX].Focus();
 
 
     }
@@ -280,76 +429,12 @@ public class InventoryUIController : SerializedMonoBehaviour
     //    }
     //}
 
-
-    private void OnPointerMove(PointerMoveEvent evt)
-    {
-        //Only take action if the player is dragging an item around the screen
-        if (!m_IsDragging)
-        {
-            return;
-        }
-        //Set the new position
-        m_GhostIcon.style.top = evt.position.y - m_GhostIcon.layout.height / 2;
-        m_GhostIcon.style.left = evt.position.x - m_GhostIcon.layout.width / 2;
-    }
-    private void OnPointerUp(PointerUpEvent evt)
-    {
-        if (!m_IsDragging)
-        {
-            return;
-        }
-        //Check to see if they are dropping the ghost icon over any inventory slots.
-        IEnumerable<Slot_UI> slots = AllSlots.Where(x =>
-               x.worldBound.Overlaps(m_GhostIcon.worldBound));
-        //Found at least one
-        if (slots.Count() != 0)
-        {
-            Slot_UI closestSlot = slots.OrderBy(x => Vector2.Distance
-               (x.worldBound.position, m_GhostIcon.worldBound.position)).First();
-
-            //Set the new inventory slot with the data
-            closestSlot.Set(m_OriginalSlot.storedItem);
-            //closestSlot.HoldItem(GameController.GetItemByGuid(m_OriginalSlot.ItemGuid));
-
-            //Clear the original slot
-            m_OriginalSlot.Reset();
-            //m_OriginalSlot.DropItem();
-
-        }
-        //Didn't find any (dragged off the window)
-        else
-        {
-            //m_OriginalSlot.Icon.image =
-            //      GameController.GetItemByGuid(m_OriginalSlot.ItemGuid).Icon.texture;
-            m_OriginalSlot.Icon.sprite = m_OriginalSprite;
-        }
-        //Clear dragging related visuals and data
-        m_IsDragging = false;
-        m_OriginalSlot = null;
-        m_GhostIcon.style.visibility = Visibility.Hidden;
-    }
-
-    public void StartDrag(Vector2 position, Slot_UI originalSlot)
-    {
-        //Set tracking variables
-        m_IsDragging = true;
-        m_OriginalSlot = originalSlot;
-        m_OriginalSprite = originalSlot.Icon.sprite;
-        //Set the new position
-        m_GhostIcon.style.top = position.y - m_GhostIcon.layout.height / 2;
-        m_GhostIcon.style.left = position.x - m_GhostIcon.layout.width / 2;
-        //Set the image
-        //m_GhostIcon.style.backgroundImage = GameController.GetItemByGuid(originalSlot.ItemGuid).Icon.texture;
-        m_GhostIcon.style.backgroundImage = originalSlot.Icon.sprite.texture;
-        originalSlot.Icon.sprite = null;
-        //Flip the visibility on
-        m_GhostIcon.style.visibility = Visibility.Visible;
-    }
+        
   
     public void ButtonCallback(/*Vector2 position,*/ Slot_UI slot)
     {
         selected = slot;
-        if (selected != null)
+        if (selected != null && selected.storedItem != null)
         {
             switch (state)
             {
@@ -375,7 +460,7 @@ public class InventoryUIController : SerializedMonoBehaviour
                 case OpenState.Cauldron:
                     if (selected.storedItem.item is Herb)
                     {
-                        ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
+                        //((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
 
                         if (((Herb)selected.storedItem.item).IsResearched)
                         {
@@ -409,52 +494,59 @@ public class InventoryUIController : SerializedMonoBehaviour
                     Debug.Log("Not open in a valid state!");
                     break;
             }
+            OnUpdateInventory();
 
         }
+
     }
 
     private void OnInventoryAdd(InventoryItem item)
     {
-        var emptySlot = ItemList.FirstOrDefault(x => x.storedItem == item);
 
-        if (emptySlot != null)
-        {
-            emptySlot.Set(item);
+        OnUpdateInventory();
+        //var emptySlot = ItemSlots.FirstOrDefault(x => x.storedItem == item);
 
-        }
-        else
-        {
-            emptySlot = ItemList.FirstOrDefault(x => x.storedItem == null);
-            if (emptySlot != null)
-            {
-                emptySlot.Set(item);
-            }
-        }
+        //if (emptySlot != null)
+        //{
+        //    emptySlot.Set(item);
 
-        
+        //}
+        //else
+        //{
+        //    emptySlot = ItemSlots.FirstOrDefault(x => x.storedItem == null);
+        //    if (emptySlot != null)
+        //    {
+        //        emptySlot.Set(item);
+        //    }
+        //}
+
+
 
 
     }
 
     private void OnInventoryRemove(InventoryItem item)
     {
-        var emptySlot = ItemList.FirstOrDefault(x => x.storedItem == item);
+        OnUpdateInventory();
 
-        if(item.count == 1)
-        {
-            emptySlot.Count.style.visibility = Visibility.Hidden;
-        }
-        else if(item.count <= 0)
-        {
-            if (emptySlot != null)
-            {
-                emptySlot.Reset();
-            }
-        }
-        else
-        {
-            emptySlot.Count.text = item.count.ToString();
-        }
+        //var emptySlot = ItemSlots.FirstOrDefault(x => x.storedItem == item);
+
+        //if(item.count == 1)
+        //{
+        //    emptySlot.countObj.SetActive(false);
+        //}
+        //else if(item.count <= 0)
+        //{
+        //    if (emptySlot != null)
+        //    {
+        //        emptySlot.Clear();
+        //    }
+        //}
+        //else
+        //{
+        //    emptySlot.countObj.SetActive(true);
+        //    emptySlot.countLabel.text = item.count.ToString();
+        //}
 
         
 
