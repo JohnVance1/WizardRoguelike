@@ -1966,7 +1966,7 @@ PrefabInstance:
     - target: {fileID: 8283519769939965813, guid: 029d1d430c5d8b44a92e723fa51c7840, type: 3}
       propertyPath: countObj
       value: 
-      objectReference: {fileID: 4294014290428800688}
+      objectReference: {fileID: 1069469834453425587}
     - target: {fileID: 8283519769939965813, guid: 029d1d430c5d8b44a92e723fa51c7840, type: 3}
       propertyPath: countLabel
       value: 
@@ -1979,6 +1979,11 @@ PrefabInstance:
 --- !u!224 &1069469832843123968 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2704942969606828931, guid: 029d1d430c5d8b44a92e723fa51c7840, type: 3}
+  m_PrefabInstance: {fileID: 3125047793228885635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1069469834453425587 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2704942970143060784, guid: 029d1d430c5d8b44a92e723fa51c7840, type: 3}
   m_PrefabInstance: {fileID: 3125047793228885635}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1069469834705804797 stripped

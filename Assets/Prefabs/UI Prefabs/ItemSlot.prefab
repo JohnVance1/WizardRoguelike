@@ -191,9 +191,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4ba64882671bf24f884f3b144d278d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  icon: {fileID: 2704942970496627582}
   ItemGuid: 
-  countLabel: {fileID: 0}
-  countObj: {fileID: 0}
+  countLabel: {fileID: 2704942970861689289}
+  countObj: {fileID: 2704942970143060784}
   highlight: {fileID: 0}
   mouseOverComp: {fileID: 0}
   openState: 0

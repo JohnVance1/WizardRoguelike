@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.InputSystem.Interactions;
+using UnityEngine.UI.Extensions;
 
 public class PotionUIController : SerializedMonoBehaviour
 {
@@ -63,6 +64,8 @@ public class PotionUIController : SerializedMonoBehaviour
     public float elapsedTime = 0f;
     private bool m_IsDragging;
 
+
+    public RadarPolygon radarGraph;
 
 
     void Awake()
@@ -315,9 +318,24 @@ public class PotionUIController : SerializedMonoBehaviour
             cauldron.storedHerbs.Add(herb);
             cauldron.storedHerbs[cauldron.storedHerbs.Count - 1].processType = type;
             AddToSlots(herb, type);
+            UpdateRadar(herb);
             //currentHerb = null;
 
         }
+        
+    }
+
+    public void UpdateRadar(Herb herb)
+    {
+        int radarPoint = 0;
+        foreach(var ele in herb.elements)
+        {
+            radarGraph.value[radarPoint] += (((float)ele.Value) / 10.0f);
+            radarGraph.SetAllDirty();
+            radarPoint++;
+        }
+
+
     }
 
     public void AddToSlots(Herb herb, ProcessType type = ProcessType.Raw)
