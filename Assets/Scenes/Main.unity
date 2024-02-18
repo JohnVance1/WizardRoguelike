@@ -971,7 +971,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &104712912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2579,7 +2579,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &341849187
 MonoBehaviour:
@@ -14216,7 +14216,19 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11438320, guid: ed806394b79ec4a44af926b836aff947, type: 3}
+      propertyPath: isFill
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438320, guid: ed806394b79ec4a44af926b836aff947, type: 3}
+      propertyPath: m_Maskable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438320, guid: ed806394b79ec4a44af926b836aff947, type: 3}
       propertyPath: useStateLine
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438320, guid: ed806394b79ec4a44af926b836aff947, type: 3}
+      propertyPath: m_RaycastTarget
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11464242, guid: ed806394b79ec4a44af926b836aff947, type: 3}
@@ -14250,30 +14262,6 @@ PrefabInstance:
     - target: {fileID: 11472088, guid: ed806394b79ec4a44af926b836aff947, type: 3}
       propertyPath: useDefaultLength
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11472088, guid: ed806394b79ec4a44af926b836aff947, type: 3}
-      propertyPath: value.Array.data[0]
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 11472088, guid: ed806394b79ec4a44af926b836aff947, type: 3}
-      propertyPath: value.Array.data[1]
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 11472088, guid: ed806394b79ec4a44af926b836aff947, type: 3}
-      propertyPath: value.Array.data[2]
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 11472088, guid: ed806394b79ec4a44af926b836aff947, type: 3}
-      propertyPath: value.Array.data[3]
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 11472088, guid: ed806394b79ec4a44af926b836aff947, type: 3}
-      propertyPath: value.Array.data[4]
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 11472088, guid: ed806394b79ec4a44af926b836aff947, type: 3}
-      propertyPath: value.Array.data[5]
-      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 11496020, guid: ed806394b79ec4a44af926b836aff947, type: 3}
       propertyPath: fillPercent
@@ -14425,11 +14413,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22417702, guid: ed806394b79ec4a44af926b836aff947, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 99.4
+      value: 223.5
       objectReference: {fileID: 0}
     - target: {fileID: 22417702, guid: ed806394b79ec4a44af926b836aff947, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 177.4
+      value: 82.8
       objectReference: {fileID: 0}
     - target: {fileID: 22421666, guid: ed806394b79ec4a44af926b836aff947, type: 3}
       propertyPath: m_AnchorMax.x
@@ -16179,7 +16167,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1721738423
 MonoBehaviour:
@@ -22391,7 +22379,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1838767352
 MonoBehaviour:
@@ -23053,7 +23041,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2036177195
 MonoBehaviour:
