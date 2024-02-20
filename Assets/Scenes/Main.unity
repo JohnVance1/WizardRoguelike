@@ -971,7 +971,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &104712912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24512,6 +24512,10 @@ PrefabInstance:
     - target: {fileID: 5059747543726425080, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ButtonCallback
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066824782181170177, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5245360921708685381, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: countObj

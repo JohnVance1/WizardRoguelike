@@ -135,6 +135,9 @@ MonoBehaviour:
   Name: Sleep Potion
   <id>k__BackingField: SleepPotion
   displayName: Sleep Potion
+  info: I am a Potion!
   potionEffect: 2
+  graph: {fileID: 0}
+  IsFound: 0
   usageTime: 0.5
   radius: 4
