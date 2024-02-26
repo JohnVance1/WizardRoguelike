@@ -41,6 +41,9 @@ public class Herb : Item_Base
     public bool IsResearched = false;
     public bool IsFound = false;
 
+    public Sprite graph;
+    public string info;
+
     public ProcessType processType = ProcessType.Raw;
 
     [SerializeField]

@@ -6,20 +6,20 @@ using UnityEngine.EventSystems;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using System;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using System.Linq;
 using static UnityEditor.VersionControl.Asset;
 using static UnityEngine.ParticleSystem;
 using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
 
-public class Research_MiniGame : SerializedMonoBehaviour
+public class Research_MiniGame : SerializedMonoBehaviour, IMoveHandler
 {
     public const int width = 6;
     public const int height = 6;
 
     [SerializeField]
-    public List<Space> spaces = new List<Space>();
+    public List<Space> spaces;
 
     [SerializeField]
     private LineController lineController;
@@ -43,40 +43,65 @@ public class Research_MiniGame : SerializedMonoBehaviour
     public List<Sprite> straightTiles;
     public List<Sprite> turnTiles;
 
-    private VisualElement m_Root;
+    public List<Sprite> connectSprites;
+
+    //private VisualElement m_Root;
     //private VisualElement m_Row1;
     //private VisualElement m_Row2;
     //private VisualElement m_Row3;
     //private VisualElement m_Row4;
     //private VisualElement m_Row5;
 
-    private List<VisualElement> m_Rows;
+    public List<GameObject> m_Rows;
 
-    private VisualElement temp;
-    private Button m_Exit;
+    //private VisualElement temp;
+    public Button m_Exit;
 
     [SerializeField]
     private Camera mainCamera;
 
     public event Action OnExit;
+    public EventSystem eventSystem;
 
     private void Awake()
     {
-        m_Root = GetComponent<UIDocument>().rootVisualElement;
-        m_Rows = m_Root.Query<VisualElement>("Row").ToList();
-        m_Exit = m_Root.Query<Button>("Exit");
-        m_Root.RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
-        m_Root.RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
+        grid = new General_Grid();
+        eventSystem = EventSystem.current;
+
+        for (int i = 0; i < m_Rows.Count; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                //Space sp = spaces[i + j];
+                Space sp = m_Rows[i].transform.GetChild(j).GetComponent<Space>();
+                grid.grid[i, j] = sp;
+                sp.Icon.sprite = defaultTiles[0];
+                //sp.parent = m_Rows[i];
+                //m_Rows[i].(sp);
+                spaces.Add(sp);
+                sp.onMouseDown += ButtonCall;
+                sp.onMouseUp += MouseUp;
+                sp.connectingSprites = connectSprites;
+
+            }
+        }
+
+
+                //m_Root = GetComponent<UIDocument>().rootVisualElement;
+                //m_Exit = m_Root.Query<Button>("Exit");
+                //RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
+                //RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
     }
 
 
     private void Start()
     {
         UILayer = LayerMask.NameToLayer("UI");
-        grid = new General_Grid();
         IsMouseDown = false;
         PathFound = false;
-        endSpace= new List<Space>();
+        endSpace = new List<Space>();
+        eventSystem.SetSelectedGameObject(grid.grid[0, 0].gameObject);
+
         //m_Row1 = m_Root.Q<VisualElement>("Row1");
         //m_Row2 = m_Root.Q<VisualElement>("Row2");
         //m_Row3 = m_Root.Q<VisualElement>("Row3");
@@ -85,19 +110,20 @@ public class Research_MiniGame : SerializedMonoBehaviour
 
         for (int i = 0; i < height; i++)
         {
-            for(int j = 0; j < width; j++)
+            for (int j = 0; j < width; j++)
             {
                 // Adds all of the grid spaces to the grid
                 //grid.grid[i, j] = spaces[i, j].GetComponent<Space>();
-                Space sp = new Space();
+                Space sp = grid.grid[i, j];
+                
 
-                grid.grid[i, j] = sp;
-                sp.Icon.sprite = defaultTiles[0];
-
-                m_Rows[i].Add(sp);
-                spaces.Add(sp);
-                sp.onMouseDown += ButtonCall;
-                sp.onMouseUp += MouseUp;
+                //grid.grid[i, j] = sp;
+                //sp.Icon.sprite = defaultTiles[0];
+                ////sp.parent = m_Rows[i];
+                ////m_Rows[i].(sp);
+                //spaces.Add(sp);
+                //sp.onMouseDown += ButtonCall;
+                //sp.onMouseUp += MouseUp;
 
                 if (i == 0 && j == 0)
                 {
@@ -174,9 +200,10 @@ public class Research_MiniGame : SerializedMonoBehaviour
             }
         }
 
-        m_Exit.clicked += () => {
+        m_Exit.onClick.AddListener(() =>
+        {
             researchStation.CloseResearchGame();
-        };
+        });
 
         // Sets up the info about each space's relation to the others
         grid.PopulateGrid();
@@ -186,7 +213,7 @@ public class Research_MiniGame : SerializedMonoBehaviour
 
     public void OpenUI()
     {
-        grid.grid[0, 0].Focus();
+        //grid.grid[0, 0].Focus();
 
     }
 
@@ -236,22 +263,26 @@ public class Research_MiniGame : SerializedMonoBehaviour
 
     }
 
-    private void OnNavCancelEvent(NavigationCancelEvent evt)
-    {
-        Debug.Log($"OnNavCancelEvent {evt.propagationPhase}");
-        researchStation.CloseResearchGame();
-    }
+    //private void OnNavCancelEvent(NavigationCancelEvent evt)
+    //{
+    //    Debug.Log($"OnNavCancelEvent {evt.propagationPhase}");
+    //    researchStation.CloseResearchGame();
+    //}
 
-    private void OnNavMoveEvent(NavigationMoveEvent evt)
+    
+
+    // private void OnNavMoveEvent(NavigationMoveEvent evt)
+    public void OnMove(AxisEventData eventData)
     {
+        Debug.Log($"Move Vector: {eventData.moveVector}");
         //Only take action if the player is dragging an item around the screen
         if (!IsMouseDown)
         {
             return;
         }
-        Debug.Log($"OnNavMoveEvent {evt.propagationPhase} - move {evt.move} - direction {evt.direction}");
+        //Debug.Log($"OnNavMoveEvent {evt.propagationPhase} - move {evt.move} - direction {evt.direction}");
 
-        Space space = GetSpace(evt.move);
+        Space space = GetSpace(eventData.moveVector);
         //IEnumerable<Space> space = spaces.Where(x =>
         //       x.worldBound.Contains(evt.position));
 
