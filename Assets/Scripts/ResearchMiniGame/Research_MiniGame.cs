@@ -12,8 +12,9 @@ using static UnityEditor.VersionControl.Asset;
 using static UnityEngine.ParticleSystem;
 using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
-public class Research_MiniGame : SerializedMonoBehaviour, IMoveHandler
+public class Research_MiniGame : MonoBehaviour
 {
     public const int width = 6;
     public const int height = 6;
@@ -63,10 +64,16 @@ public class Research_MiniGame : SerializedMonoBehaviour, IMoveHandler
     public event Action OnExit;
     public EventSystem eventSystem;
 
+    public PlayerControls input;
+    private InputAction move_UI;
+    private InputAction submit_UI;
+
+
     private void Awake()
     {
         grid = new General_Grid();
         eventSystem = EventSystem.current;
+        input = Player.Instance.interact.input;
 
         for (int i = 0; i < m_Rows.Count; i++)
         {
@@ -80,7 +87,8 @@ public class Research_MiniGame : SerializedMonoBehaviour, IMoveHandler
                 //m_Rows[i].(sp);
                 spaces.Add(sp);
                 sp.onMouseDown += ButtonCall;
-                sp.onMouseUp += MouseUp;
+                //sp.onMouseUp += MouseUp;
+                //sp.onMoveController += DrawLine;
                 sp.connectingSprites = connectSprites;
 
             }
@@ -91,6 +99,24 @@ public class Research_MiniGame : SerializedMonoBehaviour, IMoveHandler
                 //m_Exit = m_Root.Query<Button>("Exit");
                 //RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
                 //RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
+    }
+
+    private void OnEnable()
+    {
+        input.UI.Navigate.performed += OnMove;
+        input.UI.ButtonUp.canceled += MouseUp;
+        //input.UI.Navigate.canceled += RemovePress;
+        input.UI.Navigate.Enable();
+    }
+
+    private void OnDisable()
+    {
+        //input.UI.Navigate.canceled -= RemovePress;
+        input.UI.Navigate.performed -= OnMove;
+        input.UI.ButtonUp.canceled -= MouseUp;
+
+        ResetGame();
+
     }
 
 
@@ -272,17 +298,17 @@ public class Research_MiniGame : SerializedMonoBehaviour, IMoveHandler
     
 
     // private void OnNavMoveEvent(NavigationMoveEvent evt)
-    public void OnMove(AxisEventData eventData)
+    public void OnMove(InputAction.CallbackContext context)
     {
-        Debug.Log($"Move Vector: {eventData.moveVector}");
+        Debug.Log($"Move Vector: {context.ReadValue<Vector2>()}");
         //Only take action if the player is dragging an item around the screen
         if (!IsMouseDown)
         {
             return;
         }
         //Debug.Log($"OnNavMoveEvent {evt.propagationPhase} - move {evt.move} - direction {evt.direction}");
-
-        Space space = GetSpace(eventData.moveVector);
+        Vector2 moveVector = context.ReadValue<Vector2>();
+        Space space = GetSpace(context.ReadValue<Vector2>());
         //IEnumerable<Space> space = spaces.Where(x =>
         //       x.worldBound.Contains(evt.position));
 
@@ -300,14 +326,16 @@ public class Research_MiniGame : SerializedMonoBehaviour, IMoveHandler
                     grid.RemoveAnEdge(tempSpace, closestSlot);
                     tempSpace.UpdateSpace();
                     closestSlot.UpdateSpace();
-
+                    EraseLine(-moveVector, closestSlot);
+                    EraseLine(moveVector, tempSpace);
                 }
                 else
                 {
                     grid.AddAnEdge(tempSpace, closestSlot);
                     tempSpace.UpdateSpace();
                     closestSlot.UpdateSpace();
-
+                    DrawLine(-moveVector, closestSlot);
+                    DrawLine(moveVector, tempSpace);
 
 
                 }
@@ -317,32 +345,116 @@ public class Research_MiniGame : SerializedMonoBehaviour, IMoveHandler
         }
     }
 
-    
-
-    void DrawLine()
+    public void OnSubmit(BaseEventData eventData)
     {
-        if(grid.AdjacencyList != null)
+        UnityEngine.Debug.Log($"Submit OBJ: {eventData.selectedObject.name}");
+
+       
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        UnityEngine.Debug.Log($"Selected OBJ: {eventData.selectedObject.name}");
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        UnityEngine.Debug.Log($"Selected OBJ: {eventData.selectedObject}");
+    }
+
+
+
+    public void DrawLine(Vector2 moveVec, Space space)
+    {
+        foreach (Space e in space.Edges)
         {
-            foreach (Space e in grid.AdjacencyList)
-            {
-                if (e.Edges.Count != 0)
-                {
-                    foreach (Space e2 in e.Edges)
-                    {
-                        //Gizmos.DrawLine(e.transform.position, e2.transform.position);
-                        //lineController.SetUpLine(e.transform.position, e2.transform.position);
-                    }
-                }
-            }
+            
+
         }
 
+        GameObject edge;
 
+        if(moveVec == Vector2.up)
+        {
+            edge = space.directionSpaces[0];
+            edge.SetActive(true);
+        }
+        else if (moveVec == Vector2.right)
+        {
+            edge = space.directionSpaces[1];
+            edge.SetActive(true);
 
+        }
+        else if (moveVec == Vector2.down)
+        {
+            edge = space.directionSpaces[2];
+            edge.SetActive(true);
+
+        }
+        else if (moveVec == Vector2.left)
+        {
+            edge = space.directionSpaces[3];
+            edge.SetActive(true);
+
+        }
+
+        //RectTransform rectTransform = space.GetComponent<RectTransform>();
+
+        //Vector2 sizeVec = new Vector2(rectTransform.rect.width, rectTransform.rect.height);
+        //sizeVec /= 2;
+
+        //sizeVec *= moveVec;
+
+        //GameObject temp = Instantiate(space.connectingSprites[0], sizeVec + (Vector2)this.transform.position, Quaternion.identity);
+
+        //temp.transform.SetParent(space.transform, false);
+
+    }
+
+    public void EraseLine(Vector2 moveVec, Space space)
+    {
+       
+        GameObject edge;
+
+        if (moveVec == Vector2.up)
+        {
+            edge = space.directionSpaces[0];
+            edge.SetActive(false);
+        }
+        else if (moveVec == Vector2.right)
+        {
+            edge = space.directionSpaces[1];
+            edge.SetActive(false);
+
+        }
+        else if (moveVec == Vector2.down)
+        {
+            edge = space.directionSpaces[2];
+            edge.SetActive(false);
+
+        }
+        else if (moveVec == Vector2.left)
+        {
+            edge = space.directionSpaces[3];
+            edge.SetActive(false);
+
+        }
+
+        //RectTransform rectTransform = space.GetComponent<RectTransform>();
+
+        //Vector2 sizeVec = new Vector2(rectTransform.rect.width, rectTransform.rect.height);
+        //sizeVec /= 2;
+
+        //sizeVec *= moveVec;
+
+        //GameObject temp = Instantiate(space.connectingSprites[0], sizeVec + (Vector2)this.transform.position, Quaternion.identity);
+
+        //temp.transform.SetParent(space.transform, false);
 
     }
 
 
-    private void MouseUp()
+    private void MouseUp(InputAction.CallbackContext context)
     {
         if (!IsMouseDown)
         {
@@ -386,11 +498,6 @@ public class Research_MiniGame : SerializedMonoBehaviour, IMoveHandler
         //        }
         //    }
         //}
-    }
-
-    private void OnDisable()
-    {
-        ResetGame();
     }
 
 
@@ -443,7 +550,7 @@ public class Research_MiniGame : SerializedMonoBehaviour, IMoveHandler
 
     public Vector3 GetMousePos()
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(UnityEngine.Input.mousePosition);
         mousePos.z = 0;
         return mousePos;
     }    
@@ -486,7 +593,7 @@ public class Research_MiniGame : SerializedMonoBehaviour, IMoveHandler
     static List<RaycastResult> GetEventSystemRaycastResults()
     {
         PointerEventData eventData = new PointerEventData(EventSystem.current);
-        eventData.position = Input.mousePosition;
+        eventData.position = UnityEngine.Input.mousePosition;
         List<RaycastResult> raysastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, raysastResults);
         return raysastResults;

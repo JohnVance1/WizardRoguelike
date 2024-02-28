@@ -44,6 +44,19 @@ public class ResearchStation : Interactable_Base
 
     }
 
+    public void EnablePlayer()
+    {
+        input.UI.Disable();
+        input.Player.Enable();
+    }
+
+    public void EnableUI()
+    {
+        input.Player.Disable();
+        input.UI.Enable();
+
+    }
+
     void Update()
     {
         if (CanInteract)
@@ -78,19 +91,21 @@ public class ResearchStation : Interactable_Base
     public void OpenResearchGame(Herb herb)
     {
         playerInteract.CloseInventory();
-        researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-        //researchCanvas.SetActive(true);
+        //researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        researchCanvas.SetActive(true);
         researchCanvas.GetComponent<Research_MiniGame>().OpenUI();
         IsResearching = true;
         currentHerb = herb;
+        EnableUI();
+
     }
 
     public void CloseResearchGame()
     {
-        researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
-        //researchCanvas.SetActive(false);
+        //researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        researchCanvas.SetActive(false);
         IsResearching = false;
         currentHerb = null;
-
+        EnablePlayer();
     }
 }

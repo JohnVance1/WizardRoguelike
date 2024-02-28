@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using static UnityEngine.Rendering.VolumeComponent;
 using UnityEngine.InputSystem;
 
 public enum SpaceType
@@ -36,12 +35,17 @@ public class Space : MonoBehaviour, ISubmitHandler, ISelectHandler, IDeselectHan
 
     public delegate void OnMouseDown(Vector3 pos, Space slot);
     public OnMouseDown onMouseDown;
+
+    //public delegate void OnMoveController(Vector3 pos, Space slot);
+    //public OnMoveController onMoveController;
+
+
     public delegate void OnMouseUp();
     public OnMouseUp onMouseUp;
     private Color c;
     private EventSystem eventSystem;
     public List<Sprite> connectingSprites;
-
+    public List<GameObject> directionSpaces;   // North = [0], East = [1], South = [2], West = [3] 
 
     public event Action onEdgesChange;
 
@@ -102,10 +106,11 @@ public class Space : MonoBehaviour, ISubmitHandler, ISelectHandler, IDeselectHan
 
         onMouseDown(center, this);
     }
-
+    
     public void OnSelect(BaseEventData eventData)
     {
         UnityEngine.Debug.Log($"Selected OBJ: {eventData.selectedObject.name}");
+        //onMoveController(this.transform.position, this);
     }
 
     public void OnDeselect(BaseEventData eventData)
