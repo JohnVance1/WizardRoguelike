@@ -28,6 +28,10 @@ public class InventorySlot_UI : Slot_UI
     private void Awake()
     {
         //Clear();
+        countObj = transform.GetChild(2).gameObject;
+        countLabel = countObj.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>(); 
+
+
     }
 
 

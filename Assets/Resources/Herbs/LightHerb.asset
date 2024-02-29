@@ -43,19 +43,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 7
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
+      Data: 6
     - Name: 
       Entry: 7
       Data: 
@@ -199,12 +187,14 @@ MonoBehaviour:
   sprite: {fileID: -1951391425, guid: da166271d1977be42acd237ed4005a6c, type: 3}
   Name: Light Herb
   <id>k__BackingField: LightHerb
-  displayName: 
+  displayName: Light Herb
   timeToGrow: 3
   timeToProcess: 0
   researchNum: 0
   IsResearched: 0
   IsFound: 0
+  graph: {fileID: 0}
+  info: 
   processType: 0
   defaultSprite: {fileID: -1951391425, guid: da166271d1977be42acd237ed4005a6c, type: 3}
   herbStages:

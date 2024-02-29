@@ -6,8 +6,9 @@ using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Scripting;
-using UnityEngine.UIElements;
-using static UnityEngine.Rendering.VolumeComponent;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public enum SpaceType
 {
@@ -19,7 +20,7 @@ public enum SpaceType
 
 }
 
-public class Space : VisualElement
+public class Space : MonoBehaviour, ISubmitHandler, ISelectHandler, IDeselectHandler
 {
     public int x;
     public int y;
@@ -34,60 +35,68 @@ public class Space : VisualElement
 
     public delegate void OnMouseDown(Vector3 pos, Space slot);
     public OnMouseDown onMouseDown;
+
+    //public delegate void OnMoveController(Vector3 pos, Space slot);
+    //public OnMoveController onMoveController;
+
+
     public delegate void OnMouseUp();
     public OnMouseUp onMouseUp;
     private Color c;
+    private EventSystem eventSystem;
+    public List<Sprite> connectingSprites;
+    public List<GameObject> directionSpaces;   // North = [0], East = [1], South = [2], West = [3] 
 
     public event Action onEdgesChange;
 
-    public Space()
+    public void Awake()
     {
         Edges = new List<Space>();
         temp = new List<Space>();
-        Icon = new Image();
-        Add(Icon);
-        AddToClassList("space");
-        focusable= true;
-        generateVisualContent += DrawLine;
+        Icon = GetComponent<Image>();
+        //Add(Icon);
+        //AddToClassList("space");
+        //focusable= true;
+        //generateVisualContent += DrawLine;
         onEdgesChange += RemoveDiagonals;
         onEdgesChange += CheckNodeBehavior;
-        c = this.style.backgroundColor.value;
+        //c = this.style.backgroundColor.value;
+        eventSystem = EventSystem.current;
 
-        
 
         //RegisterCallback<PointerDownEvent>(OnPointerDown);
-        RegisterCallback<PointerUpEvent>(OnPointerUp);
-        RegisterCallback<FocusInEvent>(OnFocusInSlot);
-        RegisterCallback<FocusOutEvent>(OnFocusOutSlot);
+        //RegisterCallback<PointerUpEvent>(OnPointerUp);
+        //RegisterCallback<FocusInEvent>(OnFocusInSlot);
+        //RegisterCallback<FocusOutEvent>(OnFocusOutSlot);
 
         //RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
         //RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
-        RegisterCallback<NavigationSubmitEvent>(OnNavSubmitEvent);
+        //RegisterCallback<NavigationSubmitEvent>(OnNavSubmitEvent);
 
 
     }
 
     private void Start()
     {
-
         //type = SpaceType.None;
-        
-    }
-
-    public void OnFocusInSlot(FocusInEvent evt)
-    {
-        this.style.backgroundColor = Color.white;
-    }
-
-    public void OnFocusOutSlot(FocusOutEvent evt)
-    {
-        this.style.backgroundColor = c;
 
     }
 
-    private void OnNavSubmitEvent(NavigationSubmitEvent evt)
+    //public void OnFocusInSlot(FocusInEvent evt)
+    //{
+    //    //this.style.backgroundColor = Color.white;
+    //}
+
+    //public void OnFocusOutSlot(FocusOutEvent evt)
+    //{
+    //    //this.style.backgroundColor = c;
+
+    //}
+
+    
+    public void OnSubmit(BaseEventData eventData)
     {
-        Debug.Log($"OnNavSubmitEvent {evt.propagationPhase}");
+        UnityEngine.Debug.Log($"Submit OBJ: {eventData.selectedObject.name}");
 
         Vector3 center = this.transform.position;
 
@@ -96,9 +105,35 @@ public class Space : VisualElement
         CheckNodeBehavior();
 
         onMouseDown(center, this);
-
-
     }
+    
+    public void OnSelect(BaseEventData eventData)
+    {
+        UnityEngine.Debug.Log($"Selected OBJ: {eventData.selectedObject.name}");
+        //onMoveController(this.transform.position, this);
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        UnityEngine.Debug.Log($"Selected OBJ: {eventData.selectedObject}");
+    }
+        
+
+
+    //private void OnNavSubmitEvent(NavigationSubmitEvent evt)
+    //{
+    //    Debug.Log($"OnNavSubmitEvent {evt.propagationPhase}");
+
+    //    Vector3 center = this.transform.position;
+
+    //    RemoveDiagonals();
+
+    //    CheckNodeBehavior();
+
+    //    onMouseDown(center, this);
+
+
+    //}
 
    
     
@@ -121,22 +156,22 @@ public class Space : VisualElement
 
     }
 
-    private void OnPointerUp(PointerUpEvent evt)
-    {
-        if (evt.button != 0)
-        {
-            return;
-        }
+    //private void OnPointerUp(PointerUpEvent evt)
+    //{
+    //    if (evt.button != 0)
+    //    {
+    //        return;
+    //    }
 
-        RemoveDiagonals();
+    //    RemoveDiagonals();
 
-        CheckNodeBehavior();
+    //    CheckNodeBehavior();
 
-        onMouseUp();
+    //    onMouseUp();
 
         
 
-    }
+    //}
 
     private void Update()
     {
@@ -144,36 +179,41 @@ public class Space : VisualElement
 
     }
 
-    void DrawLine(MeshGenerationContext mgc)
+    public void DrawLine()
     {
-        var painter2D = mgc.painter2D;
 
-        
-        painter2D.strokeColor = Color.red;
-        painter2D.lineWidth = 5.0f;
-        painter2D.BeginPath();
+
+
+        //var painter2D = mgc.painter2D;
+
+
+        //painter2D.strokeColor = Color.red;
+        //painter2D.lineWidth = 5.0f;
+        //painter2D.BeginPath();
 
         foreach (Space e in Edges)
         {
-            Vector2 baseVec = new Vector2(this.resolvedStyle.width / 2,
-                this.resolvedStyle.height / 2);
+            //Vector2 baseVec = new Vector2(this.resolvedStyle.width / 2,
+            //    this.resolvedStyle.height / 2);
 
-            painter2D.MoveTo(baseVec);
+            //painter2D.MoveTo(baseVec);
 
-            Vector2 lineTo = e.worldBound.position - this.worldBound.position;
+            Vector2 middlePos = (e.transform.position - this.transform.position) / 2;
 
-            lineTo.Normalize();
-            //lineTo *= ClosestDirection(lineTo);
-            lineTo *= new Vector2(this.resolvedStyle.width,
-                this.resolvedStyle.height);
+            Instantiate(connectingSprites[0], middlePos, Quaternion.identity);
 
-            lineTo += baseVec;
+            //lineTo.Normalize();
+            ////lineTo *= ClosestDirection(lineTo);
+            //lineTo *= new Vector2(this.resolvedStyle.width,
+            //    this.resolvedStyle.height);
 
-            painter2D.LineTo(lineTo);
+            //lineTo += baseVec;
+
+            //painter2D.LineTo(lineTo);
 
         }
-        //painter2D.ClosePath();
-        painter2D.Stroke();
+        ////painter2D.ClosePath();
+        //painter2D.Stroke();
 
     }
 
@@ -200,7 +240,7 @@ public class Space : VisualElement
     {
         RemoveDiagonals();
         CheckNodeBehavior();
-        MarkDirtyRepaint();
+        //MarkDirtyRepaint();
     }
 
     /// <summary>
@@ -305,15 +345,17 @@ public class Space : VisualElement
     /// </summary>
     public void ErrorDisplay()
     {
-        Debug.Log("Error with space X: " + x + " Y: " + y);
+        UnityEngine.Debug.Log("Error with space X: " + x + " Y: " + y);
     }
 
+    
 
-    #region UXML
-    [Preserve]
-    public new class UxmlFactory : UxmlFactory<Space, UxmlTraits> { }
-    [Preserve]
-    public new class UxmlTraits : VisualElement.UxmlTraits { }
-    #endregion
+
+    //#region UXML
+    //[Preserve]
+    //public new class UxmlFactory : UxmlFactory<Space, UxmlTraits> { }
+    //[Preserve]
+    //public new class UxmlTraits : VisualElement.UxmlTraits { }
+    //#endregion
 
 }

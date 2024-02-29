@@ -135,6 +135,9 @@ MonoBehaviour:
   Name: Fire Potion
   <id>k__BackingField: FirePotion
   displayName: Fire Potion
+  info: I am a Potion!
   potionEffect: 4
+  graph: {fileID: 0}
+  IsFound: 1
   usageTime: 0
   radius: 0

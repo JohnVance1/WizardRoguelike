@@ -10,7 +10,12 @@ public class PotionInfo_SO : Item_Base
     [Header("General")]
     public string displayName;  // The name displayed to the player as to which potion this is
 
+    public string info = "I am a Potion!";
+
     public PotionEffect potionEffect;
+    public Sprite graph;
+
+    public bool IsFound = false;
 
     public Dictionary<Element, int> elementsNeeded= new Dictionary<Element, int>();
 

@@ -6,20 +6,21 @@ using UnityEngine.EventSystems;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using System;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 using System.Linq;
 using static UnityEditor.VersionControl.Asset;
 using static UnityEngine.ParticleSystem;
 using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
-public class Research_MiniGame : SerializedMonoBehaviour
+public class Research_MiniGame : MonoBehaviour
 {
     public const int width = 6;
     public const int height = 6;
 
     [SerializeField]
-    public List<Space> spaces = new List<Space>();
+    public List<Space> spaces;
 
     [SerializeField]
     private LineController lineController;
@@ -43,40 +44,90 @@ public class Research_MiniGame : SerializedMonoBehaviour
     public List<Sprite> straightTiles;
     public List<Sprite> turnTiles;
 
-    private VisualElement m_Root;
+    public List<Sprite> connectSprites;
+
+    //private VisualElement m_Root;
     //private VisualElement m_Row1;
     //private VisualElement m_Row2;
     //private VisualElement m_Row3;
     //private VisualElement m_Row4;
     //private VisualElement m_Row5;
 
-    private List<VisualElement> m_Rows;
+    public List<GameObject> m_Rows;
 
-    private VisualElement temp;
-    private Button m_Exit;
+    //private VisualElement temp;
+    public Button m_Exit;
 
     [SerializeField]
     private Camera mainCamera;
 
     public event Action OnExit;
+    public EventSystem eventSystem;
+
+    public PlayerControls input;
+    private InputAction move_UI;
+    private InputAction submit_UI;
+
 
     private void Awake()
     {
-        m_Root = GetComponent<UIDocument>().rootVisualElement;
-        m_Rows = m_Root.Query<VisualElement>("Row").ToList();
-        m_Exit = m_Root.Query<Button>("Exit");
-        m_Root.RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
-        m_Root.RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
+        grid = new General_Grid();
+        eventSystem = EventSystem.current;
+        input = Player.Instance.interact.input;
+
+        for (int i = 0; i < m_Rows.Count; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                //Space sp = spaces[i + j];
+                Space sp = m_Rows[i].transform.GetChild(j).GetComponent<Space>();
+                grid.grid[i, j] = sp;
+                sp.Icon.sprite = defaultTiles[0];
+                //sp.parent = m_Rows[i];
+                //m_Rows[i].(sp);
+                spaces.Add(sp);
+                sp.onMouseDown += ButtonCall;
+                //sp.onMouseUp += MouseUp;
+                //sp.onMoveController += DrawLine;
+                sp.connectingSprites = connectSprites;
+
+            }
+        }
+
+
+                //m_Root = GetComponent<UIDocument>().rootVisualElement;
+                //m_Exit = m_Root.Query<Button>("Exit");
+                //RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
+                //RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
+    }
+
+    private void OnEnable()
+    {
+        input.UI.Navigate.performed += OnMove;
+        input.UI.ButtonUp.canceled += MouseUp;
+        //input.UI.Navigate.canceled += RemovePress;
+        input.UI.Navigate.Enable();
+    }
+
+    private void OnDisable()
+    {
+        //input.UI.Navigate.canceled -= RemovePress;
+        input.UI.Navigate.performed -= OnMove;
+        input.UI.ButtonUp.canceled -= MouseUp;
+
+        ResetGame();
+
     }
 
 
     private void Start()
     {
         UILayer = LayerMask.NameToLayer("UI");
-        grid = new General_Grid();
         IsMouseDown = false;
         PathFound = false;
-        endSpace= new List<Space>();
+        endSpace = new List<Space>();
+        eventSystem.SetSelectedGameObject(grid.grid[0, 0].gameObject);
+
         //m_Row1 = m_Root.Q<VisualElement>("Row1");
         //m_Row2 = m_Root.Q<VisualElement>("Row2");
         //m_Row3 = m_Root.Q<VisualElement>("Row3");
@@ -85,19 +136,20 @@ public class Research_MiniGame : SerializedMonoBehaviour
 
         for (int i = 0; i < height; i++)
         {
-            for(int j = 0; j < width; j++)
+            for (int j = 0; j < width; j++)
             {
                 // Adds all of the grid spaces to the grid
                 //grid.grid[i, j] = spaces[i, j].GetComponent<Space>();
-                Space sp = new Space();
+                Space sp = grid.grid[i, j];
+                
 
-                grid.grid[i, j] = sp;
-                sp.Icon.sprite = defaultTiles[0];
-
-                m_Rows[i].Add(sp);
-                spaces.Add(sp);
-                sp.onMouseDown += ButtonCall;
-                sp.onMouseUp += MouseUp;
+                //grid.grid[i, j] = sp;
+                //sp.Icon.sprite = defaultTiles[0];
+                ////sp.parent = m_Rows[i];
+                ////m_Rows[i].(sp);
+                //spaces.Add(sp);
+                //sp.onMouseDown += ButtonCall;
+                //sp.onMouseUp += MouseUp;
 
                 if (i == 0 && j == 0)
                 {
@@ -174,9 +226,10 @@ public class Research_MiniGame : SerializedMonoBehaviour
             }
         }
 
-        m_Exit.clicked += () => {
+        m_Exit.onClick.AddListener(() =>
+        {
             researchStation.CloseResearchGame();
-        };
+        });
 
         // Sets up the info about each space's relation to the others
         grid.PopulateGrid();
@@ -186,7 +239,7 @@ public class Research_MiniGame : SerializedMonoBehaviour
 
     public void OpenUI()
     {
-        grid.grid[0, 0].Focus();
+        //grid.grid[0, 0].Focus();
 
     }
 
@@ -236,22 +289,26 @@ public class Research_MiniGame : SerializedMonoBehaviour
 
     }
 
-    private void OnNavCancelEvent(NavigationCancelEvent evt)
-    {
-        Debug.Log($"OnNavCancelEvent {evt.propagationPhase}");
-        researchStation.CloseResearchGame();
-    }
+    //private void OnNavCancelEvent(NavigationCancelEvent evt)
+    //{
+    //    Debug.Log($"OnNavCancelEvent {evt.propagationPhase}");
+    //    researchStation.CloseResearchGame();
+    //}
 
-    private void OnNavMoveEvent(NavigationMoveEvent evt)
+    
+
+    // private void OnNavMoveEvent(NavigationMoveEvent evt)
+    public void OnMove(InputAction.CallbackContext context)
     {
+        Debug.Log($"Move Vector: {context.ReadValue<Vector2>()}");
         //Only take action if the player is dragging an item around the screen
         if (!IsMouseDown)
         {
             return;
         }
-        Debug.Log($"OnNavMoveEvent {evt.propagationPhase} - move {evt.move} - direction {evt.direction}");
-
-        Space space = GetSpace(evt.move);
+        //Debug.Log($"OnNavMoveEvent {evt.propagationPhase} - move {evt.move} - direction {evt.direction}");
+        Vector2 moveVector = context.ReadValue<Vector2>();
+        Space space = GetSpace(context.ReadValue<Vector2>());
         //IEnumerable<Space> space = spaces.Where(x =>
         //       x.worldBound.Contains(evt.position));
 
@@ -269,14 +326,16 @@ public class Research_MiniGame : SerializedMonoBehaviour
                     grid.RemoveAnEdge(tempSpace, closestSlot);
                     tempSpace.UpdateSpace();
                     closestSlot.UpdateSpace();
-
+                    EraseLine(-moveVector, closestSlot);
+                    EraseLine(moveVector, tempSpace);
                 }
                 else
                 {
                     grid.AddAnEdge(tempSpace, closestSlot);
                     tempSpace.UpdateSpace();
                     closestSlot.UpdateSpace();
-
+                    DrawLine(-moveVector, closestSlot);
+                    DrawLine(moveVector, tempSpace);
 
 
                 }
@@ -286,32 +345,116 @@ public class Research_MiniGame : SerializedMonoBehaviour
         }
     }
 
-    
-
-    void DrawLine()
+    public void OnSubmit(BaseEventData eventData)
     {
-        if(grid.AdjacencyList != null)
+        UnityEngine.Debug.Log($"Submit OBJ: {eventData.selectedObject.name}");
+
+       
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        UnityEngine.Debug.Log($"Selected OBJ: {eventData.selectedObject.name}");
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        UnityEngine.Debug.Log($"Selected OBJ: {eventData.selectedObject}");
+    }
+
+
+
+    public void DrawLine(Vector2 moveVec, Space space)
+    {
+        foreach (Space e in space.Edges)
         {
-            foreach (Space e in grid.AdjacencyList)
-            {
-                if (e.Edges.Count != 0)
-                {
-                    foreach (Space e2 in e.Edges)
-                    {
-                        //Gizmos.DrawLine(e.transform.position, e2.transform.position);
-                        //lineController.SetUpLine(e.transform.position, e2.transform.position);
-                    }
-                }
-            }
+            
+
         }
 
+        GameObject edge;
 
+        if(moveVec == Vector2.up)
+        {
+            edge = space.directionSpaces[0];
+            edge.SetActive(true);
+        }
+        else if (moveVec == Vector2.right)
+        {
+            edge = space.directionSpaces[1];
+            edge.SetActive(true);
 
+        }
+        else if (moveVec == Vector2.down)
+        {
+            edge = space.directionSpaces[2];
+            edge.SetActive(true);
+
+        }
+        else if (moveVec == Vector2.left)
+        {
+            edge = space.directionSpaces[3];
+            edge.SetActive(true);
+
+        }
+
+        //RectTransform rectTransform = space.GetComponent<RectTransform>();
+
+        //Vector2 sizeVec = new Vector2(rectTransform.rect.width, rectTransform.rect.height);
+        //sizeVec /= 2;
+
+        //sizeVec *= moveVec;
+
+        //GameObject temp = Instantiate(space.connectingSprites[0], sizeVec + (Vector2)this.transform.position, Quaternion.identity);
+
+        //temp.transform.SetParent(space.transform, false);
+
+    }
+
+    public void EraseLine(Vector2 moveVec, Space space)
+    {
+       
+        GameObject edge;
+
+        if (moveVec == Vector2.up)
+        {
+            edge = space.directionSpaces[0];
+            edge.SetActive(false);
+        }
+        else if (moveVec == Vector2.right)
+        {
+            edge = space.directionSpaces[1];
+            edge.SetActive(false);
+
+        }
+        else if (moveVec == Vector2.down)
+        {
+            edge = space.directionSpaces[2];
+            edge.SetActive(false);
+
+        }
+        else if (moveVec == Vector2.left)
+        {
+            edge = space.directionSpaces[3];
+            edge.SetActive(false);
+
+        }
+
+        //RectTransform rectTransform = space.GetComponent<RectTransform>();
+
+        //Vector2 sizeVec = new Vector2(rectTransform.rect.width, rectTransform.rect.height);
+        //sizeVec /= 2;
+
+        //sizeVec *= moveVec;
+
+        //GameObject temp = Instantiate(space.connectingSprites[0], sizeVec + (Vector2)this.transform.position, Quaternion.identity);
+
+        //temp.transform.SetParent(space.transform, false);
 
     }
 
 
-    private void MouseUp()
+    private void MouseUp(InputAction.CallbackContext context)
     {
         if (!IsMouseDown)
         {
@@ -355,11 +498,6 @@ public class Research_MiniGame : SerializedMonoBehaviour
         //        }
         //    }
         //}
-    }
-
-    private void OnDisable()
-    {
-        ResetGame();
     }
 
 
@@ -412,7 +550,7 @@ public class Research_MiniGame : SerializedMonoBehaviour
 
     public Vector3 GetMousePos()
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(UnityEngine.Input.mousePosition);
         mousePos.z = 0;
         return mousePos;
     }    
@@ -455,7 +593,7 @@ public class Research_MiniGame : SerializedMonoBehaviour
     static List<RaycastResult> GetEventSystemRaycastResults()
     {
         PointerEventData eventData = new PointerEventData(EventSystem.current);
-        eventData.position = Input.mousePosition;
+        eventData.position = UnityEngine.Input.mousePosition;
         List<RaycastResult> raysastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, raysastResults);
         return raysastResults;

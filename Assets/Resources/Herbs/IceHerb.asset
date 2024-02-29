@@ -43,19 +43,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 7
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
+      Data: 6
     - Name: 
       Entry: 7
       Data: 
@@ -199,12 +187,14 @@ MonoBehaviour:
   sprite: {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
   Name: Ice Herb
   <id>k__BackingField: IceHerb
-  displayName: 
+  displayName: Ice Herb
   timeToGrow: 3
   timeToProcess: 0
   researchNum: 0
   IsResearched: 1
   IsFound: 1
+  graph: {fileID: 0}
+  info: 
   processType: 0
   defaultSprite: {fileID: -1091525677, guid: 37af949e270a43540a02fa733360e32b, type: 3}
   herbStages:

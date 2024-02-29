@@ -11,7 +11,7 @@ public class Cauldron : Interactable_Base
     public GameObject cauldronUI;
 
     [SerializeField]
-    public Dictionary<Type, Herb> allHerbs;
+    public List<Herb> allHerbs;
 
     private bool IsCauldronOpen;
 
@@ -48,9 +48,17 @@ public class Cauldron : Interactable_Base
 
     public Item_Base AddBackHerb(Herb herb)
     {
-        allHerbs.TryGetValue(herb.GetType(), out herb);
+        //allHerbs.TryGetValue(herb.GetType(), out herb);
+        foreach(Herb h in allHerbs)
+        {
+            if(herb.id == h.id)
+            {
+                return h;
 
-        return herb;
+            }
+        }
+        return null;
+
     }
 
     public void RemoveHerb(Herb herb)
@@ -80,8 +88,15 @@ public class Cauldron : Interactable_Base
 
     public void SelectCauldron(Herb herb)
     {
-        cauldronUI.GetComponentInChildren<PotionUIController>().UseDevice(herb, player);
-        //cauldronUI.GetComponentInChildren<PotionUIController>().SetPlayer(player);
+        if (storedHerbs.Count < 4)
+        {
+            cauldronUI.GetComponentInChildren<PotionUIController>().UseDevice(herb, player);
+            //cauldronUI.GetComponentInChildren<PotionUIController>().SetPlayer(player);
+        }
+        else
+        {
+            Debug.Log("Cauldron is full!");
+        }
     }
 
 
