@@ -48,6 +48,11 @@ public class FarmPlot : Interactable_Base
 
     public void HarvestHerb()
     {
+        if (!(storedHerb).IsFound)
+        {
+            (storedHerb).IsFound = true;
+            GameEventsManager.instance.journalEvents.FirstHerbCollected(storedHerb);
+        }
         player.AddItemToInventory(storedHerb);
         herbGO.GetComponent<SpriteRenderer>().sprite = null;
         CanHarvest = false;

@@ -68,6 +68,8 @@ public class Research_MiniGame : MonoBehaviour
     private InputAction move_UI;
     private InputAction submit_UI;
 
+    public ResearchMiniGame_Data activeGame;
+
 
     private void Awake()
     {
@@ -119,6 +121,55 @@ public class Research_MiniGame : MonoBehaviour
 
     }
 
+    public Sprite ReturnCornerSprites(List<Sprite> tiles, int x, int y)
+    {
+        Sprite sprite = null;
+        if (x == 0 && y == 0)
+        {
+            sprite = tiles[8];
+
+        }
+        else if (x == height - 1 && y == width - 1)
+        {
+            sprite = tiles[2];
+
+        }
+        else if (x == 0 && y == width - 1)
+        {
+            sprite = tiles[9];
+
+        }
+        else if (x == height - 1 && y == 0)
+        {
+            sprite = tiles[1];
+
+        }
+        else if (x == 0)
+        {
+            sprite = tiles[6];
+
+        }
+        else if (y == 0)
+        {
+            sprite = tiles[5];
+
+        }
+        else if (x == height - 1)
+        {
+            sprite = tiles[7];
+        }
+        else if (y == width - 1)
+        {
+            sprite = tiles[3];
+        }
+        else
+        {
+            sprite = tiles[0];
+        }
+
+        return sprite;
+    }
+
 
     private void Start()
     {
@@ -134,97 +185,7 @@ public class Research_MiniGame : MonoBehaviour
         //m_Row4 = m_Root.Q<VisualElement>("Row4");
         //m_Row5 = m_Root.Q<VisualElement>("Row5");
 
-        for (int i = 0; i < height; i++)
-        {
-            for (int j = 0; j < width; j++)
-            {
-                // Adds all of the grid spaces to the grid
-                //grid.grid[i, j] = spaces[i, j].GetComponent<Space>();
-                Space sp = grid.grid[i, j];
-                
-
-                //grid.grid[i, j] = sp;
-                //sp.Icon.sprite = defaultTiles[0];
-                ////sp.parent = m_Rows[i];
-                ////m_Rows[i].(sp);
-                //spaces.Add(sp);
-                //sp.onMouseDown += ButtonCall;
-                //sp.onMouseUp += MouseUp;
-
-                if (i == 0 && j == 0)
-                {
-                    sp.Icon.sprite = defaultTiles[8];
-
-                }
-                else if (i == height - 1 && j == width - 1)
-                {
-                    sp.Icon.sprite = defaultTiles[2];
-
-                }
-                else if (i == 0 && j == width - 1)
-                {
-                    sp.Icon.sprite = defaultTiles[9];
-
-                }
-                else if (i == height - 1 && j == 0)
-                {
-                    sp.Icon.sprite = defaultTiles[1];
-
-                }
-                else if (i == 0)
-                {
-                    sp.Icon.sprite = defaultTiles[6];
-
-                }
-                else if (j == 0)
-                {
-                    sp.Icon.sprite = defaultTiles[5];
-
-                }
-                else if (i == height - 1)
-                {
-                    sp.Icon.sprite = defaultTiles[7];
-                }
-                else if (j == width - 1)
-                {
-                    sp.Icon.sprite = defaultTiles[3];
-                }
-                else
-                {
-                    sp.Icon.sprite = defaultTiles[0];
-                }
-
-
-                if (i == 3 && j == 3)
-                {
-                    //sp.style.backgroundColor = Color.red;
-                    sp.Icon.sprite = endTiles[0];
-                    sp.type = SpaceType.End;
-                    endSpace.Add(sp);
-                }
-                if (i == 1 && j == 1)
-                {
-                    //sp.style.backgroundColor = Color.green;
-                    sp.Icon.sprite = startTiles[0];
-                    sp.type = SpaceType.Start;
-                    startSpace = sp;
-                }
-
-                if (i == 2 && j == 4)
-                {
-                    //sp.style.backgroundColor = Color.black;
-                    sp.Icon.sprite = turnTiles[0];
-                    sp.type = SpaceType.Black;
-                }
-                if (i == 3 && j == 1)
-                {
-                    //sp.style.backgroundColor = Color.white;
-                    sp.Icon.sprite = straightTiles[0];
-                    sp.type = SpaceType.White;
-                }
-
-            }
-        }
+        OpenUI();
 
         m_Exit.onClick.AddListener(() =>
         {
@@ -239,7 +200,52 @@ public class Research_MiniGame : MonoBehaviour
 
     public void OpenUI()
     {
-        //grid.grid[0, 0].Focus();
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {               
+                Space sp = grid.grid[i, j];
+
+                sp.Icon.sprite = ReturnCornerSprites(defaultTiles, i, j);
+
+                if (i == activeGame.start.x && j == activeGame.start.y)
+                {
+                    sp.Icon.sprite = ReturnCornerSprites(startTiles, i, j);
+                    sp.type = SpaceType.Start;
+                    startSpace = sp;
+                }
+
+                foreach (Vector2 vec in activeGame.end)
+                {
+                    if (i == vec.x && j == vec.y)
+                    {
+                        sp.Icon.sprite = ReturnCornerSprites(endTiles, i, j);
+                        sp.type = SpaceType.End;
+                        endSpace.Add(sp);
+                    }
+                }
+
+                foreach (Vector2 vec in activeGame.turn)
+                {
+                    if (i == vec.x && j == vec.y)
+                    {
+                        sp.Icon.sprite = ReturnCornerSprites(turnTiles, i, j);
+                        sp.type = SpaceType.Black;
+                    }
+                }
+
+                foreach (Vector2 vec in activeGame.straight)
+                {
+                    if (i == vec.x && j == vec.y)
+                    {
+                        sp.Icon.sprite = ReturnCornerSprites(straightTiles, i, j);
+                        sp.type = SpaceType.White;
+                    }
+                }
+
+
+            }
+        }
 
     }
 

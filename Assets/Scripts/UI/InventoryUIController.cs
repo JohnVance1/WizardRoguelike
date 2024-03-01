@@ -465,14 +465,7 @@ public class InventoryUIController : SerializedMonoBehaviour
                         if (((Herb)selected.storedItem.item).IsResearched)
                         {
                             ((Cauldron)interactable).SelectCauldron((Herb)selected.storedItem.item);
-                            //List<CauldronSlot> slots = ((Cauldron)interactable).GetCauldronSlots();
-                            //foreach(CauldronSlot calSlot in slots)
-                            //{
-                            //    AllSlots.Add(calSlot);
-                            //    calSlot.onMouseDown += ButtonCallback;
-                            //}
-                            //StartDrag(position, slot);
-
+                            
                         }
                         else
                         {
