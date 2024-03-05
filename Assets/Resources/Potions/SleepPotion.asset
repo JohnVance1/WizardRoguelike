@@ -131,7 +131,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  sprite: {fileID: 21300000, guid: 57a87035364045d4ab424df0cbd5e155, type: 3}
+  sprite: {fileID: -3199011220901390198, guid: aa1d8d6b655e4c441b496f4053e8b0eb, type: 3}
   Name: Sleep Potion
   <id>k__BackingField: SleepPotion
   displayName: Sleep Potion
