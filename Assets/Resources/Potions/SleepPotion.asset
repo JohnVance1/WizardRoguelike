@@ -40,7 +40,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 7
+      Data: 6
     - Name: 
       Entry: 7
       Data: 
@@ -85,7 +85,7 @@ MonoBehaviour:
       Data: 8
     - Name: $v
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -114,28 +114,16 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
       Entry: 13
       Data: 
     - Name: 
       Entry: 8
       Data: 
-  sprite: {fileID: -3199011220901390198, guid: aa1d8d6b655e4c441b496f4053e8b0eb, type: 3}
+  sprite: {fileID: 21300000, guid: deae301297cf745449e47f4cdf147cfb, type: 3}
   Name: Sleep Potion
   <id>k__BackingField: SleepPotion
   displayName: Sleep Potion
-  info: I am a Potion!
+  info: Needs at least two different Herb types.
   potionEffect: 2
   graph: {fileID: 0}
   IsFound: 0

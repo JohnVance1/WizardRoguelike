@@ -103,7 +103,7 @@ public class InventoryUIController : SerializedMonoBehaviour
 
     public void OnFocusInSlot(FocusInEvent evt)
     {
-        current = (Slot_UI)evt.currentTarget;
+        //current = (Slot_UI)evt.currentTarget;
 
         if (m_IsDragging)
         {

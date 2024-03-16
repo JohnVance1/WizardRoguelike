@@ -126,10 +126,10 @@ TextureImporter:
       name: ResearchStation_0
       rect:
         serializedVersion: 2
-        x: 144
-        y: 140
-        width: 48
-        height: 48
+        x: 96
+        y: 160
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -139,6 +139,27 @@ TextureImporter:
       bones: []
       spriteID: 1fcf13c9165563347bfbbf959483ee18
       internalID: 2091886102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ResearchStation_1
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 144
+        width: 48
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d78cc43ad52191d44bb8a0180b5ae5a5
+      internalID: -452516432
       vertices: []
       indices: 
       edges: []
@@ -155,6 +176,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       ResearchStation_0: 2091886102
+      ResearchStation_1: -452516432
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

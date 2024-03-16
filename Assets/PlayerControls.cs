@@ -80,6 +80,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenPotionJournal"",
+                    ""type"": ""Button"",
+                    ""id"": ""1435a683-b496-4774-b9bc-8f3b0ffe0d16"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -273,7 +282,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2451f3c3-627f-40de-9303-9edf73d1b049"",
-                    ""path"": ""<Keyboard>/#(I)"",
+                    ""path"": ""<Keyboard>/j"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -284,7 +293,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4a95b7cc-85d1-4d47-96f8-462cd9ad9c48"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -338,8 +347,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""5bd7cfd6-ec65-4d9b-8a9c-aa0a3de41d81"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""id"": ""f3c0b422-1894-4ba3-be7c-716975eed727"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -349,12 +358,23 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f3c0b422-1894-4ba3-be7c-716975eed727"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""id"": ""6259fe3b-1b02-4289-9767-944e7c78d428"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Sneak"",
+                    ""action"": ""OpenPotionJournal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef4bd49d-cf14-4ae6-a140-5659f4fee255"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenPotionJournal"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -979,6 +999,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_OpenInventory = m_Player.FindAction("OpenInventory", throwIfNotFound: true);
         m_Player_OpenQuestLog = m_Player.FindAction("OpenQuestLog", throwIfNotFound: true);
         m_Player_Sneak = m_Player.FindAction("Sneak", throwIfNotFound: true);
+        m_Player_OpenPotionJournal = m_Player.FindAction("OpenPotionJournal", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1059,6 +1080,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_OpenInventory;
     private readonly InputAction m_Player_OpenQuestLog;
     private readonly InputAction m_Player_Sneak;
+    private readonly InputAction m_Player_OpenPotionJournal;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1069,6 +1091,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @OpenInventory => m_Wrapper.m_Player_OpenInventory;
         public InputAction @OpenQuestLog => m_Wrapper.m_Player_OpenQuestLog;
         public InputAction @Sneak => m_Wrapper.m_Player_Sneak;
+        public InputAction @OpenPotionJournal => m_Wrapper.m_Player_OpenPotionJournal;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1096,6 +1119,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Sneak.started += instance.OnSneak;
             @Sneak.performed += instance.OnSneak;
             @Sneak.canceled += instance.OnSneak;
+            @OpenPotionJournal.started += instance.OnOpenPotionJournal;
+            @OpenPotionJournal.performed += instance.OnOpenPotionJournal;
+            @OpenPotionJournal.canceled += instance.OnOpenPotionJournal;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1118,6 +1144,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Sneak.started -= instance.OnSneak;
             @Sneak.performed -= instance.OnSneak;
             @Sneak.canceled -= instance.OnSneak;
+            @OpenPotionJournal.started -= instance.OnOpenPotionJournal;
+            @OpenPotionJournal.performed -= instance.OnOpenPotionJournal;
+            @OpenPotionJournal.canceled -= instance.OnOpenPotionJournal;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1314,6 +1343,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnOpenInventory(InputAction.CallbackContext context);
         void OnOpenQuestLog(InputAction.CallbackContext context);
         void OnSneak(InputAction.CallbackContext context);
+        void OnOpenPotionJournal(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

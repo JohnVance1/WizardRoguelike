@@ -40,19 +40,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 7
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
+      Data: 6
     - Name: 
       Entry: 7
       Data: 
@@ -135,7 +123,7 @@ MonoBehaviour:
   Name: Fire Potion
   <id>k__BackingField: FirePotion
   displayName: Fire Potion
-  info: I am a Potion!
+  info: Only uses Fire Herbs.
   potionEffect: 4
   graph: {fileID: 0}
   IsFound: 1

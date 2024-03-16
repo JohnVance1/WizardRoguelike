@@ -113,32 +113,32 @@ public class PotionManager : SerializedMonoBehaviour
 
     public Potion CalculatePotion(List<Herb> herbs)
     {
-        //Dictionary<Element, int> herbSum = new Dictionary<Element, int>();
-        //var v = Enum.GetValues(typeof(Element));
-        //foreach (Element h in v)
-        //{
-        //    herbSum[h] = 0;
-        //}
+        Dictionary<Element, int> herbSum = new Dictionary<Element, int>();
+        var v = Enum.GetValues(typeof(Element));
+        foreach (Element h in v)
+        {
+            herbSum[h] = 0;
+        }
 
-        //foreach (Herb h in herbs)
-        //{
-        //    foreach(var p in h.elements)
-        //    {
-        //        herbSum[p.Key] += p.Value;
-        //    }
-        //}
+        foreach (Herb h in herbs)
+        {
+            foreach (var p in h.elements)
+            {
+                herbSum[p.Key] += p.Value;
+            }
+        }
 
-        //Potion potion = GetPotionByElement(herbSum);
+        Potion potion = GetPotionByElement(herbSum);
 
-        //if(potion == null)
-        //{
-        //    Debug.LogWarning("No potion found!!!");
-        //}
+        if (potion == null)
+        {
+            Debug.LogWarning("No potion found!!!");
+        }
 
-        //return potion;
+        return potion;
 
 
-        return potionMap["SleepPotion"];
+        //return potionMap["SleepPotion"];
 
 
 

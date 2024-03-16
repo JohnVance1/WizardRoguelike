@@ -14,7 +14,6 @@ public enum ProcessType
 [Flags]
 public enum Element
 {
-    None = 0,
     Light = 1,
     Shadow = 2,
     Fire = 4,

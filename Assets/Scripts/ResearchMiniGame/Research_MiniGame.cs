@@ -31,6 +31,9 @@ public class Research_MiniGame : MonoBehaviour
 
     public Space startSpace;
     public List<Space> endSpace;
+    public List<Space> turnSpaces;
+    public List<Space> straightSpaces;
+
 
     private int UILayer;
     private bool IsMouseDown;
@@ -70,6 +73,13 @@ public class Research_MiniGame : MonoBehaviour
 
     public ResearchMiniGame_Data activeGame;
 
+    public GameObject completeResearch;
+
+    public GameObject pressSprite;
+    public List<Sprite> pressButtons;
+
+    public InputType storedType;
+    public Player_Interact playerInteract;
 
     private void Awake()
     {
@@ -95,30 +105,54 @@ public class Research_MiniGame : MonoBehaviour
 
             }
         }
-
-
-                //m_Root = GetComponent<UIDocument>().rootVisualElement;
-                //m_Exit = m_Root.Query<Button>("Exit");
-                //RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
-                //RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
+        
+        //m_Root = GetComponent<UIDocument>().rootVisualElement;
+        //m_Exit = m_Root.Query<Button>("Exit");
+        //RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
+        //RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
     }
 
     private void OnEnable()
     {
+        input.UI.Point.performed += OnPointerEnter;
+        input.UI.Click.canceled += MouseUp;
         input.UI.Navigate.performed += OnMove;
         input.UI.ButtonUp.canceled += MouseUp;
         //input.UI.Navigate.canceled += RemovePress;
         input.UI.Navigate.Enable();
+        input.UI.Point.Enable();
     }
 
     private void OnDisable()
     {
         //input.UI.Navigate.canceled -= RemovePress;
+        input.UI.Point.performed -= OnPointerEnter;
         input.UI.Navigate.performed -= OnMove;
         input.UI.ButtonUp.canceled -= MouseUp;
+        input.UI.Click.canceled -= MouseUp;
 
         ResetGame();
 
+    }
+
+    public void DisplayInteractButtons(InputType type, List<Sprite> buttons, GameObject sp)
+    {
+        if (type == InputType.KBM)
+        {
+            sp.GetComponent<Image>().sprite = buttons[0];
+        }
+        else if (type == InputType.XBox)
+        {
+            sp.GetComponent<Image>().sprite = buttons[1];
+
+        }
+        else if (type == InputType.PS)
+        {
+            sp.GetComponent<Image>().sprite = buttons[2];
+
+        }
+
+        sp.SetActive(true);
     }
 
     public Sprite ReturnCornerSprites(List<Sprite> tiles, int x, int y)
@@ -184,17 +218,21 @@ public class Research_MiniGame : MonoBehaviour
         //m_Row3 = m_Root.Q<VisualElement>("Row3");
         //m_Row4 = m_Root.Q<VisualElement>("Row4");
         //m_Row5 = m_Root.Q<VisualElement>("Row5");
+        playerInteract = FindObjectOfType<Player_Interact>();
 
         OpenUI();
 
         m_Exit.onClick.AddListener(() =>
         {
+            ResetGame();
             researchStation.CloseResearchGame();
         });
 
         // Sets up the info about each space's relation to the others
         grid.PopulateGrid();
 
+        storedType = playerInteract.inputType;
+        DisplayInteractButtons(storedType, pressButtons, pressSprite);
 
     }
 
@@ -231,6 +269,7 @@ public class Research_MiniGame : MonoBehaviour
                     {
                         sp.Icon.sprite = ReturnCornerSprites(turnTiles, i, j);
                         sp.type = SpaceType.Black;
+                        turnSpaces.Add(sp);
                     }
                 }
 
@@ -240,12 +279,16 @@ public class Research_MiniGame : MonoBehaviour
                     {
                         sp.Icon.sprite = ReturnCornerSprites(straightTiles, i, j);
                         sp.type = SpaceType.White;
+                        straightSpaces.Add(sp);
+
                     }
                 }
 
 
             }
         }
+
+        playerInteract.EnableUI();
 
     }
 
@@ -255,6 +298,16 @@ public class Research_MiniGame : MonoBehaviour
         foreach (Space end in endSpace)
         {
             CheckCompletePath(startSpace, end);
+        }
+
+        if(PathFound)
+        {
+            DisplayComplete();
+        }
+
+        if (storedType != playerInteract.inputType)
+        {
+            DisplayInteractButtons(storedType, pressButtons, pressSprite);
         }
 
 
@@ -301,7 +354,54 @@ public class Research_MiniGame : MonoBehaviour
     //    researchStation.CloseResearchGame();
     //}
 
-    
+    public void OnPointerEnter(InputAction.CallbackContext context)
+    {
+        if (!IsMouseDown)
+        {
+            return;
+        }
+        //Debug.Log($"Move Vector: {context.ReadValue<Vector2>()}");
+
+        //Vector2 moveVector = context.ReadValue<Vector2>();
+        //Space space = GetSpace(context.ReadValue<Vector2>());
+        //IEnumerable<Space> space = spaces.Where(x =>
+        //       x.worldBound.Contains(evt.position));
+
+
+        Space space = GetMousedOverSquare(GetEventSystemRaycastResults()).GetComponent<Space>();
+        if (space != null)
+        {
+            //Space closestSlot = space.OrderBy(x => Vector2.Distance
+            //   (x.worldBound.position, evt.position)).First();
+            Vector2 moveVector = space.transform.position - tempSpace.transform.position;
+
+            Space closestSlot = space;
+            if (closestSlot != tempSpace && closestSlot != null)
+            {
+                //Debug.DrawLine(startSpace.transform.position, square.transform.position);
+                if (grid.DoesEdgeExist(tempSpace, closestSlot))
+                {
+                    grid.RemoveAnEdge(tempSpace, closestSlot);
+                    tempSpace.UpdateSpace();
+                    closestSlot.UpdateSpace();
+                    EraseLine(-moveVector, closestSlot);
+                    EraseLine(moveVector, tempSpace);
+                }
+                else
+                {
+                    grid.AddAnEdge(tempSpace, closestSlot);
+                    tempSpace.UpdateSpace();
+                    closestSlot.UpdateSpace();
+                    DrawLine(-moveVector, closestSlot);
+                    DrawLine(moveVector, tempSpace);
+
+
+                }
+
+                tempSpace = closestSlot;
+            }
+        }
+    }
 
     // private void OnNavMoveEvent(NavigationMoveEvent evt)
     public void OnMove(InputAction.CallbackContext context)
@@ -369,6 +469,25 @@ public class Research_MiniGame : MonoBehaviour
     }
 
 
+    Vector3[] compass = { Vector3.left, Vector3.right, Vector3.up, Vector3.down };
+
+    public Vector3 ClosestDirection(Vector3 v)
+    {
+	    float maxDot = -Mathf.Infinity;
+        Vector3 ret = Vector3.zero;
+	
+	    foreach(Vector3 dir in compass) 
+        { 
+		    float t = Vector3.Dot(v, dir);
+		    if (t > maxDot) {
+			    ret = dir;
+			    maxDot = t;
+		    }
+	    }
+
+	    return ret;
+    }
+
 
     public void DrawLine(Vector2 moveVec, Space space)
     {
@@ -380,7 +499,9 @@ public class Research_MiniGame : MonoBehaviour
 
         GameObject edge;
 
-        if(moveVec == Vector2.up)
+        moveVec = ClosestDirection(moveVec);
+
+        if (moveVec == Vector2.up)
         {
             edge = space.directionSpaces[0];
             edge.SetActive(true);
@@ -422,6 +543,8 @@ public class Research_MiniGame : MonoBehaviour
        
         GameObject edge;
 
+        moveVec = ClosestDirection(moveVec);
+
         if (moveVec == Vector2.up)
         {
             edge = space.directionSpaces[0];
@@ -459,6 +582,29 @@ public class Research_MiniGame : MonoBehaviour
 
     }
 
+    public void ReleaseMouse()
+    {
+        if (!IsMouseDown)
+        {
+            return;
+        }
+        IsMouseDown = false;
+        tempSpace = null;
+    }
+
+    public void DisplayComplete()
+    {
+        completeResearch.SetActive(true);
+        StartCoroutine(ActivateDisplay());
+    }
+
+    public IEnumerator ActivateDisplay()
+    {
+        yield return new WaitForSeconds(1.5f);
+        completeResearch.SetActive(false);
+        ResetGame();
+        researchStation.CloseResearchGame();
+    }
 
     private void MouseUp(InputAction.CallbackContext context)
     {
@@ -474,9 +620,6 @@ public class Research_MiniGame : MonoBehaviour
     }
 
     
-
-
-
     private void OnDrawGizmos()
     {
         //Gizmos.color = Color.red;
@@ -533,7 +676,7 @@ public class Research_MiniGame : MonoBehaviour
             }
         }
 
-        if (path.ContainsKey(end))
+        if (path.ContainsKey(end) && CheckTiles())
         {
             Space startEnd = end;
             while (end != start)
@@ -547,9 +690,40 @@ public class Research_MiniGame : MonoBehaviour
         }
     }
 
+    public bool CheckTiles()
+    {
+        foreach(Space sp in straightSpaces)
+        {
+            if (sp.IsSatisfied == false)
+            {
+                return false;
+            }
+        }
+
+        foreach (Space sp in turnSpaces)
+        {
+            if (sp.IsSatisfied == false)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void ResetGame()
     {
         grid.RemoveAllEdges();
+
+        foreach(Space sp in spaces)
+        {
+            foreach(GameObject go in sp.directionSpaces)
+            {
+                go.SetActive(false);
+            }
+            
+        }
+
         PathFound = false;
 
     }

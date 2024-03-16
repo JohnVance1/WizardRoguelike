@@ -7,7 +7,6 @@ using UnityEngine;
 [Flags]
 public enum PotionEffect
 {
-    None = 0,
     Light = 1,
     Shadow = 2,
     Fire = 4,

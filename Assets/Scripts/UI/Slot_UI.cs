@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 
 public abstract class Slot_UI : MonoBehaviour
 {
+    [SerializeField]
     public InventoryItem storedItem;
     protected Sprite defaultIcon;
     [SerializeField]

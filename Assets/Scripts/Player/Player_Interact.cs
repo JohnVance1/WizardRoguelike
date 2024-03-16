@@ -5,6 +5,16 @@ using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.InputSystem.Users;
+
+
+public enum InputType
+{
+    None,
+    KBM,
+    XBox,
+    PS
+}
 
 public class Player_Interact : MonoBehaviour
 {
@@ -12,11 +22,16 @@ public class Player_Interact : MonoBehaviour
     public GameObject InventoryCanvas;
     private bool IsInventoryOpen;
 
-    public GameObject JournalCanvas;
-    private bool IsJournalOpen;
+    public GameObject HerbJournalCanvas;
+    private bool IsHerbJournalOpen;
+
+    public GameObject PotionJournalCanvas;
+    private bool IsPotionJournalOpen;
 
     public GameObject QuestLogUI;
     private bool IsQuestLogOpen;
+
+    public GameObject DefaultUI;
 
     private bool IsCauldronOpen;
 
@@ -27,6 +42,9 @@ public class Player_Interact : MonoBehaviour
     public bool IsInteractButtonDown { get; private set; }
     public Player player;
     public bool IsCrouched;
+
+    public InputType inputType;
+
 
     #region Movement Variables
     [SerializeField]
@@ -46,7 +64,8 @@ public class Player_Interact : MonoBehaviour
     {
         input = new PlayerControls();
         IsCrouched = false;
-
+        PlayerInput inputContoller = FindObjectOfType<PlayerInput>();
+        updateButtonImage(inputContoller.currentControlScheme);
     }
 
     private void OnEnable()
@@ -64,11 +83,17 @@ public class Player_Interact : MonoBehaviour
         input.Player.OpenJournal.performed += JournalInput;
         input.Player.OpenJournal.Enable();
 
+        input.Player.OpenPotionJournal.performed += PotionJournalInput;
+        input.Player.OpenPotionJournal.Enable();
+
         input.Player.OpenQuestLog.performed += QuestLogInput;
         input.Player.OpenQuestLog.Enable();
 
         input.Player.Sneak.performed += Crouch;
         input.Player.Sneak.Enable();
+
+        InputUser.onChange += onInputDeviceChange;
+
     }
 
     private void OnDisable()
@@ -79,13 +104,18 @@ public class Player_Interact : MonoBehaviour
 
         input.Player.OpenInventory.performed -= InventoryInput;
         input.Player.OpenJournal.performed -= JournalInput;
+        input.Player.OpenPotionJournal.performed -= PotionJournalInput;
         input.Player.OpenQuestLog.performed -= QuestLogInput;
         input.Player.Sneak.performed -= Crouch;
 
         input.Player.Sneak.Disable();
         input.Player.Interact.Disable();
         input.Player.OpenJournal.Disable();
+        input.Player.OpenPotionJournal.Disable();
         input.Player.OpenQuestLog.Disable();
+
+        InputUser.onChange -= onInputDeviceChange;
+
 
     }
 
@@ -94,7 +124,9 @@ public class Player_Interact : MonoBehaviour
     void Start()
     {
         IsInventoryOpen = false;
-        IsJournalOpen = false;
+        IsHerbJournalOpen = false;
+        IsPotionJournalOpen = false;
+
         IsQuestLogOpen = false;
         input.Player.Enable();
         input.UI.Disable();
@@ -196,6 +228,28 @@ public class Player_Interact : MonoBehaviour
             animator.SetBool("IsMoving", false);
         }
 
+    }  
+
+    void onInputDeviceChange(InputUser user, InputUserChange change, InputDevice device)
+    {
+        if (change == InputUserChange.ControlSchemeChanged)
+        {
+            updateButtonImage(user.controlScheme.Value.name);
+        }
+    }
+
+    void updateButtonImage(string schemeName)
+    {
+        if (schemeName.Equals("Gamepad"))
+        {
+            inputType = InputType.XBox;
+            print("Xbox gamepad");
+        }
+        else
+        {
+            inputType = InputType.KBM;
+            print("Mouse and Keyboard");
+        }
     }
 
     public void Crouch(InputAction.CallbackContext context)
@@ -218,13 +272,25 @@ public class Player_Interact : MonoBehaviour
 
     public void JournalInput(InputAction.CallbackContext context)
     {
-        if (IsJournalOpen)
+        if (IsHerbJournalOpen)
         {
-            CloseJournal();
+            CloseHerbJournal();
         }
         else
         {
-            OpenJournal();
+            OpenHerbJournal();
+        }
+    }
+
+    public void PotionJournalInput(InputAction.CallbackContext context)
+    {
+        if (IsPotionJournalOpen)
+        {
+            ClosePotionJournal();
+        }
+        else
+        {
+            OpenPotionJournal();
         }
     }
 
@@ -258,11 +324,15 @@ public class Player_Interact : MonoBehaviour
         {
             CloseInventory();
         }
-        if(IsJournalOpen)
+        if(IsHerbJournalOpen)
         {
-            CloseJournal();
+            CloseHerbJournal();
         }
-        if(IsQuestLogOpen)
+        if (IsPotionJournalOpen)
+        {
+            ClosePotionJournal();
+        }
+        if (IsQuestLogOpen)
         {
             CloseQuestLog();
         }
@@ -271,12 +341,15 @@ public class Player_Interact : MonoBehaviour
 
     public void EnablePlayer()
     {
+        DefaultUI.SetActive(true);
         input.UI.Disable();
         input.Player.Enable();
+
     }
 
     public void EnableUI()
     {
+        DefaultUI.SetActive(false);
         input.Player.Disable();
         input.UI.Enable();
         IsInteractButtonDown = false;
@@ -300,23 +373,38 @@ public class Player_Interact : MonoBehaviour
         EnablePlayer();
     }
 
-    public void OpenJournal()
+    public void OpenHerbJournal()
     {
-        //JournalCanvas.gameObject.SetActive(true);
-        JournalCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-        JournalCanvas.GetComponent<Journal_UI>().OpenUI();
-        IsJournalOpen = true;
+        HerbJournalCanvas.gameObject.SetActive(true);
+        //HerbJournalCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        HerbJournalCanvas.GetComponent<HerbJournal_UI>().OpenUI();
+        IsHerbJournalOpen = true;
         EnableUI();
     }
-    public void CloseJournal()
+    public void CloseHerbJournal()
     {
-        //JournalCanvas.gameObject.SetActive(false);
-        JournalCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        HerbJournalCanvas.gameObject.SetActive(false);
+        //HerbJournalCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
 
-        IsJournalOpen = false;
+        IsHerbJournalOpen = false;
         EnablePlayer();
+    }
 
+    public void OpenPotionJournal()
+    {
+        PotionJournalCanvas.gameObject.SetActive(true);
+        //HerbJournalCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        PotionJournalCanvas.GetComponent<PotionJournal_UI>().OpenUI();
+        IsPotionJournalOpen = true;
+        EnableUI();
+    }
+    public void ClosePotionJournal()
+    {
+        PotionJournalCanvas.gameObject.SetActive(false);
+        //HerbJournalCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
 
+        IsPotionJournalOpen = false;
+        EnablePlayer();
     }
 
     public void OpenQuestLog()

@@ -31,6 +31,8 @@ public class Space : MonoBehaviour, ISubmitHandler, ISelectHandler, IDeselectHan
     public SpaceType type;
     public Image Icon;
 
+    public bool IsSatisfied { get; private set; }
+
     public bool IsError { get; private set; }
 
     public delegate void OnMouseDown(Vector3 pos, Space slot);
@@ -62,7 +64,7 @@ public class Space : MonoBehaviour, ISubmitHandler, ISelectHandler, IDeselectHan
         onEdgesChange += CheckNodeBehavior;
         //c = this.style.backgroundColor.value;
         eventSystem = EventSystem.current;
-
+        IsSatisfied = false;
 
         //RegisterCallback<PointerDownEvent>(OnPointerDown);
         //RegisterCallback<PointerUpEvent>(OnPointerUp);
@@ -93,7 +95,10 @@ public class Space : MonoBehaviour, ISubmitHandler, ISelectHandler, IDeselectHan
 
     //}
 
-    
+    /// <summary>
+    /// Used for XBox controller
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnSubmit(BaseEventData eventData)
     {
         UnityEngine.Debug.Log($"Submit OBJ: {eventData.selectedObject.name}");
@@ -106,16 +111,30 @@ public class Space : MonoBehaviour, ISubmitHandler, ISelectHandler, IDeselectHan
 
         onMouseDown(center, this);
     }
+
+    /// <summary>
+    /// Used for Mouse and Keyboard
+    /// </summary>
+    public void ButtonDown()
+    {
+        Vector3 center = this.transform.position;
+
+        RemoveDiagonals();
+
+        CheckNodeBehavior();
+
+        onMouseDown(center, this);
+    }
     
     public void OnSelect(BaseEventData eventData)
     {
-        UnityEngine.Debug.Log($"Selected OBJ: {eventData.selectedObject.name}");
+        //UnityEngine.Debug.Log($"Selected OBJ: {eventData.selectedObject.name}");
         //onMoveController(this.transform.position, this);
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        UnityEngine.Debug.Log($"Selected OBJ: {eventData.selectedObject}");
+        //UnityEngine.Debug.Log($"Selected OBJ: {eventData.selectedObject}");
     }
         
 
@@ -280,6 +299,13 @@ public class Space : MonoBehaviour, ISubmitHandler, ISelectHandler, IDeselectHan
                 if (!CheckEdgesTurn(Edges[0], Edges[1]))
                 {
                     ErrorDisplay();
+                    IsSatisfied = false;
+                }
+                else
+                {
+                    IsSatisfied = true;
+                    Icon.color = Color.white;
+
                 }
             }
             else if (type == SpaceType.White)
@@ -287,6 +313,13 @@ public class Space : MonoBehaviour, ISubmitHandler, ISelectHandler, IDeselectHan
                 if (!CheckEdgesSraight(Edges[0], Edges[1]))
                 {
                     ErrorDisplay();
+                    IsSatisfied = false;
+                }
+                else
+                {
+                    IsSatisfied = true;
+                    Icon.color = Color.white;
+
                 }
 
             }
@@ -299,6 +332,11 @@ public class Space : MonoBehaviour, ISubmitHandler, ISelectHandler, IDeselectHan
         else if (Edges.Count > 2)
         {
             ErrorDisplay();
+        }
+        else
+        {
+            Icon.color = Color.white;
+
         }
     }
 
@@ -346,6 +384,7 @@ public class Space : MonoBehaviour, ISubmitHandler, ISelectHandler, IDeselectHan
     public void ErrorDisplay()
     {
         UnityEngine.Debug.Log("Error with space X: " + x + " Y: " + y);
+        Icon.color = Color.red;
     }
 
     
