@@ -43,6 +43,10 @@ public class InventoryUIController : SerializedMonoBehaviour
     private int currentX;
     private int currentY;
 
+    public GameObject defaultUI;
+    public GameObject needsResearch;
+    public GameObject alreadyResearched;
+
 
     private void Awake()
     {
@@ -309,6 +313,26 @@ public class InventoryUIController : SerializedMonoBehaviour
     {
         //Debug.Log("X: " + currentX);
         //Debug.Log("Y: " + currentY);
+        bool gameEndFire = false;
+        bool gameEndShadow = false;
+
+        for (int i = 0; i < inv.inventory.Count; i++)
+        {
+            if (inv.inventory[i].item.Name == "Fire Potion")
+            {
+                gameEndFire = true;
+            }
+            if (inv.inventory[i].item.Name == "Sleep Potion")
+            {
+                gameEndShadow = true;
+            }
+
+        }
+        if(gameEndFire && gameEndShadow) 
+        {
+            defaultUI.GetComponent<DefaultHUD_UI>().EndGame();
+        }
+        
 
     }
 
@@ -454,6 +478,9 @@ public class InventoryUIController : SerializedMonoBehaviour
                         else
                         {
                             Debug.Log("This Herb has been researched already!");
+                            alreadyResearched.SetActive(true);
+                            StartCoroutine(AlreadyResearch());
+
                         }
                     }
                     break;
@@ -470,6 +497,8 @@ public class InventoryUIController : SerializedMonoBehaviour
                         else
                         {
                             Debug.Log("This Herb needs to be researched!!");
+                            needsResearch.SetActive(true);
+                            StartCoroutine(NeedsResearch());
                         }
                     }
                     break;
@@ -491,6 +520,17 @@ public class InventoryUIController : SerializedMonoBehaviour
 
         }
 
+    }
+
+    public IEnumerator AlreadyResearch()
+    {
+        yield return new WaitForSeconds(1.5f);
+        alreadyResearched.SetActive(false);
+    }
+    public IEnumerator NeedsResearch()
+    {
+        yield return new WaitForSeconds(1.5f);
+        needsResearch.SetActive(false);
     }
 
     private void OnInventoryAdd(InventoryItem item)

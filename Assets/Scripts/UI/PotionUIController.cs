@@ -44,6 +44,10 @@ public class PotionUIController : SerializedMonoBehaviour
     private Slot_UI m_OriginalSlot;
     private Sprite m_OriginalSprite;
 
+    public List<Sprite> pressButtons;
+    public GameObject pressSprite;
+    public InputType storedType;
+    public Player_Interact playerInteract;
 
 
     public bool IsActive;
@@ -97,8 +101,8 @@ public class PotionUIController : SerializedMonoBehaviour
         //m_Distiller.clicked += ActivateDistil;
         //m_Crusher.clicked += ActivateCrush;
         //m_Smoker.clicked += ActivateSmoke;
+        playerInteract = FindObjectOfType<Player_Interact>();
 
-       
         IsFinished = true;
 
     }
@@ -121,7 +125,14 @@ public class PotionUIController : SerializedMonoBehaviour
         }
     }
 
-
+    private void Update()
+    {
+        if (storedType != playerInteract.inputType)
+        {
+            storedType = playerInteract.inputType;
+            DisplayInteractButtons(storedType, pressButtons, pressSprite);
+        }
+    }
 
 
     public void ButtonCallback(InventoryItem item)
@@ -129,6 +140,26 @@ public class PotionUIController : SerializedMonoBehaviour
         player.AddItemToInventory(cauldron.AddBackHerb((Herb)item.item));
         cauldron.RemoveHerb((Herb)item.item);
         RemoveRadar((Herb)item.item);
+    }
+
+    public void DisplayInteractButtons(InputType type, List<Sprite> buttons, GameObject sp)
+    {
+        if (type == InputType.KBM)
+        {
+            sp.GetComponent<Image>().sprite = buttons[0];
+        }
+        else if (type == InputType.XBox)
+        {
+            sp.GetComponent<Image>().sprite = buttons[1];
+
+        }
+        else if (type == InputType.PS)
+        {
+            sp.GetComponent<Image>().sprite = buttons[2];
+
+        }
+
+        sp.SetActive(true);
     }
 
     public void SetSlotHerb(Slot_UI slot)
@@ -430,6 +461,7 @@ public class PotionUIController : SerializedMonoBehaviour
     public void SetPlayer(Player p)
     {
         player = p;
+
     }
 
     public void UseDevice(Herb herb, Player p)

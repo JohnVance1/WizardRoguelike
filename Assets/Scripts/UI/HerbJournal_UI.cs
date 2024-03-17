@@ -24,6 +24,15 @@ public class HerbJournal_UI : MonoBehaviour
     public GameObject player;
     private PlayerControls input;
 
+    public List<Sprite> selectButtons;
+    public GameObject selectSprite;
+
+    public List<Sprite> exitButtons;
+    public GameObject exitSprite;
+
+    public InputType storedType;
+    public Player_Interact playerInteract;
+
     private void OnEnable()
     {
         input = GetComponentInParent<Player_Interact>().input;
@@ -41,6 +50,10 @@ public class HerbJournal_UI : MonoBehaviour
     private void Start()
     {
         player = transform.parent.gameObject;
+        playerInteract = player.GetComponent<Player>().interact;
+        storedType = playerInteract.inputType;
+        DisplayInteractButtons(storedType, selectButtons, selectSprite);
+        DisplayInteractButtons(storedType, exitButtons, exitSprite);
         Selected(herbSlots[0].GetComponent<HerbJournal_Slot>());
         foreach (Button herb in herbSlots)
         {
@@ -48,7 +61,41 @@ public class HerbJournal_UI : MonoBehaviour
         }
     }
 
-    
+    public void Update()
+    {
+        if (storedType != playerInteract.inputType)
+        {
+            storedType = playerInteract.inputType;
+            DisplayInteractButtons(storedType, selectButtons, selectSprite);
+            DisplayInteractButtons(storedType, exitButtons, exitSprite);
+        }
+    }
+
+    public void DisplayInteractButtons(InputType type, List<Sprite> buttons, GameObject sp)
+    {
+        sp.GetComponent<RectTransform>().sizeDelta = new Vector2(16, 16);
+        if (type == InputType.KBM)
+        {
+            if (buttons == exitButtons)
+            {
+                sp.GetComponent<RectTransform>().sizeDelta = new Vector2(32, 16);
+            }
+        }
+        else if (type == InputType.XBox)
+        {
+            sp.GetComponent<Image>().sprite = buttons[1];
+
+        }
+        else if (type == InputType.PS)
+        {
+            sp.GetComponent<Image>().sprite = buttons[2];
+
+        }
+
+        sp.SetActive(true);
+    }
+
+
 
     public void OpenUI()
     {

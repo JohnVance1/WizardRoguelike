@@ -15,6 +15,8 @@ public class ResearchStation : Interactable_Base
 
     public GameObject researchCanvas;
 
+    public Herb researchedHerb;
+
     //[System.NonSerialized, OdinSerialize]
     public List<ResearchMiniGame_Data> miniGames;
 
@@ -88,6 +90,12 @@ public class ResearchStation : Interactable_Base
         }
     }
 
+    public void GameComplete()
+    {
+        researchedHerb.IsResearched = true;
+
+    }
+
     public void Cancel(InputAction.CallbackContext context)
     {
         Debug.Log("OnCancel");
@@ -129,8 +137,8 @@ public class ResearchStation : Interactable_Base
             return null;            
         }
 
-
-        foreach(ResearchMiniGame_Data data in miniGames)
+        researchedHerb = herb;
+        foreach (ResearchMiniGame_Data data in miniGames)
         {
             if(data.herb == herb)
             {

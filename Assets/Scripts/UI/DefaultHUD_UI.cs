@@ -16,12 +16,27 @@ public class DefaultHUD_UI : MonoBehaviour
     public InputType storedType;
     public Player_Interact playerInteract;
 
+    public GameObject startMsg;
+    public GameObject endMsg;
+
+    private void Awake()
+    {
+        startMsg.SetActive(true);
+
+    }
+
     private void Start()
     {
         storedType = playerInteract.inputType;
         DisplayInteractButtons(storedType, herbJournalButtons, herbJournalSprite);
         DisplayInteractButtons(storedType, potionJournalButtons, potionJournalSprite);
         DisplayInteractButtons(storedType, inventoryButtons, inventorySprite);
+        OpenGame();
+    }
+
+    public void OpenGame()
+    {
+        StartCoroutine(StartGame());
     }
 
 
@@ -55,5 +70,16 @@ public class DefaultHUD_UI : MonoBehaviour
         }
 
         sp.SetActive(true);
+    }
+
+    public IEnumerator StartGame()
+    {
+        yield return new WaitForSeconds(2.5f);
+        startMsg.SetActive(false);
+    }
+
+    public void EndGame()
+    {
+        endMsg.SetActive(true);
     }
 }

@@ -5,7 +5,6 @@ using Sirenix.OdinInspector;
 using UnityEngine.InputSystem.DualShock;
 using UnityEngine.InputSystem.XInput;
 using UnityEngine.InputSystem;
-using Sirenix.OdinInspector.Editor.GettingStarted;
 using UnityEngine.InputSystem.Users;
 using UnityEngine.Windows;
 

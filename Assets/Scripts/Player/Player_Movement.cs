@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
-using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
 public class Player_Movement : MonoBehaviour
@@ -43,79 +41,79 @@ public class Player_Movement : MonoBehaviour
 
     
 
-    public void Movement(InputAction.CallbackContext context)
-    {
-        Vector2 move = context.ReadValue<Vector2>();
-        //horizontal = Input.GetAxisRaw("Horizontal");
+    //public void Movement(InputAction.CallbackContext context)
+    //{
+    //    Vector2 move = context.ReadValue<Vector2>();
+    //    //horizontal = Input.GetAxisRaw("Horizontal");
 
-        //vertical = Input.GetAxisRaw("Vertical");
-        if (move.x != 0 && move.y != 0)
-        {
-            prevHorizontal = move.x;
-            prevVertical = move.y;
+    //    //vertical = Input.GetAxisRaw("Vertical");
+    //    if (move.x != 0 && move.y != 0)
+    //    {
+    //        prevHorizontal = move.x;
+    //        prevVertical = move.y;
 
-        }
-        else if (move.x != 0)
-        {
-            prevHorizontal = move.y;
-            prevVertical = 0;
+    //    }
+    //    else if (move.x != 0)
+    //    {
+    //        prevHorizontal = move.y;
+    //        prevVertical = 0;
 
-        }
-        else if (move.y != 0)
-        {
-            prevVertical = move.y;
-            prevHorizontal = 0;
+    //    }
+    //    else if (move.y != 0)
+    //    {
+    //        prevVertical = move.y;
+    //        prevHorizontal = 0;
 
-        }
+    //    }
 
-        if (move.x < 0 && move.y < 0)
-        {
-            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontLeft];
-        }
+    //    if (move.x < 0 && move.y < 0)
+    //    {
+    //        GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontLeft];
+    //    }
 
-        if (move.x > 0 && move.y < 0)
-        {
-            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontRight];
-        }
+    //    if (move.x > 0 && move.y < 0)
+    //    {
+    //        GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontRight];
+    //    }
 
-        if (move.x < 0 && move.y > 0)
-        {
-            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackLeft];
-        }
+    //    if (move.x < 0 && move.y > 0)
+    //    {
+    //        GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackLeft];
+    //    }
 
-        if (move.x > 0 && move.y > 0)
-        {
-            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackRight];
-        }
+    //    if (move.x > 0 && move.y > 0)
+    //    {
+    //        GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackRight];
+    //    }
 
-        if (move.x > 0 && move.y == 0)
-        {
-            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontRight];
-        }
+    //    if (move.x > 0 && move.y == 0)
+    //    {
+    //        GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontRight];
+    //    }
 
-        if (move.x < 0 && move.y == 0)
-        {
-            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontLeft];
-        }
+    //    if (move.x < 0 && move.y == 0)
+    //    {
+    //        GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.FrontLeft];
+    //    }
 
-        if (move.x == 0 && move.y > 0)
-        {
-            GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackRight];
-        }
+    //    if (move.x == 0 && move.y > 0)
+    //    {
+    //        GetComponentInChildren<SpriteRenderer>().sprite = directionSprites[(int)Sprites.BackRight];
+    //    }
 
         
 
-        rb.velocity = move.normalized * speed;
+    //    rb.velocity = move.normalized * speed;
 
-        if (rb.velocity != Vector2.zero)
-        {
-            animator.SetBool("IsMoving", true);
-        }
-        else
-        {
-            animator.SetBool("IsMoving", false);
-        }
+    //    if (rb.velocity != Vector2.zero)
+    //    {
+    //        animator.SetBool("IsMoving", true);
+    //    }
+    //    else
+    //    {
+    //        animator.SetBool("IsMoving", false);
+    //    }
 
-    }
+    //}
 
 }

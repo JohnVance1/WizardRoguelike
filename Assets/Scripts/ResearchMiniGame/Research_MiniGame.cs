@@ -8,8 +8,6 @@ using Sirenix.Serialization;
 using System;
 using UnityEngine.UI;
 using System.Linq;
-using static UnityEditor.VersionControl.Asset;
-using static UnityEngine.ParticleSystem;
 using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -302,6 +300,7 @@ public class Research_MiniGame : MonoBehaviour
 
         if(PathFound)
         {
+            researchStation.GameComplete();
             DisplayComplete();
         }
 
