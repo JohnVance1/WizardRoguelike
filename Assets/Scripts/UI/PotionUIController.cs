@@ -19,6 +19,7 @@ public class PotionUIController : SerializedMonoBehaviour
     public List<Device> devices;
     public Potion potion;
 
+    public GameObject invalidPotionUI;
 
     public Player player;
     //private VisualElement m_Root;
@@ -43,6 +44,10 @@ public class PotionUIController : SerializedMonoBehaviour
     private Slot_UI m_OriginalSlot;
     private Sprite m_OriginalSprite;
 
+    public List<Sprite> pressButtons;
+    public GameObject pressSprite;
+    public InputType storedType;
+    public Player_Interact playerInteract;
 
 
     public bool IsActive;
@@ -96,8 +101,8 @@ public class PotionUIController : SerializedMonoBehaviour
         //m_Distiller.clicked += ActivateDistil;
         //m_Crusher.clicked += ActivateCrush;
         //m_Smoker.clicked += ActivateSmoke;
+        playerInteract = FindObjectOfType<Player_Interact>();
 
-       
         IsFinished = true;
 
     }
@@ -120,14 +125,41 @@ public class PotionUIController : SerializedMonoBehaviour
         }
     }
 
-
+    private void Update()
+    {
+        if (storedType != playerInteract.inputType)
+        {
+            storedType = playerInteract.inputType;
+            DisplayInteractButtons(storedType, pressButtons, pressSprite);
+        }
+    }
 
 
     public void ButtonCallback(InventoryItem item)
     {
         player.AddItemToInventory(cauldron.AddBackHerb((Herb)item.item));
         cauldron.RemoveHerb((Herb)item.item);
+        RemoveRadar((Herb)item.item);
+    }
 
+    public void DisplayInteractButtons(InputType type, List<Sprite> buttons, GameObject sp)
+    {
+        if (type == InputType.KBM)
+        {
+            sp.GetComponent<Image>().sprite = buttons[0];
+        }
+        else if (type == InputType.XBox)
+        {
+            sp.GetComponent<Image>().sprite = buttons[1];
+
+        }
+        else if (type == InputType.PS)
+        {
+            sp.GetComponent<Image>().sprite = buttons[2];
+
+        }
+
+        sp.SetActive(true);
     }
 
     public void SetSlotHerb(Slot_UI slot)
@@ -330,12 +362,21 @@ public class PotionUIController : SerializedMonoBehaviour
         int radarPoint = 0;
         foreach(var ele in herb.elements)
         {
-            radarGraph.value[radarPoint] += (((float)ele.Value) / 10.0f);
+            radarGraph.value[radarPoint] += Mathf.Clamp((((float)ele.Value) / 5.0f), 0f, 1f);
             radarGraph.SetAllDirty();
             radarPoint++;
         }
+    }
 
-
+    public void RemoveRadar(Herb herb)
+    {
+        int radarPoint = 0;
+        foreach (var ele in herb.elements)
+        {
+            radarGraph.value[radarPoint] -= Mathf.Clamp((((float)ele.Value) / 5.0f), 0f, 1f);
+            radarGraph.SetAllDirty();
+            radarPoint++;
+        }
     }
 
     public void AddToSlots(Herb herb, ProcessType type = ProcessType.Raw)
@@ -357,20 +398,55 @@ public class PotionUIController : SerializedMonoBehaviour
         if (cauldron.storedHerbs.Count > 0)
         {
             Potion p = potionManager.CalculatePotion(cauldron.storedHerbs);
-            player.AddItemToInventory(p.info);
+            if(p != null)
+            {
+                player.AddItemToInventory(p.info);
+
+            }
+            else
+            {
+                CancelPotion();
+                ActivateInValidPotion();
+                return;
+            }
             //player.AddItemToInventory(potion.info);
 
-            cauldron.storedHerbs.Clear();
             currentHerb = null;
+            foreach (Herb h in cauldron.storedHerbs)
+            {
+                RemoveRadar(h);
+            }
+            cauldron.storedHerbs.Clear();
+            foreach (CauldronSlot slot in CauldronSlots)
+            {
+                slot.Clear();
+
+            }
+
         }
+    }
+
+    public void ActivateInValidPotion()
+    {
+        invalidPotionUI.SetActive(true);
+
+        StartCoroutine(OpenPotionWindow());
+
+    }
+
+    public IEnumerator OpenPotionWindow()
+    {
+        yield return new WaitForSeconds(1f);
+        invalidPotionUI.SetActive(false);
+
     }
 
     public void CancelPotion()
     {
         foreach (Herb h in cauldron.storedHerbs)
         {
-
             player.AddItemToInventory(cauldron.AddBackHerb(h));
+            RemoveRadar(h);
         }
         cauldron.storedHerbs.Clear();
 
@@ -385,6 +461,7 @@ public class PotionUIController : SerializedMonoBehaviour
     public void SetPlayer(Player p)
     {
         player = p;
+
     }
 
     public void UseDevice(Herb herb, Player p)

@@ -8,8 +8,6 @@ using Sirenix.Serialization;
 using System;
 using UnityEngine.UI;
 using System.Linq;
-using static UnityEditor.VersionControl.Asset;
-using static UnityEngine.ParticleSystem;
 using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -31,6 +29,9 @@ public class Research_MiniGame : MonoBehaviour
 
     public Space startSpace;
     public List<Space> endSpace;
+    public List<Space> turnSpaces;
+    public List<Space> straightSpaces;
+
 
     private int UILayer;
     private bool IsMouseDown;
@@ -68,6 +69,15 @@ public class Research_MiniGame : MonoBehaviour
     private InputAction move_UI;
     private InputAction submit_UI;
 
+    public ResearchMiniGame_Data activeGame;
+
+    public GameObject completeResearch;
+
+    public GameObject pressSprite;
+    public List<Sprite> pressButtons;
+
+    public InputType storedType;
+    public Player_Interact playerInteract;
 
     private void Awake()
     {
@@ -93,30 +103,103 @@ public class Research_MiniGame : MonoBehaviour
 
             }
         }
-
-
-                //m_Root = GetComponent<UIDocument>().rootVisualElement;
-                //m_Exit = m_Root.Query<Button>("Exit");
-                //RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
-                //RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
+        
+        //m_Root = GetComponent<UIDocument>().rootVisualElement;
+        //m_Exit = m_Root.Query<Button>("Exit");
+        //RegisterCallback<NavigationMoveEvent>(OnNavMoveEvent);
+        //RegisterCallback<NavigationCancelEvent>(OnNavCancelEvent);
     }
 
     private void OnEnable()
     {
+        input.UI.Point.performed += OnPointerEnter;
+        input.UI.Click.canceled += MouseUp;
         input.UI.Navigate.performed += OnMove;
         input.UI.ButtonUp.canceled += MouseUp;
         //input.UI.Navigate.canceled += RemovePress;
         input.UI.Navigate.Enable();
+        input.UI.Point.Enable();
     }
 
     private void OnDisable()
     {
         //input.UI.Navigate.canceled -= RemovePress;
+        input.UI.Point.performed -= OnPointerEnter;
         input.UI.Navigate.performed -= OnMove;
         input.UI.ButtonUp.canceled -= MouseUp;
+        input.UI.Click.canceled -= MouseUp;
 
         ResetGame();
 
+    }
+
+    public void DisplayInteractButtons(InputType type, List<Sprite> buttons, GameObject sp)
+    {
+        if (type == InputType.KBM)
+        {
+            sp.GetComponent<Image>().sprite = buttons[0];
+        }
+        else if (type == InputType.XBox)
+        {
+            sp.GetComponent<Image>().sprite = buttons[1];
+
+        }
+        else if (type == InputType.PS)
+        {
+            sp.GetComponent<Image>().sprite = buttons[2];
+
+        }
+
+        sp.SetActive(true);
+    }
+
+    public Sprite ReturnCornerSprites(List<Sprite> tiles, int x, int y)
+    {
+        Sprite sprite = null;
+        if (x == 0 && y == 0)
+        {
+            sprite = tiles[8];
+
+        }
+        else if (x == height - 1 && y == width - 1)
+        {
+            sprite = tiles[2];
+
+        }
+        else if (x == 0 && y == width - 1)
+        {
+            sprite = tiles[9];
+
+        }
+        else if (x == height - 1 && y == 0)
+        {
+            sprite = tiles[1];
+
+        }
+        else if (x == 0)
+        {
+            sprite = tiles[6];
+
+        }
+        else if (y == 0)
+        {
+            sprite = tiles[5];
+
+        }
+        else if (x == height - 1)
+        {
+            sprite = tiles[7];
+        }
+        else if (y == width - 1)
+        {
+            sprite = tiles[3];
+        }
+        else
+        {
+            sprite = tiles[0];
+        }
+
+        return sprite;
     }
 
 
@@ -133,113 +216,77 @@ public class Research_MiniGame : MonoBehaviour
         //m_Row3 = m_Root.Q<VisualElement>("Row3");
         //m_Row4 = m_Root.Q<VisualElement>("Row4");
         //m_Row5 = m_Root.Q<VisualElement>("Row5");
+        playerInteract = FindObjectOfType<Player_Interact>();
 
-        for (int i = 0; i < height; i++)
-        {
-            for (int j = 0; j < width; j++)
-            {
-                // Adds all of the grid spaces to the grid
-                //grid.grid[i, j] = spaces[i, j].GetComponent<Space>();
-                Space sp = grid.grid[i, j];
-                
-
-                //grid.grid[i, j] = sp;
-                //sp.Icon.sprite = defaultTiles[0];
-                ////sp.parent = m_Rows[i];
-                ////m_Rows[i].(sp);
-                //spaces.Add(sp);
-                //sp.onMouseDown += ButtonCall;
-                //sp.onMouseUp += MouseUp;
-
-                if (i == 0 && j == 0)
-                {
-                    sp.Icon.sprite = defaultTiles[8];
-
-                }
-                else if (i == height - 1 && j == width - 1)
-                {
-                    sp.Icon.sprite = defaultTiles[2];
-
-                }
-                else if (i == 0 && j == width - 1)
-                {
-                    sp.Icon.sprite = defaultTiles[9];
-
-                }
-                else if (i == height - 1 && j == 0)
-                {
-                    sp.Icon.sprite = defaultTiles[1];
-
-                }
-                else if (i == 0)
-                {
-                    sp.Icon.sprite = defaultTiles[6];
-
-                }
-                else if (j == 0)
-                {
-                    sp.Icon.sprite = defaultTiles[5];
-
-                }
-                else if (i == height - 1)
-                {
-                    sp.Icon.sprite = defaultTiles[7];
-                }
-                else if (j == width - 1)
-                {
-                    sp.Icon.sprite = defaultTiles[3];
-                }
-                else
-                {
-                    sp.Icon.sprite = defaultTiles[0];
-                }
-
-
-                if (i == 3 && j == 3)
-                {
-                    //sp.style.backgroundColor = Color.red;
-                    sp.Icon.sprite = endTiles[0];
-                    sp.type = SpaceType.End;
-                    endSpace.Add(sp);
-                }
-                if (i == 1 && j == 1)
-                {
-                    //sp.style.backgroundColor = Color.green;
-                    sp.Icon.sprite = startTiles[0];
-                    sp.type = SpaceType.Start;
-                    startSpace = sp;
-                }
-
-                if (i == 2 && j == 4)
-                {
-                    //sp.style.backgroundColor = Color.black;
-                    sp.Icon.sprite = turnTiles[0];
-                    sp.type = SpaceType.Black;
-                }
-                if (i == 3 && j == 1)
-                {
-                    //sp.style.backgroundColor = Color.white;
-                    sp.Icon.sprite = straightTiles[0];
-                    sp.type = SpaceType.White;
-                }
-
-            }
-        }
+        OpenUI();
 
         m_Exit.onClick.AddListener(() =>
         {
+            ResetGame();
             researchStation.CloseResearchGame();
         });
 
         // Sets up the info about each space's relation to the others
         grid.PopulateGrid();
 
+        storedType = playerInteract.inputType;
+        DisplayInteractButtons(storedType, pressButtons, pressSprite);
 
     }
 
     public void OpenUI()
     {
-        //grid.grid[0, 0].Focus();
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {               
+                Space sp = grid.grid[i, j];
+
+                sp.Icon.sprite = ReturnCornerSprites(defaultTiles, i, j);
+
+                if (i == activeGame.start.x && j == activeGame.start.y)
+                {
+                    sp.Icon.sprite = ReturnCornerSprites(startTiles, i, j);
+                    sp.type = SpaceType.Start;
+                    startSpace = sp;
+                }
+
+                foreach (Vector2 vec in activeGame.end)
+                {
+                    if (i == vec.x && j == vec.y)
+                    {
+                        sp.Icon.sprite = ReturnCornerSprites(endTiles, i, j);
+                        sp.type = SpaceType.End;
+                        endSpace.Add(sp);
+                    }
+                }
+
+                foreach (Vector2 vec in activeGame.turn)
+                {
+                    if (i == vec.x && j == vec.y)
+                    {
+                        sp.Icon.sprite = ReturnCornerSprites(turnTiles, i, j);
+                        sp.type = SpaceType.Black;
+                        turnSpaces.Add(sp);
+                    }
+                }
+
+                foreach (Vector2 vec in activeGame.straight)
+                {
+                    if (i == vec.x && j == vec.y)
+                    {
+                        sp.Icon.sprite = ReturnCornerSprites(straightTiles, i, j);
+                        sp.type = SpaceType.White;
+                        straightSpaces.Add(sp);
+
+                    }
+                }
+
+
+            }
+        }
+
+        playerInteract.EnableUI();
 
     }
 
@@ -249,6 +296,17 @@ public class Research_MiniGame : MonoBehaviour
         foreach (Space end in endSpace)
         {
             CheckCompletePath(startSpace, end);
+        }
+
+        if(PathFound)
+        {
+            researchStation.GameComplete();
+            DisplayComplete();
+        }
+
+        if (storedType != playerInteract.inputType)
+        {
+            DisplayInteractButtons(storedType, pressButtons, pressSprite);
         }
 
 
@@ -295,7 +353,54 @@ public class Research_MiniGame : MonoBehaviour
     //    researchStation.CloseResearchGame();
     //}
 
-    
+    public void OnPointerEnter(InputAction.CallbackContext context)
+    {
+        if (!IsMouseDown)
+        {
+            return;
+        }
+        //Debug.Log($"Move Vector: {context.ReadValue<Vector2>()}");
+
+        //Vector2 moveVector = context.ReadValue<Vector2>();
+        //Space space = GetSpace(context.ReadValue<Vector2>());
+        //IEnumerable<Space> space = spaces.Where(x =>
+        //       x.worldBound.Contains(evt.position));
+
+
+        Space space = GetMousedOverSquare(GetEventSystemRaycastResults()).GetComponent<Space>();
+        if (space != null)
+        {
+            //Space closestSlot = space.OrderBy(x => Vector2.Distance
+            //   (x.worldBound.position, evt.position)).First();
+            Vector2 moveVector = space.transform.position - tempSpace.transform.position;
+
+            Space closestSlot = space;
+            if (closestSlot != tempSpace && closestSlot != null)
+            {
+                //Debug.DrawLine(startSpace.transform.position, square.transform.position);
+                if (grid.DoesEdgeExist(tempSpace, closestSlot))
+                {
+                    grid.RemoveAnEdge(tempSpace, closestSlot);
+                    tempSpace.UpdateSpace();
+                    closestSlot.UpdateSpace();
+                    EraseLine(-moveVector, closestSlot);
+                    EraseLine(moveVector, tempSpace);
+                }
+                else
+                {
+                    grid.AddAnEdge(tempSpace, closestSlot);
+                    tempSpace.UpdateSpace();
+                    closestSlot.UpdateSpace();
+                    DrawLine(-moveVector, closestSlot);
+                    DrawLine(moveVector, tempSpace);
+
+
+                }
+
+                tempSpace = closestSlot;
+            }
+        }
+    }
 
     // private void OnNavMoveEvent(NavigationMoveEvent evt)
     public void OnMove(InputAction.CallbackContext context)
@@ -363,6 +468,25 @@ public class Research_MiniGame : MonoBehaviour
     }
 
 
+    Vector3[] compass = { Vector3.left, Vector3.right, Vector3.up, Vector3.down };
+
+    public Vector3 ClosestDirection(Vector3 v)
+    {
+	    float maxDot = -Mathf.Infinity;
+        Vector3 ret = Vector3.zero;
+	
+	    foreach(Vector3 dir in compass) 
+        { 
+		    float t = Vector3.Dot(v, dir);
+		    if (t > maxDot) {
+			    ret = dir;
+			    maxDot = t;
+		    }
+	    }
+
+	    return ret;
+    }
+
 
     public void DrawLine(Vector2 moveVec, Space space)
     {
@@ -374,7 +498,9 @@ public class Research_MiniGame : MonoBehaviour
 
         GameObject edge;
 
-        if(moveVec == Vector2.up)
+        moveVec = ClosestDirection(moveVec);
+
+        if (moveVec == Vector2.up)
         {
             edge = space.directionSpaces[0];
             edge.SetActive(true);
@@ -416,6 +542,8 @@ public class Research_MiniGame : MonoBehaviour
        
         GameObject edge;
 
+        moveVec = ClosestDirection(moveVec);
+
         if (moveVec == Vector2.up)
         {
             edge = space.directionSpaces[0];
@@ -453,6 +581,29 @@ public class Research_MiniGame : MonoBehaviour
 
     }
 
+    public void ReleaseMouse()
+    {
+        if (!IsMouseDown)
+        {
+            return;
+        }
+        IsMouseDown = false;
+        tempSpace = null;
+    }
+
+    public void DisplayComplete()
+    {
+        completeResearch.SetActive(true);
+        StartCoroutine(ActivateDisplay());
+    }
+
+    public IEnumerator ActivateDisplay()
+    {
+        yield return new WaitForSeconds(1.5f);
+        completeResearch.SetActive(false);
+        ResetGame();
+        researchStation.CloseResearchGame();
+    }
 
     private void MouseUp(InputAction.CallbackContext context)
     {
@@ -468,9 +619,6 @@ public class Research_MiniGame : MonoBehaviour
     }
 
     
-
-
-
     private void OnDrawGizmos()
     {
         //Gizmos.color = Color.red;
@@ -527,7 +675,7 @@ public class Research_MiniGame : MonoBehaviour
             }
         }
 
-        if (path.ContainsKey(end))
+        if (path.ContainsKey(end) && CheckTiles())
         {
             Space startEnd = end;
             while (end != start)
@@ -541,9 +689,40 @@ public class Research_MiniGame : MonoBehaviour
         }
     }
 
+    public bool CheckTiles()
+    {
+        foreach(Space sp in straightSpaces)
+        {
+            if (sp.IsSatisfied == false)
+            {
+                return false;
+            }
+        }
+
+        foreach (Space sp in turnSpaces)
+        {
+            if (sp.IsSatisfied == false)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void ResetGame()
     {
         grid.RemoveAllEdges();
+
+        foreach(Space sp in spaces)
+        {
+            foreach(GameObject go in sp.directionSpaces)
+            {
+                go.SetActive(false);
+            }
+            
+        }
+
         PathFound = false;
 
     }

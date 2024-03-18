@@ -126,12 +126,12 @@ TextureImporter:
       name: StoneWallTile_full_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 32
+        x: 16
+        y: 80
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      pivot: {x: 0.5, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,19 +147,145 @@ TextureImporter:
       name: StoneWallTile_full_1
       rect:
         serializedVersion: 2
-        x: 64
-        y: 48
-        width: 48
-        height: 48
+        x: 48
+        y: 80
+        width: 32
+        height: 32
       alignment: 9
-      pivot: {x: 0.5, y: 0.25}
+      pivot: {x: 0.5, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b7ca5a051f12edc47881082458529786
+      spriteID: 26f6d16f7f685b64fb236f246a6faada
       internalID: 728782776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StoneWallTile_full_2
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 80
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d341b6f9a8fc4540a6113cddf9ba121
+      internalID: -1791871215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StoneWallTile_full_3
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 48
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c94af9d7ed9a3d449b0599c6abf3b4bb
+      internalID: 1915366317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StoneWallTile_full_4
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5aefb52c778dc7345a4f25b4171bf047
+      internalID: 488668430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StoneWallTile_full_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 48
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e0ef4f9873d1664092b2f5af7070aad
+      internalID: -1724678408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StoneWallTile_full_6
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64d459243e21f354ea3aac7af39d780c
+      internalID: 2016339140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StoneWallTile_full_7
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: 0.75}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eaf44363ee0ec574b96c742f0c2919bc
+      internalID: 189117735
       vertices: []
       indices: 
       edges: []
@@ -177,6 +303,12 @@ TextureImporter:
     nameFileIdTable:
       StoneWallTile_full_0: 990866962
       StoneWallTile_full_1: 728782776
+      StoneWallTile_full_2: -1791871215
+      StoneWallTile_full_3: 1915366317
+      StoneWallTile_full_4: 488668430
+      StoneWallTile_full_5: -1724678408
+      StoneWallTile_full_6: 2016339140
+      StoneWallTile_full_7: 189117735
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

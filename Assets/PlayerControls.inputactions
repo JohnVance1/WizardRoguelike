@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenPotionJournal",
+                    "type": "Button",
+                    "id": "1435a683-b496-4774-b9bc-8f3b0ffe0d16",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -251,7 +260,7 @@
                 {
                     "name": "",
                     "id": "2451f3c3-627f-40de-9303-9edf73d1b049",
-                    "path": "<Keyboard>/#(I)",
+                    "path": "<Keyboard>/j",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -262,7 +271,7 @@
                 {
                     "name": "",
                     "id": "4a95b7cc-85d1-4d47-96f8-462cd9ad9c48",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -316,8 +325,8 @@
                 },
                 {
                     "name": "",
-                    "id": "5bd7cfd6-ec65-4d9b-8a9c-aa0a3de41d81",
-                    "path": "<Gamepad>/buttonWest",
+                    "id": "f3c0b422-1894-4ba3-be7c-716975eed727",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -327,12 +336,23 @@
                 },
                 {
                     "name": "",
-                    "id": "f3c0b422-1894-4ba3-be7c-716975eed727",
-                    "path": "<Keyboard>/shift",
+                    "id": "6259fe3b-1b02-4289-9767-944e7c78d428",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Sneak",
+                    "action": "OpenPotionJournal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ef4bd49d-cf14-4ae6-a140-5659f4fee255",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenPotionJournal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

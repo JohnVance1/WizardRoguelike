@@ -5,17 +5,30 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using UnityEngine.Windows;
+using Sirenix.Serialization;
+using System;
 
+[Serializable]
 public class ResearchStation : Interactable_Base
 {
     public bool IsResearching;
 
     public GameObject researchCanvas;
-    [SerializeField]
-    private GameObject[] miniGames;
+
+    public Herb researchedHerb;
+
+    //[System.NonSerialized, OdinSerialize]
+    public List<ResearchMiniGame_Data> miniGames;
+
     public Player player;
 
     private PlayerControls input;
+
+    private void Awake()
+    {
+         
+    }
+
 
     void Start()
     {
@@ -65,7 +78,7 @@ public class ResearchStation : Interactable_Base
             {
                 playerInteract.OpenResearchInventory(this);
             }
-            if(IsResearching && miniGames[0].GetComponent<Research_MiniGame>().PathFound)
+            if(IsResearching && researchCanvas.GetComponent<Research_MiniGame>().PathFound)
             {
                 if(currentHerb != null)
                 {
@@ -75,6 +88,12 @@ public class ResearchStation : Interactable_Base
             }
 
         }
+    }
+
+    public void GameComplete()
+    {
+        researchedHerb.IsResearched = true;
+
     }
 
     public void Cancel(InputAction.CallbackContext context)
@@ -93,6 +112,7 @@ public class ResearchStation : Interactable_Base
         playerInteract.CloseInventory();
         //researchCanvas.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
         researchCanvas.SetActive(true);
+        researchCanvas.GetComponent<Research_MiniGame>().activeGame = GetActiveGame(herb);
         researchCanvas.GetComponent<Research_MiniGame>().OpenUI();
         IsResearching = true;
         currentHerb = herb;
@@ -108,4 +128,26 @@ public class ResearchStation : Interactable_Base
         currentHerb = null;
         EnablePlayer();
     }
+
+
+    public ResearchMiniGame_Data GetActiveGame(Herb herb)
+    {
+        if(herb == null)
+        {
+            return null;            
+        }
+
+        researchedHerb = herb;
+        foreach (ResearchMiniGame_Data data in miniGames)
+        {
+            if(data.herb == herb)
+            {
+                return data;
+            }
+        }
+
+        return null;
+
+    }
+
 }

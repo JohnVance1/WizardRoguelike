@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class FarmPlot : Interactable_Base
@@ -48,6 +47,11 @@ public class FarmPlot : Interactable_Base
 
     public void HarvestHerb()
     {
+        if (!(storedHerb).IsFound)
+        {
+            (storedHerb).IsFound = true;
+            GameEventsManager.instance.journalEvents.FirstHerbCollected(storedHerb);
+        }
         player.AddItemToInventory(storedHerb);
         herbGO.GetComponent<SpriteRenderer>().sprite = null;
         CanHarvest = false;

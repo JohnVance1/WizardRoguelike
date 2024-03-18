@@ -40,19 +40,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 7
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
+      Data: 6
     - Name: 
       Entry: 7
       Data: 
@@ -131,13 +119,13 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  sprite: {fileID: 21300000, guid: 57a87035364045d4ab424df0cbd5e155, type: 3}
+  sprite: {fileID: 21300000, guid: 82b3c46e3439b6443a9f2e181d0bb4f1, type: 3}
   Name: Fire Potion
   <id>k__BackingField: FirePotion
   displayName: Fire Potion
-  info: I am a Potion!
+  info: Only uses Fire Herbs.
   potionEffect: 4
   graph: {fileID: 0}
-  IsFound: 1
+  IsFound: 0
   usageTime: 0
   radius: 0
