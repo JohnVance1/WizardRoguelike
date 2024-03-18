@@ -7029,7 +7029,7 @@ Camera:
   far clip plane: 5000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.6484375
+  orthographic size: 4.59375
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -7054,7 +7054,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.714375, y: 0.5600005, z: -10}
+  m_LocalPosition: {x: -0.813334, y: 0.56000096, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -32632,6 +32632,10 @@ PrefabInstance:
       propertyPath: m_Colors.m_SelectedColor.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1479652371858074793, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 34
+      objectReference: {fileID: 0}
     - target: {fileID: 1520805140881500852, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_SizeDelta.x
       value: 244
@@ -32851,6 +32855,10 @@ PrefabInstance:
     - target: {fileID: 2126866273153562232, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 84
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139241352654188682, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2150781583235782117, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_Colors.m_SelectedColor.b
@@ -34034,7 +34042,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5230444092508679203, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 23.4
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 5230444092508679203, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -34438,7 +34446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5852654676075484969, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 31.2
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 5919641453028628197, guid: d785ab31a20a6f842ab3d535fc3d7145, type: 3}
       propertyPath: m_Colors.m_SelectedColor.b

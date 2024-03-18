@@ -80,6 +80,7 @@ public class HerbJournal_UI : MonoBehaviour
             {
                 sp.GetComponent<RectTransform>().sizeDelta = new Vector2(32, 16);
             }
+            sp.GetComponent<Image>().sprite = buttons[0];
         }
         else if (type == InputType.XBox)
         {
