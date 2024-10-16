@@ -17,6 +17,9 @@ public class NPC : Interactable_Base
     public int pathCount;
     public bool IsPaused;
 
+    public float NPC_EnvironmentProgress;
+    public float NPC_ProgressMax;
+
     
 
     protected virtual void Awake()
@@ -24,7 +27,8 @@ public class NPC : Interactable_Base
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-        
+        NPC_EnvironmentProgress = 0;
+        NPC_ProgressMax = 10;
 
     }
     public virtual void Start()
