@@ -8,6 +8,12 @@ public class CollectHerbQuestStep : QuestStep
 
     private int herbsToCollect = 2;
 
+    private void Start()
+    {
+        UpdateState();
+    }
+
+
     private void OnEnable()
     {
         GameEventsManager.instance.miscEvents.onHerbCollected += HerbCollected;
@@ -43,7 +49,8 @@ public class CollectHerbQuestStep : QuestStep
     private void UpdateState()
     {
         string state = herbsCollected.ToString();
-        ChangeState(state);
+        string status = $"Collected {herbsCollected} / {herbsToCollect} herbs";
+        ChangeState(state, status);
     }
 
     /// <summary>

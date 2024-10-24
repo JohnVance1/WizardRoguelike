@@ -209,6 +209,9 @@ public class QuestManager : MonoBehaviour
     private void ClaimRewards(Quest quest)
     {
         Debug.Log("Rewards Gained from Quest: " + quest.info.displayName);
+        // Gold
+        // Items
+        // EP (Environmental Progress)
     }
 
     private void OnApplicationQuit()

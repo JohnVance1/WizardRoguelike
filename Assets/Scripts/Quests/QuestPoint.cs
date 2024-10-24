@@ -1,13 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(CircleCollider2D))]
-public class QuestPoint : MonoBehaviour
+public class QuestPoint : Interactable_Base
 {
     [Header("Quest")]
     [SerializeField]
     private QuestInfo_SO questInfoForPoint; //  Info about the quest that the NPC can give
+    public QuestInfo_SO QuestInfo
+    {
+        get { return questInfoForPoint; }
+        private set { questInfoForPoint = value; }
+    } //  Info about the quest that the NPC can give
+
 
     [Header("Config")]
     [SerializeField]
@@ -17,9 +24,15 @@ public class QuestPoint : MonoBehaviour
 
     private bool playerIsNear = false;
 
+    [SerializeField] private bool IsNPC;
+
     private string questID;
 
-    private QuestState currentQuestState;
+    public QuestState currentQuestState { get; private set; }
+
+    private UnityAction<QuestState> onQuestStateChange;
+    private UnityAction<QuestInfo_SO> onQuestFinished;
+
 
     private void Awake()
     {
@@ -43,15 +56,18 @@ public class QuestPoint : MonoBehaviour
     /// <summary>
     /// Runs whenever the 'Submit' button is pressed
     /// </summary>
-    private void SubmitPressed()
+    public void SubmitPressed()
     {
-        if(!playerIsNear)
-        {
-            return;
-        }
+        if(!IsNPC && CanInteract)
+        {           
+            SubmitCode();
+        }        
+    }
 
+    public void SubmitCode()
+    {
         //  If the player is at the start point of a quest and the quest can be started
-        if(currentQuestState.Equals(QuestState.CAN_START) && startPoint)
+        if (currentQuestState.Equals(QuestState.CAN_START) && startPoint)
         {
             GameEventsManager.instance.questEvents.StartQuest(questID);
         }
@@ -59,8 +75,8 @@ public class QuestPoint : MonoBehaviour
         else if (currentQuestState.Equals(QuestState.CAN_FINISH) && finishPoint)
         {
             GameEventsManager.instance.questEvents.FinishQuest(questID);
+            //onQuestFinished(questInfoForPoint);
         }
-
     }
 
     /// <summary>
@@ -72,23 +88,7 @@ public class QuestPoint : MonoBehaviour
         if(quest.info.id.EndsWith(questID))
         {
             currentQuestState = quest.state;
-        }
-    }
-
-
-    private void OnTriggerEnter2D(Collider2D othercollider)
-    {
-        if(othercollider.CompareTag("Player"))
-        {
-            playerIsNear = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D othercollider)
-    {
-        if (othercollider.CompareTag("Player"))
-        {
-            playerIsNear = false;
+            //onQuestStateChange(currentQuestState);
         }
     }
 

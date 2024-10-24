@@ -17,8 +17,8 @@ public class NPC : Interactable_Base
     public int pathCount;
     public bool IsPaused;
 
-    public float NPC_EnvironmentProgress;
-    public float NPC_ProgressMax;
+    public float currentEnviroProgress;
+    public const float maxEnviroProgress = 10;
 
     
 
@@ -27,8 +27,7 @@ public class NPC : Interactable_Base
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-        NPC_EnvironmentProgress = 0;
-        NPC_ProgressMax = 10;
+        currentEnviroProgress = 0;
 
     }
     public virtual void Start()
@@ -48,10 +47,10 @@ public class NPC : Interactable_Base
 
     public void SetPath()
     {
-        foreach(Transform t in pathOBJ.transform) 
-        {
-            npcPath.Add(t);
-        }
+        //foreach(Transform t in pathOBJ.transform) 
+        //{
+        //    npcPath.Add(t);
+        //}
     }
 
 
@@ -61,40 +60,40 @@ public class NPC : Interactable_Base
 
         if(CanInteract)
         {
-            if (playerInteract.IsInteractButtonDown && dialogueBox.activeInHierarchy == false)
-            {
-                dialogueBox.SetActive(true);
-                player.SetSpeed(0f);
-                Dialogue dialogue = dialogueBox.GetComponent<Dialogue>();
-                //if(questLog.ContainsQuest(quest))
-                //{
-                //    AssignedQuest = true;
-                //}
+            //if (playerInteract.IsInteractButtonDown && dialogueBox.activeInHierarchy == false)
+            //{
+            //    //dialogueBox.SetActive(true);
+            //    //player.SetSpeed(0f);
+            //    //Dialogue dialogue = dialogueBox.GetComponent<Dialogue>();
+            //    //if(questLog.ContainsQuest(quest))
+            //    //{
+            //    //    AssignedQuest = true;
+            //    //}
 
-                //if (!AssignedQuest && !QuestCompleted)
-                //{
-                //    // Assign Quest
-                //    dialogue.lines = questStartLines.lines;
-                //    AssignQuest();
-                //    dialogue.StartDialogue();
-                //    Dialogue.OnEnd += EndDialouge;
+            //    //if (!AssignedQuest && !QuestCompleted)
+            //    //{
+            //    //    // Assign Quest
+            //    //    dialogue.lines = questStartLines.lines;
+            //    //    AssignQuest();
+            //    //    dialogue.StartDialogue();
+            //    //    Dialogue.OnEnd += EndDialouge;
 
-                //}
-                //else if(AssignedQuest && !QuestCompleted)
-                //{
-                //    // Check Quest Status
-                //    CheckQuestStatus(dialogue);
-                //}
-                //else if(QuestCompleted)
-                //{
-                //    // Dialouge after Quest is completeed
-                //    dialogue.lines = questCompleteLines.lines;
-                //    dialogue.StartDialogue();
-                //    Dialogue.OnEnd += EndDialouge;
-                //}
+            //    //}
+            //    //else if(AssignedQuest && !QuestCompleted)
+            //    //{
+            //    //    // Check Quest Status
+            //    //    CheckQuestStatus(dialogue);
+            //    //}
+            //    //else if(QuestCompleted)
+            //    //{
+            //    //    // Dialouge after Quest is completeed
+            //    //    dialogue.lines = questCompleteLines.lines;
+            //    //    dialogue.StartDialogue();
+            //    //    Dialogue.OnEnd += EndDialouge;
+            //    //}
                 
 
-            }
+            //}
 
             
         }
@@ -111,24 +110,24 @@ public class NPC : Interactable_Base
     {
         if(!CanInteract && !IsPaused)
         {
-            if (!playerInteract.IsInteractButtonDown)
-            {
-                agent.isStopped = false;
-                agent.SetDestination(npcPath[pathCount].position);
-                Vector3 npcPos = transform.position;
-                Vector3 npcDes = agent.destination;
-                npcPos.z = 0;
-                npcDes.z = 0;
+            //if (!playerInteract.IsInteractButtonDown)
+            //{
+            //    agent.isStopped = false;
+            //    agent.SetDestination(npcPath[pathCount].position);
+            //    Vector3 npcPos = transform.position;
+            //    Vector3 npcDes = agent.destination;
+            //    npcPos.z = 0;
+            //    npcDes.z = 0;
 
-                if (Vector3.Distance(npcPos, npcDes) <= 0.1f)
-                {
-                    StartCoroutine(PauseMovement(2f));
-                }
-            }
-            if(dialogueBox.activeInHierarchy == true)
-            {
-                agent.isStopped = true;
-            }
+            //    if (Vector3.Distance(npcPos, npcDes) <= 0.1f)
+            //    {
+            //        StartCoroutine(PauseMovement(2f));
+            //    }
+            //}
+            //if(dialogueBox.activeInHierarchy == true)
+            //{
+            //    agent.isStopped = true;
+            //}
         }
         
 

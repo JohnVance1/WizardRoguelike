@@ -53,6 +53,7 @@ public class FarmPlot : Interactable_Base
             GameEventsManager.instance.journalEvents.FirstHerbCollected(storedHerb);
         }
         player.AddItemToInventory(storedHerb);
+        GameEventsManager.instance.miscEvents.HerbCollected();
         herbGO.GetComponent<SpriteRenderer>().sprite = null;
         CanHarvest = false;
         StartGrowing();

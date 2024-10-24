@@ -7,13 +7,14 @@ public class Enemy_Basic : BaseEnemy
     public GameObject weaponPrefab;
     private bool spawned;
 
-    override public void Start()
+    public void Start()
     {
+        base.Start();
         spawned = false;
         Name = gameObject.name;
     }
 
-    public override void Update()
+    public void Update()
     {
         MoveEnemy();
         Attack();

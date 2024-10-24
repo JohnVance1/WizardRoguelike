@@ -409,7 +409,7 @@ public class Player_Interact : MonoBehaviour
 
     public void OpenQuestLog()
     {
-        QuestLogUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        QuestLogUI.gameObject.SetActive(true);
 
         IsQuestLogOpen = true;
         EnableUI();
@@ -417,7 +417,7 @@ public class Player_Interact : MonoBehaviour
 
     public void CloseQuestLog()
     {
-        QuestLogUI.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        QuestLogUI.gameObject.SetActive(false);
 
         IsQuestLogOpen = false;
         EnablePlayer();

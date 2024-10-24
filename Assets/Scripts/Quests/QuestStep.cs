@@ -47,9 +47,12 @@ public abstract class QuestStep : MonoBehaviour
     /// Used for saving after the game exits
     /// </summary>
     /// <param name="newState"></param>
-    protected void ChangeState(string newState)
+    protected void ChangeState(string newState, string newStatus)
     {
-        GameEventsManager.instance.questEvents.QuestStepStateChange(questID, stepIndex, new QuestStepState(newState));
+        GameEventsManager.instance.questEvents.QuestStepStateChange(
+            questID, 
+            stepIndex, 
+            new QuestStepState(newState, newStatus));
     }
 
     /// <summary>

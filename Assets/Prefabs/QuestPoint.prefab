@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 3100083015665782055}
   - component: {fileID: 1937581643741422586}
   - component: {fileID: 4084171213961516051}
+  - component: {fileID: 469407152077641477}
   m_Layer: 0
   m_Name: QuestPoint
   m_TagString: Untagged
@@ -116,6 +117,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6288821135124138679}
+  - {fileID: 5308485792937022524}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &1937581643741422586
@@ -165,4 +167,148 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cc1eb1a2efb4e9469baaf00812a0b51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  currentHerb: {fileID: 0}
+  interactButtons: []
+  interactSprite: {fileID: 0}
   questInfoForPoint: {fileID: 0}
+  startPoint: 1
+  finishPoint: 1
+  IsNPC: 0
+--- !u!114 &469407152077641477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3893603845274156310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b03cc43d248cfb4f887fb1bd7e773b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: storedQuests
+      Entry: 6
+      Data: 
+  currentHerb: {fileID: 0}
+  interactButtons:
+  - {fileID: -1971455988, guid: be40f0f3f9c92a24da2d504450c11a1f, type: 3}
+  - {fileID: 1498028340, guid: be40f0f3f9c92a24da2d504450c11a1f, type: 3}
+  - {fileID: -1515051982, guid: be40f0f3f9c92a24da2d504450c11a1f, type: 3}
+  interactSprite: {fileID: 4734519331401594764}
+  questCompleteLines: {fileID: 11400000, guid: 89fb18431f9141b4d953b5cd01a69698, type: 2}
+  questActiveLines: {fileID: 11400000, guid: 89307b492974ce940983c7b2cf37d16f, type: 2}
+  questStartLines: {fileID: 11400000, guid: 8469416615d2c0540bef24ac9a15b182, type: 2}
+  dialogueBox: {fileID: 0}
+  agent: {fileID: 0}
+  pathOBJ: {fileID: 0}
+  npcPath: []
+  pathCount: 0
+  IsPaused: 0
+  currentEnviroProgress: 0
+  questType: 
+  quest: {fileID: 0}
+  AssignedQuest: 0
+  QuestCompleted: 0
+  questLog: {fileID: 0}
+--- !u!1 &4734519331401594764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5308485792937022524}
+  - component: {fileID: 2111909464755127114}
+  m_Layer: 0
+  m_Name: InteractButton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5308485792937022524
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4734519331401594764}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.56, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3100083015665782055}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2111909464755127114
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4734519331401594764}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 1498028340, guid: be40f0f3f9c92a24da2d504450c11a1f, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0

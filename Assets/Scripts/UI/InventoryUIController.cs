@@ -19,8 +19,8 @@ public class InventoryUIController : SerializedMonoBehaviour
     public List<InventorySlot_UI> ItemSlots;
     //public List<InventorySlot_UI> AllSlots;
 
-    private int xCount;
-    private int yCount;
+    //private int xCount;
+    //private int yCount;
 
     //private VisualElement m_Root;
     //private VisualElement m_SlotContainer;
@@ -62,7 +62,7 @@ public class InventoryUIController : SerializedMonoBehaviour
         //m_SlotContainer = m_Root.Q<VisualElement>("SlotContainer");
         //Create InventorySlots and add them as children to the SlotContainer
         //List<VisualElement> items = m_SlotContainer.hierarchy.Children().ToList();
-        int index = 1;
+        //int index = 1;
         for(int i = 0; i < 5; i++)
         {
             //List<VisualElement> buttons = InventoryItems;
@@ -228,8 +228,8 @@ public class InventoryUIController : SerializedMonoBehaviour
 
     private void OnUpdateInventory()
     {
-        xCount = 0;
-        yCount = 0;
+        //xCount = 0;
+        //yCount = 0;
 
         DrawInventory();
     }

@@ -12,12 +12,12 @@ public class QuestLog : ScriptableObject
 
     
 
-    void ActivateQuest(string quest)
+    public void ActivateQuest(string quest)
     {
         ActiveQuests.Add(AllQuests[quest]);
     }
 
-    void CompleteQuest(string quest)
+    public void CompleteQuest(string quest)
     {
         Quest temp = AllQuests[quest];
         ActiveQuests.Remove(temp);

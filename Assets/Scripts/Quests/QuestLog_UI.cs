@@ -1,35 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using UnityEngine.Windows;
 
 public class QuestLog_UI : MonoBehaviour
 {
     public QuestLog questLogOBJ;
 
-    private VisualElement m_Root;
-    private Foldout m_ActiveQuests;
-    private Foldout m_CompletedQuests;
+    private List<QuestJournalSlot_UI> m_ActiveQuests;
+    private List<QuestJournalSlot_UI> m_CompletedQuests;
 
     private Dictionary<string, QuestJournalSlot_UI> ActiveQuests;
     private Dictionary<string, QuestJournalSlot_UI> CompletedQuests;
 
 
+
+
     private void Awake()
     {
-        m_Root = GetComponent<UIDocument>().rootVisualElement;
-        m_ActiveQuests = m_Root.Q<VisualElement>("ActiveQuests").Q<Foldout>("Active");
-        m_CompletedQuests = m_Root.Q<VisualElement>("CompletedQuests").Q<Foldout>("Complete");
+        //m_Root = GetComponent<UIDocument>().rootVisualElement;
+        m_ActiveQuests = new List<QuestJournalSlot_UI>();
+        m_CompletedQuests = new List<QuestJournalSlot_UI>();
         ActiveQuests = new Dictionary<string, QuestJournalSlot_UI>();
         CompletedQuests = new Dictionary<string, QuestJournalSlot_UI>();
-
     }
+
 
     private void OnEnable()
     {
         GameEventsManager.instance.questEvents.onStartQuest += StartQuest;
         GameEventsManager.instance.questEvents.onAdvanceQuest += AdvanceQuest;
         GameEventsManager.instance.questEvents.onFinishQuest += FinishQuest;
+
+        
 
     }
 
@@ -39,13 +45,13 @@ public class QuestLog_UI : MonoBehaviour
         GameEventsManager.instance.questEvents.onAdvanceQuest -= AdvanceQuest;
         GameEventsManager.instance.questEvents.onFinishQuest -= FinishQuest;
 
-
+        
     }
 
     private void Start()
     {
-        this.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
-        this.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
+        //this.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.Flex;
+        //this.GetComponent<UIDocument>().rootVisualElement.style.display = DisplayStyle.None;
     }
 
     private void StartQuest(string id)
@@ -53,9 +59,9 @@ public class QuestLog_UI : MonoBehaviour
         Quest quest = QuestManager.instance.GetQuestByID(id);
         questLogOBJ.ActiveQuests.Add(quest);
 
-        QuestJournalSlot_UI journalSlot = new QuestJournalSlot_UI(quest, quest.state);
-        m_ActiveQuests.Add(journalSlot);
-        ActiveQuests.Add(quest.info.id, journalSlot);
+        //QuestJournalSlot_UI journalSlot;
+        //m_ActiveQuests.Add(journalSlot);
+        //ActiveQuests.Add(quest.info.id, journalSlot);
 
     }
 
@@ -84,5 +90,6 @@ public class QuestLog_UI : MonoBehaviour
 
 
     }
+
 
 }

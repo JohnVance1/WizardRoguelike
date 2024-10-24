@@ -26,15 +26,7 @@ public class BaseEnemy : Character
         agent.updateUpAxis = false;
     }
 
-    virtual public void Start()
-    {
-
-    }
-
-    virtual public void Update()
-    {
-
-    }
+    
 
     public void SetStatus(EnemyStatus s)
     {

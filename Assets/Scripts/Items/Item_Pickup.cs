@@ -5,12 +5,12 @@ using UnityEngine;
 public class Item_Pickup : MonoBehaviour
 {
     public Item_Base item;
-    private SpriteRenderer renderer;
+    private SpriteRenderer spriteRenderer;
 
     public void Awake()
     {
-        renderer = GetComponent<SpriteRenderer>();
-        renderer.sprite = item.sprite;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = item.sprite;
 
 
     }

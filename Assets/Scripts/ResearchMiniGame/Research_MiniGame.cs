@@ -62,7 +62,7 @@ public class Research_MiniGame : MonoBehaviour
     [SerializeField]
     private Camera mainCamera;
 
-    public event Action OnExit;
+    //public event Action OnExit;
     public EventSystem eventSystem;
 
     public PlayerControls input;

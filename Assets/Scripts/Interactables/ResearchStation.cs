@@ -20,7 +20,7 @@ public class ResearchStation : Interactable_Base
     //[System.NonSerialized, OdinSerialize]
     public List<ResearchMiniGame_Data> miniGames;
 
-    public Player player;
+    //public Player player;
 
     private PlayerControls input;
 
@@ -39,7 +39,7 @@ public class ResearchStation : Interactable_Base
 
     private void OnEnable()
     {
-        //player = Player.Instance;
+        player = Player.Instance;
 
         input = player.gameObject.GetComponent<Player_Interact>().input;
 
@@ -51,7 +51,7 @@ public class ResearchStation : Interactable_Base
 
     private void OnDisable()
     {
-        //input.UI.Cancel.performed -= Cancel;
+        input.UI.Cancel.performed -= Cancel;
         input.UI.Cancel.Disable();
         //researchCanvas.GetComponent<Research_MiniGame>().OnExit -= CloseResearchGame;
 

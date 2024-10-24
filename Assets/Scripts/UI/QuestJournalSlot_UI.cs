@@ -7,34 +7,20 @@ using TMPro;
 using Unity.VisualScripting;
 using System.Xml.Linq;
 
-public class QuestJournalSlot_UI : VisualElement
+public class QuestJournalSlot_UI : MonoBehaviour
 {
     public Quest storedQuest;
     public string questName;
     public QuestState currentState;
-    public Label Name;
+    public TextMeshProUGUI title;
+        
 
-    public QuestJournalSlot_UI()
+    public void SetUpQuest(Quest quest, QuestState state)
     {
-        Name = new Label();
-        Add(Name);
-        Name.AddToClassList("questName");
-        Name.text = "???";
-
-        AddToClassList("questSlot");
-    }
-
-    public QuestJournalSlot_UI(Quest quest, QuestState state)
-    {
-        Name = new Label();
-        Add(Name);
-        Name.AddToClassList("questName");
-        AddToClassList("questSlot");
         storedQuest = quest;
         questName = quest.info.name;
-        Name.text = questName;
+        title.text = questName;
         currentState = state;
-
     }
 
     public void SetQuestState(QuestState state)
@@ -46,14 +32,11 @@ public class QuestJournalSlot_UI : VisualElement
     {
         questName = quest.info.name;
         storedQuest = quest;
+        title.text = questName;
+
     }
 
-    #region UXML
-    [Preserve]
-    public new class UxmlFactory : UxmlFactory<QuestJournalSlot_UI, UxmlTraits> { }
-    [Preserve]
-    public new class UxmlTraits : VisualElement.UxmlTraits { }
-    #endregion
+
 
 
 

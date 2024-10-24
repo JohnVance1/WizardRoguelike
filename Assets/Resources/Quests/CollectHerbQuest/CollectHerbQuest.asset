@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6683f1b54e7bf1d43b9bba8ce8432c23, type: 3}
   m_Name: CollectHerbQuest
   m_EditorClassIdentifier: 
-  <id>k__BackingField: CollectHerbQuest
   displayName: Collect The Herbs!
   levelRequirement: 1
   questPrereqs: []
   questStepPrefabs:
   - {fileID: 5285862370153633570, guid: 761adc0107b93e843be949a8dae53727, type: 3}
-  goldReward: 10
-  expReward: 0
+  questProgressionText: 
+  goldReward: 0
+  expReward: 1
+  rewardText: 
