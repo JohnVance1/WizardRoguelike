@@ -47,42 +47,44 @@ public class QuestGiver : NPC
         {
             return;
         }
-        AssignQuest();
-        //if(dialogueBox.activeInHierarchy == false)
-        //{
-        //    Dialogue dialogue = dialogueBox.GetComponent<Dialogue>();
+        
+        //AssignQuest();
+        if (dialogueBox.activeInHierarchy == false)
+        {
+            Dialogue dialogue = dialogueBox.GetComponent<Dialogue>();
+            dialogueBox.SetActive(true);
+            player.SetSpeed(0f);
 
+            switch (questPoint.currentQuestState)
+            {
+                case QuestState.REQUIREMENTS_NOT_MET:
+                    break;
+                case QuestState.CAN_START:
+                    dialogue.lines = questStartLines.lines;
+                    AssignQuest();
+                    dialogue.StartDialogue();
+                    Dialogue.OnEnd += EndDialouge;
+                    break;
+                case QuestState.IN_PROGRESS:
+                    dialogue.lines = questActiveLines.lines;
+                    dialogue.StartDialogue();
+                    Dialogue.OnEnd += EndDialouge;
+                    break;
+                case QuestState.CAN_FINISH:
+                    break;
+                case QuestState.FINISHED:
+                    // Dialouge after Quest is completeed
+                    dialogue.lines = questCompleteLines.lines;
+                    dialogue.StartDialogue();
+                    Dialogue.OnEnd += EndDialouge;
+                    break;
+                default:
+                    Debug.Log("Quest is not in an accepted QuestState");
+                    break;
 
-        //    switch (questPoint.currentQuestState)
-        //    { 
-        //        case QuestState.REQUIREMENTS_NOT_MET:
-        //            break;
-        //        case QuestState.CAN_START:
-        //            dialogue.lines = questStartLines.lines;
-        //            AssignQuest();
-        //            dialogue.StartDialogue();
-        //            Dialogue.OnEnd += EndDialouge;
-        //            break;
-        //        case QuestState.IN_PROGRESS:
-        //            dialogue.lines = questActiveLines.lines;
-        //            dialogue.StartDialogue();
-        //            Dialogue.OnEnd += EndDialouge;
-        //            break;
-        //        case QuestState.CAN_FINISH:
-        //            break;
-        //        case QuestState.FINISHED:
-        //            // Dialouge after Quest is completeed
-        //            dialogue.lines = questCompleteLines.lines;
-        //            dialogue.StartDialogue();
-        //            Dialogue.OnEnd += EndDialouge;
-        //            break;
-        //        default:
-        //            Debug.Log("Quest is not in an accepted QuestState");
-        //            break;
+            }
 
-        //    }
-
-        //}
+        }
 
 
     }
