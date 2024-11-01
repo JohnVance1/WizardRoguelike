@@ -45,22 +45,25 @@ public class Interactable_Base : SerializedMonoBehaviour
 
     public void DisplayInteractButtons(InputType type)
     {
-        if(type == InputType.KBM)
-        {
-            interactSprite.GetComponent<SpriteRenderer>().sprite = interactButtons[0];
-        }
-        else if(type == InputType.XBox)
-        {
-            interactSprite.GetComponent<SpriteRenderer>().sprite = interactButtons[1];
+        if(interactSprite!= null)
+        {        
+            if(type == InputType.KBM)
+            {
+                interactSprite.GetComponent<SpriteRenderer>().sprite = interactButtons[0];
+            }
+            else if(type == InputType.XBox)
+            {
+                interactSprite.GetComponent<SpriteRenderer>().sprite = interactButtons[1];
 
-        }
-        else if(type == InputType.PS)
-        {
-            interactSprite.GetComponent<SpriteRenderer>().sprite = interactButtons[2];
+            }
+            else if(type == InputType.PS)
+            {
+                interactSprite.GetComponent<SpriteRenderer>().sprite = interactButtons[2];
 
-        }
+            }
 
-        interactSprite.SetActive(true);
+            interactSprite.SetActive(true);
+        }
     }
 
     public void CloseInteractButton()

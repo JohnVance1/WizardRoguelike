@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b878669097562242be838d185dae2bf, type: 3}
   m_Name: QuestActive
   m_EditorClassIdentifier: 
-  NPCname: 
+  NPCname: QuestPoint
   lines:
-  - How's the herb gathering going?
+  - 'Hint: You need two of one herb to make a potion.'
