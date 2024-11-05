@@ -119,6 +119,7 @@ public class Research_MiniGame : MonoBehaviour
         //input.UI.Navigate.canceled += RemovePress;
         input.UI.Navigate.Enable();
         input.UI.Point.Enable();
+
     }
 
     private void OnDisable()
@@ -211,14 +212,9 @@ public class Research_MiniGame : MonoBehaviour
         endSpace = new List<Space>();
         eventSystem.SetSelectedGameObject(grid.grid[0, 0].gameObject);
 
-        //m_Row1 = m_Root.Q<VisualElement>("Row1");
-        //m_Row2 = m_Root.Q<VisualElement>("Row2");
-        //m_Row3 = m_Root.Q<VisualElement>("Row3");
-        //m_Row4 = m_Root.Q<VisualElement>("Row4");
-        //m_Row5 = m_Root.Q<VisualElement>("Row5");
         playerInteract = FindObjectOfType<Player_Interact>();
 
-        OpenUI();
+        //OpenUI();
 
         m_Exit.onClick.AddListener(() =>
         {
@@ -236,6 +232,8 @@ public class Research_MiniGame : MonoBehaviour
 
     public void OpenUI()
     {
+        playerInteract = FindObjectOfType<Player_Interact>();
+
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)

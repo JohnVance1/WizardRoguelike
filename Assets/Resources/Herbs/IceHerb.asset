@@ -192,7 +192,7 @@ MonoBehaviour:
   timeToProcess: 0
   researchNum: 0
   IsResearched: 0
-  IsFound: 0
+  IsFound: 1
   graph: {fileID: 0}
   info: 
   processType: 0
