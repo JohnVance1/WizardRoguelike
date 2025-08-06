@@ -217,9 +217,9 @@ public class Player_Interact : MonoBehaviour
             newSpeed *= 0.7f;
         }
 
-        rb.velocity = movement.normalized * newSpeed;
+        rb.linearVelocity = movement.normalized * newSpeed;
 
-        if (rb.velocity != Vector2.zero)
+        if (rb.linearVelocity != Vector2.zero)
         {
             animator.SetBool("IsMoving", true);
         }

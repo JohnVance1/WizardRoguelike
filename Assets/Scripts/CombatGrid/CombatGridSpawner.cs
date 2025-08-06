@@ -12,7 +12,7 @@ public class CombatGridSpawner : MonoBehaviour
     private float spriteWidth;
 
     public GameObject gridSpacePrefab;
-    private GameObject[,] grid;
+    public GameObject[,] grid;
 
     private void Start()
     {
@@ -24,7 +24,7 @@ public class CombatGridSpawner : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                grid[i, j] = Instantiate(gridSpacePrefab, transform.position + new Vector3((spriteWidth/2 * j) - (spriteWidth / 2 * i), (spriteHeight/2 * i) + (spriteHeight / 2 * j)), Quaternion.identity);
+                grid[i, j] = Instantiate(gridSpacePrefab, transform.position + new Vector3((spriteWidth/2 * j) - (spriteWidth / 2 * i), (spriteHeight/2 * i) + (spriteHeight / 2 * j)), Quaternion.identity, transform);
 
             }
         }
