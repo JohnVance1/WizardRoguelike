@@ -1,74 +1,70 @@
+using NUnit.Framework;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerCombatGrid : MonoBehaviour
 {
     public CombatGridSpawner Spawner;
-
     private int x, y;
+
+    public int moveDistance;
+    private List<GameObject> moveableSpaces;
+
+    public static PlayerCombatGrid Instance { get; private set; }
+    public int X { get { return x; } private set { x = value; } }
+    public int Y { get { return y; } private set { y = value;  } }
+
+    private void Awake()
+    {
+        // If there is an instance, and it's not me, delete myself.
+
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     void Start()
     {
-        x = 0; 
-        y = 0;
+        moveableSpaces = new List<GameObject>();
+        x = 3; 
+        y = 3;
+        transform.position = Spawner.SetEntityPos(GridContents.Player, x, y);
+        moveDistance = 2;
+        moveableSpaces = Spawner.SetMoveableSpaces(moveDistance, x, y);
+
     }
 
     void Update()
     {
-        Move();
+        
+
     }
 
-    public void Move()
+    public void SetPos(int xPos, int yPos)
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        if (moveableSpaces.Contains(Spawner.grid[xPos, yPos]))
         {
-            if (x + 1 >= Spawner.width)
-            {
-                x = Spawner.width - 1;
-            }
-            else
-            {
-                x++;
-            }
-
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            if (y - 1 < 0)
-            {
-                y = 0;
-            }
-            else
-            {
-                y--;
-            }
-
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            if (x - 1 < 0)
-            {
-                x = 0;
-            }
-            else
-            {
-                x--;
-            }
-
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            if (y + 1 >= Spawner.height)
-            {
-                y = Spawner.height - 1;
-            }
-            else
-            {
-                y++;
-            }
-                
-
+            transform.position = Spawner.SetEntityPos(GridContents.Player, xPos, yPos);
+            Spawner.ResetGridSpaceContents(GridContents.None, x, y);
+            x = xPos;
+            y = yPos;
+            Spawner.ResetGridSpaces();
+            moveableSpaces = Spawner.SetMoveableSpaces(moveDistance, x, y);
         }
 
-        transform.position = Spawner.grid[x, y].transform.position;
     }
+
+    public void ShowMoveableSpaces()
+    {
+        Spawner.HighlightMoveableSpaces(moveableSpaces);
+    }
+
+    
+
 }

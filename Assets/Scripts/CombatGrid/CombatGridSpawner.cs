@@ -25,11 +25,101 @@ public class CombatGridSpawner : MonoBehaviour
             for (int j = 0; j < height; j++)
             {
                 grid[i, j] = Instantiate(gridSpacePrefab, transform.position + new Vector3((spriteWidth/2 * j) - (spriteWidth / 2 * i), (spriteHeight/2 * i) + (spriteHeight / 2 * j)), Quaternion.identity, transform);
+                grid[i, j].GetComponent<GridSpace>().xPos = i;
+                grid[i, j].GetComponent<GridSpace>().yPos = j;
 
             }
         }
 
     }
-    
-    
+
+    public Vector3 SetEntityPos(GridContents contents, int x, int y)
+    {
+        grid[x, y].GetComponent<GridSpace>().UpdateContents(contents);
+
+        return grid[x, y].transform.position;
+    }
+
+    public void ResetGridSpaceContents(GridContents contents, int x, int y)
+    {
+        grid[x, y].GetComponent<GridSpace>().UpdateContents(contents);
+    }
+
+    public void ResetGridSpaces()
+    {
+        foreach(GameObject GO in grid)
+        {
+            GO.GetComponent<GridSpace>().ResetHighlight();
+        }
+    }
+
+    public void HighlightMoveableSpaces(List<GameObject> spaces)
+    {
+        foreach(GameObject GO in spaces)
+        {
+            GO.GetComponent<GridSpace>().HighlightSpace();
+        }
+    }
+
+    public List<GameObject> SetMoveableSpaces(int moveDist, int xPos, int yPos)
+    {
+        List<GameObject> visited = new List<GameObject>();
+        visited.Add(grid[xPos, yPos]);
+
+        SetMoveableSpacesRecursive(moveDist, xPos, yPos, visited);
+
+        return visited;
+
+    }
+
+    public void SetMoveableSpacesRecursive(int moveDist, int xPos, int yPos, List<GameObject> visited)
+    {
+        if(moveDist == 0)
+        {
+            return;
+        }
+
+        if ((xPos + 1) < width)
+        {
+            if(!visited.Contains(grid[xPos + 1, yPos]))
+            {
+                visited.Add(grid[xPos + 1, yPos]);
+                SetMoveableSpacesRecursive(moveDist - 1, xPos + 1, yPos, visited);
+            }
+        }
+
+        if ((yPos + 1) < height)
+        {
+            if (!visited.Contains(grid[xPos, yPos + 1]))
+            {
+                visited.Add(grid[xPos, yPos + 1]);
+                SetMoveableSpacesRecursive(moveDist - 1, xPos, yPos + 1, visited);
+
+            }
+        }
+
+        if ((xPos - 1) >= 0)
+        {
+            if (!visited.Contains(grid[xPos - 1, yPos]))
+            {
+                visited.Add(grid[xPos - 1, yPos]);
+                SetMoveableSpacesRecursive(moveDist - 1, xPos - 1, yPos, visited);
+
+            }
+        }
+
+        if ((yPos - 1) >= 0)
+        {
+            if (!visited.Contains(grid[xPos, yPos - 1]))
+            {
+                visited.Add(grid[xPos, yPos - 1]);
+                SetMoveableSpacesRecursive(moveDist - 1, xPos, yPos - 1, visited);
+
+            }
+        }
+
+
+    }
+
+
 }
