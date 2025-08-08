@@ -66,7 +66,10 @@ public class GridSpace : Interactable
         switch(contents)
         {
             case GridContents.Player:
-                PlayerCombatGrid.Instance.ShowMoveableSpaces();
+                if (GridGameManager.Instance.PlayerTurn)
+                {
+                    PlayerCombatGrid.Instance.ShowMoveableSpaces();
+                }
                 break;
             case GridContents.Enemy:
 

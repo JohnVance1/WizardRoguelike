@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GridGameManager : MonoBehaviour
@@ -5,6 +6,28 @@ public class GridGameManager : MonoBehaviour
     public CombatGridSpawner spawner;
     public PlayerCombatGrid player;
 
+    public int levelNum;
+    public bool PlayerTurn;
+
+    public static GridGameManager Instance { get; private set; }
+
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+        PlayerTurn = true;
+    }
+    private void Start()
+    {
+        
+    }
 
     private void Update()
     {
@@ -20,6 +43,22 @@ public class GridGameManager : MonoBehaviour
             }
             
         }
+    }
+
+    public void EndPlayerTurn()
+    {
+        StartCoroutine(StartPlayerTurn());
+
+    }
+
+    public IEnumerator StartPlayerTurn()
+    {
+        PlayerTurn = false;
+        Debug.Log(PlayerTurn);
+        yield return new WaitForSeconds(2f);
+        PlayerTurn = true;
+        Debug.Log(PlayerTurn);
+
     }
 
 

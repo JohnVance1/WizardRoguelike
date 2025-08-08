@@ -36,7 +36,6 @@ public class PlayerCombatGrid : MonoBehaviour
         y = 3;
         transform.position = Spawner.SetEntityPos(GridContents.Player, x, y);
         moveDistance = 2;
-        moveableSpaces = Spawner.SetMoveableSpaces(moveDistance, x, y);
 
     }
 
@@ -55,13 +54,15 @@ public class PlayerCombatGrid : MonoBehaviour
             x = xPos;
             y = yPos;
             Spawner.ResetGridSpaces();
-            moveableSpaces = Spawner.SetMoveableSpaces(moveDistance, x, y);
+            moveableSpaces = new List<GameObject>();
         }
 
     }
 
     public void ShowMoveableSpaces()
     {
+        moveableSpaces = Spawner.SetMoveableSpaces(moveDistance, x, y);
+
         Spawner.HighlightMoveableSpaces(moveableSpaces);
     }
 
