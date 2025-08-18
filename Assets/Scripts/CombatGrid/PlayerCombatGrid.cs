@@ -11,6 +11,10 @@ public class PlayerCombatGrid : MonoBehaviour
     public int moveDistance;
     private List<GameObject> moveableSpaces;
 
+    public Inventory inventory;
+
+    public int moveNums = 1;
+
     public static PlayerCombatGrid Instance { get; private set; }
     public int X { get { return x; } private set { x = value; } }
     public int Y { get { return y; } private set { y = value;  } }
@@ -55,6 +59,7 @@ public class PlayerCombatGrid : MonoBehaviour
             y = yPos;
             Spawner.ResetGridSpaces();
             moveableSpaces = new List<GameObject>();
+            moveNums--;
         }
 
     }
@@ -66,6 +71,14 @@ public class PlayerCombatGrid : MonoBehaviour
         Spawner.HighlightMoveableSpaces(moveableSpaces);
     }
 
-    
+    public void AddItemToInventory(Item_Base item)
+    {
+        inventory.Add(item);
+    }
+
+    public void RemoveItemFromInventory(Item_Base item)
+    {
+        inventory.Remove(item);
+    }
 
 }

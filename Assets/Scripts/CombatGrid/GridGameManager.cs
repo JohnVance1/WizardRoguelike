@@ -8,6 +8,7 @@ public class GridGameManager : MonoBehaviour
 
     public int levelNum;
     public bool PlayerTurn;
+    public int turnCount;
 
     public static GridGameManager Instance { get; private set; }
 
@@ -54,10 +55,9 @@ public class GridGameManager : MonoBehaviour
     public IEnumerator StartPlayerTurn()
     {
         PlayerTurn = false;
-        Debug.Log(PlayerTurn);
         yield return new WaitForSeconds(2f);
         PlayerTurn = true;
-        Debug.Log(PlayerTurn);
+        PlayerCombatGrid.Instance.moveNums = 1;
 
     }
 

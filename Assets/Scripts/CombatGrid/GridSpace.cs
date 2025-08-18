@@ -16,8 +16,12 @@ public class GridSpace : Interactable
 
     public GridContents contents;
 
+    public Herb herb;
+
+
     public SpriteRenderer highlightSprite;
     public SpriteRenderer playerMoveSprite;
+    public SpriteRenderer contentsSprite;
 
 
     public int xPos;
@@ -27,12 +31,16 @@ public class GridSpace : Interactable
     {
         highlightSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
         playerMoveSprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
+        contentsSprite = transform.GetChild(2).GetComponent<SpriteRenderer>();
 
     }
 
     void Start()
     {
-
+        if (herb != null)
+        {
+            contentsSprite.sprite = herb.defaultSprite;
+        }
     }
 
     public void UpdateContents(GridContents newContents)
@@ -66,7 +74,7 @@ public class GridSpace : Interactable
         switch(contents)
         {
             case GridContents.Player:
-                if (GridGameManager.Instance.PlayerTurn)
+                if (GridGameManager.Instance.PlayerTurn && PlayerCombatGrid.Instance.moveNums > 0)
                 {
                     PlayerCombatGrid.Instance.ShowMoveableSpaces();
                 }
@@ -75,10 +83,17 @@ public class GridSpace : Interactable
 
                 break;
             case GridContents.Herb:
+                if (playerMoveSprite.enabled)
+                {
+                    PlayerCombatGrid.Instance.AddItemToInventory(herb);
+                    contentsSprite.sprite = null;
+                    UpdateContents(GridContents.None);
+                    PlayerCombatGrid.Instance.SetPos(xPos, yPos);
 
+                }
                 break;
             case GridContents.None:
-                if(highlightSprite.enabled)
+                if(playerMoveSprite.enabled)
                 {
                     PlayerCombatGrid.Instance.SetPos(xPos, yPos);
                 }

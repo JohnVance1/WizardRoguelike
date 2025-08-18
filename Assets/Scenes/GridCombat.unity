@@ -199,6 +199,7 @@ MonoBehaviour:
   width: 6
   height: 6
   gridSpacePrefab: {fileID: 6572405619990428952, guid: 828704aaa58676d4692658f3c959df40, type: 3}
+  tempHerb: {fileID: 11400000, guid: 10f1e2b6a720faf4382708209bbb4a62, type: 2}
 --- !u!4 &262676169
 Transform:
   m_ObjectHideFlags: 0
@@ -726,6 +727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Spawner: {fileID: 262676168}
   moveDistance: 0
+  inventory: {fileID: 11400000, guid: 2b479184f7dc470468a1d0ae83da7c88, type: 2}
 --- !u!4 &1543798104
 Transform:
   m_ObjectHideFlags: 0

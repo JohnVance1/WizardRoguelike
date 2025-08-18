@@ -14,6 +14,8 @@ public class CombatGridSpawner : MonoBehaviour
     public GameObject gridSpacePrefab;
     public GameObject[,] grid;
 
+    public Herb tempHerb;
+
     private void Start()
     {
         grid = new GameObject[width, height];
@@ -27,6 +29,11 @@ public class CombatGridSpawner : MonoBehaviour
                 grid[i, j] = Instantiate(gridSpacePrefab, transform.position + new Vector3((spriteWidth/2 * j) - (spriteWidth / 2 * i), (spriteHeight/2 * i) + (spriteHeight / 2 * j)), Quaternion.identity, transform);
                 grid[i, j].GetComponent<GridSpace>().xPos = i;
                 grid[i, j].GetComponent<GridSpace>().yPos = j;
+                if(i == 2 && j == 1)
+                {
+                    grid[i, j].GetComponent<GridSpace>().UpdateContents(GridContents.Herb);
+                    grid[i, j].GetComponent<GridSpace>().herb = tempHerb;
+                }
 
             }
         }
