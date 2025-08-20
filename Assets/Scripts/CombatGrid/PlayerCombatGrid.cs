@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum PlayerState
+{
+    Idle,
+    Move,
+    UsePotion,
+
+}
+
+
 public class PlayerCombatGrid : MonoBehaviour
 {
     public CombatGridSpawner Spawner;
@@ -15,6 +24,10 @@ public class PlayerCombatGrid : MonoBehaviour
 
     public int moveNums = 1;
 
+    public PlayerState state;
+
+    public bool[,] currentAttackPotionArray;
+
     public static PlayerCombatGrid Instance { get; private set; }
     public int X { get { return x; } private set { x = value; } }
     public int Y { get { return y; } private set { y = value;  } }
@@ -22,7 +35,6 @@ public class PlayerCombatGrid : MonoBehaviour
     private void Awake()
     {
         // If there is an instance, and it's not me, delete myself.
-
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -35,17 +47,12 @@ public class PlayerCombatGrid : MonoBehaviour
 
     void Start()
     {
+        state = PlayerState.Idle;
         moveableSpaces = new List<GameObject>();
         x = 3; 
         y = 3;
         transform.position = Spawner.SetEntityPos(GridContents.Player, x, y);
         moveDistance = 2;
-
-    }
-
-    void Update()
-    {
-        
 
     }
 
@@ -69,6 +76,11 @@ public class PlayerCombatGrid : MonoBehaviour
         moveableSpaces = Spawner.SetMoveableSpaces(moveDistance, x, y);
 
         Spawner.HighlightMoveableSpaces(moveableSpaces);
+    }
+    public void ShowAttackableSpaces()
+    {
+        List<GameObject> temp = Spawner.SetAttackableSpaces(currentAttackPotionArray);
+        Spawner.HighlightAttackingSpaces(temp);
     }
 
     public void AddItemToInventory(Item_Base item)

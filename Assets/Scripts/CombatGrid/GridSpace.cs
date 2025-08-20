@@ -27,6 +27,9 @@ public class GridSpace : Interactable
     public delegate void OnPlayerMouseEnterGridSpace(int x, int y);
     public OnPlayerMouseEnterGridSpace updateCurrentSpace;
 
+    public delegate void OnGridHighlightReset();
+    public OnGridHighlightReset onGridHighlightReset;
+
 
     public int xPos;
     public int yPos;
@@ -70,10 +73,18 @@ public class GridSpace : Interactable
 
     public override void OnMouseEnter()
     {
-        highlightSprite.enabled = true;
         if (updateCurrentSpace != null)
         {
             updateCurrentSpace(xPos, yPos);
+
+        }
+        if (PlayerCombatGrid.Instance.state == PlayerState.UsePotion)
+        {
+            PlayerCombatGrid.Instance.ShowAttackableSpaces();
+        }
+        else
+        {
+            highlightSprite.enabled = true;
 
         }
     }
@@ -81,7 +92,11 @@ public class GridSpace : Interactable
     public override void OnMouseExit()
     {
         highlightSprite.enabled = false;
+        if (onGridHighlightReset != null && PlayerCombatGrid.Instance.state == PlayerState.UsePotion)
+        {
+            onGridHighlightReset();
 
+        }
     }
 
     public void OnMouseDown()
@@ -89,9 +104,10 @@ public class GridSpace : Interactable
         switch(contents)
         {
             case GridContents.Player:
-                if (GridGameManager.Instance.PlayerTurn && PlayerCombatGrid.Instance.moveNums > 0)
+                if (GridGameManager.Instance.PlayerTurn && PlayerCombatGrid.Instance.moveNums > 0 && PlayerCombatGrid.Instance.state == PlayerState.Idle)
                 {
                     PlayerCombatGrid.Instance.ShowMoveableSpaces();
+                    PlayerCombatGrid.Instance.state = PlayerState.Move;
                 }
                 break;
             case GridContents.Enemy:
@@ -108,10 +124,21 @@ public class GridSpace : Interactable
                 }
                 break;
             case GridContents.None:
-                if(playerMoveSprite.enabled)
+                if(playerMoveSprite.enabled && PlayerCombatGrid.Instance.state == PlayerState.Move)
                 {
                     PlayerCombatGrid.Instance.SetPos(xPos, yPos);
                 }
+                else if(PlayerCombatGrid.Instance.state == PlayerState.UsePotion)
+                {
+                    // Use Potion
+                    if (onGridHighlightReset != null)
+                    {
+                        onGridHighlightReset();
+
+                    }
+                    PlayerCombatGrid.Instance.state = PlayerState.Idle;
+                }
+
                 break;
             default:
 

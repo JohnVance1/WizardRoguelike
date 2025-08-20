@@ -334,18 +334,18 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_SortingLayerID: 430187533
+  m_SortingLayer: -2
+  m_SortingOrder: 2
+  m_Sprite: {fileID: 3625043607559282579, guid: 0f42e12c5e96e924384e957fcaa73c85, type: 3}
   m_Color: {r: 0, g: 0.04240489, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &6572405619990428952
@@ -457,6 +457,7 @@ MonoBehaviour:
   herb: {fileID: 0}
   highlightSprite: {fileID: 0}
   playerMoveSprite: {fileID: 0}
+  playerWeaponHighlight: {fileID: 0}
   contentsSprite: {fileID: 0}
   xPos: 0
   yPos: 0

@@ -15,10 +15,12 @@ public class PotionUIButton : MonoBehaviour
         };
     }
 
-    void Update()
+    public void SetPotion()
     {
-        
+        PlayerCombatGrid.Instance.currentAttackPotionArray = effectRadius;
+        PlayerCombatGrid.Instance.state = PlayerState.UsePotion;
+
     }
 
-    
+
 }
