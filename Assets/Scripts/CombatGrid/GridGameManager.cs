@@ -12,6 +12,7 @@ public class GridGameManager : MonoBehaviour
 
     public static GridGameManager Instance { get; private set; }
 
+    
 
     private void Awake()
     {

@@ -21,7 +21,11 @@ public class GridSpace : Interactable
 
     public SpriteRenderer highlightSprite;
     public SpriteRenderer playerMoveSprite;
+    public SpriteRenderer playerWeaponHighlight;
     public SpriteRenderer contentsSprite;
+
+    public delegate void OnPlayerMouseEnterGridSpace(int x, int y);
+    public OnPlayerMouseEnterGridSpace updateCurrentSpace;
 
 
     public int xPos;
@@ -31,7 +35,8 @@ public class GridSpace : Interactable
     {
         highlightSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
         playerMoveSprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
-        contentsSprite = transform.GetChild(2).GetComponent<SpriteRenderer>();
+        playerWeaponHighlight = transform.GetChild(2).GetComponent<SpriteRenderer>();
+        contentsSprite = transform.GetChild(3).GetComponent<SpriteRenderer>();
 
     }
 
@@ -47,20 +52,30 @@ public class GridSpace : Interactable
     {
         contents = newContents;
     }
-
     public void HighlightSpace()
     {
         playerMoveSprite.enabled = true;
     }
 
+    public void WeaponHighlightSpace()
+    {
+        playerWeaponHighlight.enabled = true;
+    }
+
     public void ResetHighlight()
     {
         playerMoveSprite.enabled = false;
+        playerWeaponHighlight.enabled = false;
     }
 
     public override void OnMouseEnter()
     {
         highlightSprite.enabled = true;
+        if (updateCurrentSpace != null)
+        {
+            updateCurrentSpace(xPos, yPos);
+
+        }
     }
 
     public override void OnMouseExit()

@@ -15,6 +15,9 @@ public class CombatGridSpawner : MonoBehaviour
     public GameObject[,] grid;
 
     public Herb tempHerb;
+    public GameObject currentGridSpace;
+
+    
 
     private void Start()
     {
@@ -27,17 +30,24 @@ public class CombatGridSpawner : MonoBehaviour
             for (int j = 0; j < height; j++)
             {
                 grid[i, j] = Instantiate(gridSpacePrefab, transform.position + new Vector3((spriteWidth/2 * j) - (spriteWidth / 2 * i), (spriteHeight/2 * i) + (spriteHeight / 2 * j)), Quaternion.identity, transform);
-                grid[i, j].GetComponent<GridSpace>().xPos = i;
-                grid[i, j].GetComponent<GridSpace>().yPos = j;
+                GridSpace space = grid[i, j].GetComponent<GridSpace>();
+                space.xPos = i;
+                space.yPos = j;
                 if(i == 2 && j == 1)
                 {
-                    grid[i, j].GetComponent<GridSpace>().UpdateContents(GridContents.Herb);
-                    grid[i, j].GetComponent<GridSpace>().herb = tempHerb;
+                    space.UpdateContents(GridContents.Herb);
+                    space.herb = tempHerb;
+                    space.updateCurrentSpace += SetCurrentGridNode;
                 }
 
             }
         }
 
+    }
+
+    public void SetCurrentGridNode(int x, int y)
+    {
+        currentGridSpace = grid[x, y];
     }
 
     public Vector3 SetEntityPos(GridContents contents, int x, int y)
