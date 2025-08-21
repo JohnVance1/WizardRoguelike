@@ -1,8 +1,10 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
-
+using UnityEngine.Tilemaps;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 public enum PlayerState
 {
     Idle,
@@ -14,6 +16,11 @@ public enum PlayerState
 
 public class PlayerCombatGrid : MonoBehaviour
 {
+    PlayerControls controls;
+    public Tilemap map;
+    private Vector3 destination;
+    private int movementSpeed;
+
     public CombatGridSpawner Spawner;
     private int x, y;
 
@@ -43,17 +50,58 @@ public class PlayerCombatGrid : MonoBehaviour
         {
             Instance = this;
         }
+
+        controls = new PlayerControls();
+    }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+        controls.GridPlayer.Enable();
+
+    }
+
+    private void OnDisable()
+    {
+        controls.GridPlayer.Disable();
+        controls.Disable();
     }
 
     void Start()
     {
         state = PlayerState.Idle;
-        moveableSpaces = new List<GameObject>();
+        //moveableSpaces = new List<GameObject>();
         x = 3; 
         y = 3;
-        transform.position = Spawner.SetEntityPos(GridContents.Player, x, y);
+        //transform.position = Spawner.SetEntityPos(GridContents.Player, x, y);
+        movementSpeed = 2;
+
+        destination = transform.position;
+        controls.GridPlayer.MouseClick.performed += _ => MouseClick();
+
         moveDistance = 2;
 
+    }
+
+    public void MouseClick()
+    {
+        Vector2 mousePos = controls.GridPlayer.MouseMove.ReadValue<Vector2>();
+        mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+        Vector3Int gridPos = map.WorldToCell(mousePos);
+        if (map.HasTile(gridPos))
+        {
+            transform.position = map.GetCellCenterWorld(gridPos);
+            destination = mousePos;
+        }
+
+    }
+
+    private void Update()
+    {
+        if(Vector3.Distance(transform.position, destination) > 0.1f)
+        {
+            //transform.position = Vector3.MoveTowards(transform.position, destination, movementSpeed * Time.deltaTime);
+        }
     }
 
     public void SetPos(int xPos, int yPos)

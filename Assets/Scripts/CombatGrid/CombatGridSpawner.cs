@@ -24,32 +24,32 @@ public class CombatGridSpawner : MonoBehaviour
 
     private void Start()
     {
-        potionMaxWidth = 3;
-        potionMaxHeight = 3;
+        //potionMaxWidth = 3;
+        //potionMaxHeight = 3;
 
-        grid = new GameObject[width, height];
-        spriteHeight = gridSpacePrefab.GetComponent<SpriteRenderer>().bounds.size.y;
-        spriteWidth = gridSpacePrefab.GetComponent<SpriteRenderer>().bounds.size.x;
+        //grid = new GameObject[width, height];
+        //spriteHeight = gridSpacePrefab.GetComponent<SpriteRenderer>().bounds.size.y;
+        //spriteWidth = gridSpacePrefab.GetComponent<SpriteRenderer>().bounds.size.x;
 
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                grid[i, j] = Instantiate(gridSpacePrefab, transform.position + new Vector3((spriteWidth / 2 * j) - (spriteWidth / 2 * i), (spriteHeight / 2 * i) + (spriteHeight / 2 * j)), Quaternion.identity, transform);
-                GridSpace space = grid[i, j].GetComponent<GridSpace>();
-                space.xPos = i;
-                space.yPos = j;
-                if (i == 2 && j == 1)
-                {
-                    space.UpdateContents(GridContents.Herb);
-                    space.herb = tempHerb;
+        //for (int i = 0; i < width; i++)
+        //{
+        //    for (int j = 0; j < height; j++)
+        //    {
+        //        grid[i, j] = Instantiate(gridSpacePrefab, transform.position + new Vector3((spriteWidth / 2 * j) - (spriteWidth / 2 * i), (spriteHeight / 2 * i) + (spriteHeight / 2 * j)), Quaternion.identity, transform);
+        //        GridSpace space = grid[i, j].GetComponent<GridSpace>();
+        //        space.xPos = i;
+        //        space.yPos = j;
+        //        if (i == 2 && j == 1)
+        //        {
+        //            space.UpdateContents(GridContents.Herb);
+        //            space.herb = tempHerb;
                     
-                }
-                space.updateCurrentSpace += SetCurrentGridNode;
-                space.onGridHighlightReset += ResetGridSpaces;
+        //        }
+        //        space.updateCurrentSpace += SetCurrentGridNode;
+        //        space.onGridHighlightReset += ResetGridSpaces;
 
-            }
-        }
+        //    }
+        //}
 
     }
 

@@ -99,52 +99,52 @@ public class GridSpace : Interactable
         }
     }
 
-    public void OnMouseDown()
-    {
-        switch(contents)
-        {
-            case GridContents.Player:
-                if (GridGameManager.Instance.PlayerTurn && PlayerCombatGrid.Instance.moveNums > 0 && PlayerCombatGrid.Instance.state == PlayerState.Idle)
-                {
-                    PlayerCombatGrid.Instance.ShowMoveableSpaces();
-                    PlayerCombatGrid.Instance.state = PlayerState.Move;
-                }
-                break;
-            case GridContents.Enemy:
+    //public void OnMouseDown()
+    //{
+    //    switch(contents)
+    //    {
+    //        case GridContents.Player:
+    //            if (GridGameManager.Instance.PlayerTurn && PlayerCombatGrid.Instance.moveNums > 0 && PlayerCombatGrid.Instance.state == PlayerState.Idle)
+    //            {
+    //                PlayerCombatGrid.Instance.ShowMoveableSpaces();
+    //                PlayerCombatGrid.Instance.state = PlayerState.Move;
+    //            }
+    //            break;
+    //        case GridContents.Enemy:
 
-                break;
-            case GridContents.Herb:
-                if (playerMoveSprite.enabled)
-                {
-                    PlayerCombatGrid.Instance.AddItemToInventory(herb);
-                    contentsSprite.sprite = null;
-                    UpdateContents(GridContents.None);
-                    PlayerCombatGrid.Instance.SetPos(xPos, yPos);
+    //            break;
+    //        case GridContents.Herb:
+    //            if (playerMoveSprite.enabled)
+    //            {
+    //                PlayerCombatGrid.Instance.AddItemToInventory(herb);
+    //                contentsSprite.sprite = null;
+    //                UpdateContents(GridContents.None);
+    //                PlayerCombatGrid.Instance.SetPos(xPos, yPos);
 
-                }
-                break;
-            case GridContents.None:
-                if(playerMoveSprite.enabled && PlayerCombatGrid.Instance.state == PlayerState.Move)
-                {
-                    PlayerCombatGrid.Instance.SetPos(xPos, yPos);
-                }
-                else if(PlayerCombatGrid.Instance.state == PlayerState.UsePotion)
-                {
-                    // Use Potion
-                    if (onGridHighlightReset != null)
-                    {
-                        onGridHighlightReset();
+    //            }
+    //            break;
+    //        case GridContents.None:
+    //            if(playerMoveSprite.enabled && PlayerCombatGrid.Instance.state == PlayerState.Move)
+    //            {
+    //                PlayerCombatGrid.Instance.SetPos(xPos, yPos);
+    //            }
+    //            else if(PlayerCombatGrid.Instance.state == PlayerState.UsePotion)
+    //            {
+    //                // Use Potion
+    //                if (onGridHighlightReset != null)
+    //                {
+    //                    onGridHighlightReset();
 
-                    }
-                    PlayerCombatGrid.Instance.state = PlayerState.Idle;
-                }
+    //                }
+    //                PlayerCombatGrid.Instance.state = PlayerState.Idle;
+    //            }
 
-                break;
-            default:
+    //            break;
+    //        default:
 
-                break;
+    //            break;
 
 
-        }
-    }
+    //    }
+    //}
 }
