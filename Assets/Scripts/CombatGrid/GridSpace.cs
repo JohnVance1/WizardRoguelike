@@ -9,12 +9,13 @@ public enum GridContents
 }
 
 
-[RequireComponent(typeof(Collider2D))]
-public class GridSpace : Interactable
+public class GridSpace
 {
     private Color originalColor;
 
-    public GridContents contents;
+    //public GridContents contents;
+
+    public GridContent contents;
 
     public Herb herb;
 
@@ -31,15 +32,21 @@ public class GridSpace : Interactable
     public OnGridHighlightReset onGridHighlightReset;
 
 
-    public int xPos;
-    public int yPos;
+    public Vector2Int position;
+
+    public GridSpace() { }
+    public GridSpace(Vector2Int position)
+    {
+        this.position = position;
+        
+    }
 
     private void Awake()
     {
-        highlightSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        playerMoveSprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
-        playerWeaponHighlight = transform.GetChild(2).GetComponent<SpriteRenderer>();
-        contentsSprite = transform.GetChild(3).GetComponent<SpriteRenderer>();
+        //highlightSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        //playerMoveSprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
+        //playerWeaponHighlight = transform.GetChild(2).GetComponent<SpriteRenderer>();
+        //contentsSprite = transform.GetChild(3).GetComponent<SpriteRenderer>();
 
     }
 
@@ -53,7 +60,7 @@ public class GridSpace : Interactable
 
     public void UpdateContents(GridContents newContents)
     {
-        contents = newContents;
+        //contents = newContents;
     }
     public void HighlightSpace()
     {
@@ -71,11 +78,11 @@ public class GridSpace : Interactable
         playerWeaponHighlight.enabled = false;
     }
 
-    public override void OnMouseEnter()
+    public void OnMouseEnter()
     {
         if (updateCurrentSpace != null)
         {
-            updateCurrentSpace(xPos, yPos);
+            //updateCurrentSpace(xPos, yPos);
 
         }
         if (PlayerCombatGrid.Instance.state == PlayerState.UsePotion)
@@ -89,7 +96,7 @@ public class GridSpace : Interactable
         }
     }
 
-    public override void OnMouseExit()
+    public void OnMouseExit()
     {
         highlightSprite.enabled = false;
         if (onGridHighlightReset != null && PlayerCombatGrid.Instance.state == PlayerState.UsePotion)

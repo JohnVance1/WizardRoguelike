@@ -14,7 +14,7 @@ public enum PlayerState
 }
 
 
-public class PlayerCombatGrid : MonoBehaviour
+public class PlayerCombatGrid : GridContent
 {
     PlayerControls controls;
     public Tilemap map;
@@ -91,6 +91,7 @@ public class PlayerCombatGrid : MonoBehaviour
         if (map.HasTile(gridPos))
         {
             transform.position = map.GetCellCenterWorld(gridPos);
+            Spawner.SetCurrentGridNode(gridPos.x, gridPos.y, this);
             destination = mousePos;
         }
 
@@ -106,16 +107,7 @@ public class PlayerCombatGrid : MonoBehaviour
 
     public void SetPos(int xPos, int yPos)
     {
-        if (moveableSpaces.Contains(Spawner.grid[xPos, yPos]))
-        {
-            transform.position = Spawner.SetEntityPos(GridContents.Player, xPos, yPos);
-            Spawner.ResetGridSpaceContents(GridContents.None, x, y);
-            x = xPos;
-            y = yPos;
-            Spawner.ResetGridSpaces();
-            moveableSpaces = new List<GameObject>();
-            moveNums--;
-        }
+        transform.position = map.GetCellCenterWorld(new Vector3Int(xPos, yPos, 0));
 
     }
 
