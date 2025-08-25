@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class GridGameManager : MonoBehaviour
 {
     public CombatGridSpawner spawner;
-    public PlayerCombatGrid player;
+    private PlayerCombatGrid player;
 
     public int levelNum;
     public bool PlayerTurn;
@@ -12,7 +13,10 @@ public class GridGameManager : MonoBehaviour
 
     public static GridGameManager Instance { get; private set; }
 
-    
+    PlayerControls controls;
+    public Tilemap map;
+
+
 
     private void Awake()
     {
@@ -25,10 +29,55 @@ public class GridGameManager : MonoBehaviour
             Instance = this;
         }
         PlayerTurn = true;
+        player = PlayerCombatGrid.Instance;
+        controls = new PlayerControls();
     }
+
+    private void OnEnable()
+    {
+        controls.Enable();
+        controls.GridPlayer.Enable();
+
+    }
+
+    private void OnDisable()
+    {
+        controls.GridPlayer.Disable();
+        controls.Disable();
+    }
+
     private void Start()
     {
-        
+        controls.GridPlayer.MouseClick.performed += _ => MouseClick();
+
+    }
+    public void MouseClick()
+    {
+        Vector2 mousePos = controls.GridPlayer.MouseMove.ReadValue<Vector2>();
+        mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+        Vector3Int gridPos = map.WorldToCell(mousePos);
+        if (map.HasTile(gridPos))
+        {
+            GridSpace space = spawner.MapToGrid(gridPos.x, gridPos.y);
+            if (space.contents == PlayerCombatGrid.Instance && PlayerCombatGrid.Instance.state == PlayerState.Idle)
+            {
+                PlayerCombatGrid.Instance.ShowMoveableSpaces(space.position.x, space.position.y);
+                PlayerCombatGrid.Instance.state = PlayerState.Move;
+            }
+            else if(PlayerCombatGrid.Instance.state == PlayerState.Move && space.IsHighlighted)
+            {
+                PlayerCombatGrid.Instance.transform.position = map.GetCellCenterWorld(gridPos);
+                spawner.SetCurrentGridNode(gridPos.x, gridPos.y, PlayerCombatGrid.Instance);
+                spawner.ResetGridSpaces();
+                PlayerCombatGrid.Instance.state = PlayerState.Idle;
+            }
+            
+        }
+        else
+        {
+            spawner.ResetGridSpaces();
+        }
+
     }
 
     private void Update()

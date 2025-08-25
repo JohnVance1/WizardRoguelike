@@ -453,14 +453,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468249df3bca1c1488982fffbf220042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contents: 0
+  contents: {fileID: 0}
   herb: {fileID: 0}
-  highlightSprite: {fileID: 0}
-  playerMoveSprite: {fileID: 0}
+  highlightSprite: {fileID: 11400000, guid: 788d23d229bcf344185191e6205a4b20, type: 2}
+  defaultSprite: {fileID: 11400000, guid: 9c7816c2f6615964cbc390eda67165fb, type: 2}
   playerWeaponHighlight: {fileID: 0}
   contentsSprite: {fileID: 0}
-  xPos: 0
-  yPos: 0
+  position: {x: 0, y: 0}
 --- !u!60 &-2014587152519674742
 PolygonCollider2D:
   m_ObjectHideFlags: 0

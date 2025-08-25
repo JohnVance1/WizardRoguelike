@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public enum GridContents
 {
@@ -11,17 +12,16 @@ public enum GridContents
 
 public class GridSpace
 {
-    private Color originalColor;
-
     //public GridContents contents;
 
     public GridContent contents;
 
     public Herb herb;
 
+    public bool IsHighlighted;
 
-    public SpriteRenderer highlightSprite;
-    public SpriteRenderer playerMoveSprite;
+    public Tile highlightSprite;
+    public Tile defaultSprite;
     public SpriteRenderer playerWeaponHighlight;
     public SpriteRenderer contentsSprite;
 
@@ -35,36 +35,23 @@ public class GridSpace
     public Vector2Int position;
 
     public GridSpace() { }
+
     public GridSpace(Vector2Int position)
     {
         this.position = position;
-        
+        IsHighlighted = false;
     }
 
-    private void Awake()
-    {
-        //highlightSprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        //playerMoveSprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
-        //playerWeaponHighlight = transform.GetChild(2).GetComponent<SpriteRenderer>();
-        //contentsSprite = transform.GetChild(3).GetComponent<SpriteRenderer>();
+    
 
-    }
-
-    void Start()
-    {
-        if (herb != null)
-        {
-            contentsSprite.sprite = herb.defaultSprite;
-        }
-    }
-
+    
     public void UpdateContents(GridContents newContents)
     {
         //contents = newContents;
     }
     public void HighlightSpace()
     {
-        playerMoveSprite.enabled = true;
+        //playerMoveSprite.enabled = true;
     }
 
     public void WeaponHighlightSpace()
@@ -74,7 +61,7 @@ public class GridSpace
 
     public void ResetHighlight()
     {
-        playerMoveSprite.enabled = false;
+        //playerMoveSprite.enabled = false;
         playerWeaponHighlight.enabled = false;
     }
 
@@ -85,20 +72,20 @@ public class GridSpace
             //updateCurrentSpace(xPos, yPos);
 
         }
-        if (PlayerCombatGrid.Instance.state == PlayerState.UsePotion)
-        {
-            PlayerCombatGrid.Instance.ShowAttackableSpaces();
-        }
+        //if (PlayerCombatGrid.Instance.state == PlayerState.UsePotion)
+        //{
+        //    PlayerCombatGrid.Instance.ShowAttackableSpaces();
+        //}
         else
         {
-            highlightSprite.enabled = true;
+            //highlightSprite.enabled = true;
 
         }
     }
 
     public void OnMouseExit()
     {
-        highlightSprite.enabled = false;
+        //highlightSprite.enabled = false;
         if (onGridHighlightReset != null && PlayerCombatGrid.Instance.state == PlayerState.UsePotion)
         {
             onGridHighlightReset();

@@ -164,10 +164,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawner: {fileID: 262676168}
-  player: {fileID: 1543798103}
   levelNum: 0
   PlayerTurn: 0
   turnCount: 0
+  map: {fileID: 1930802557}
 --- !u!1 &262676167
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,6 +202,8 @@ MonoBehaviour:
   height: 6
   gridSpacePrefab: {fileID: 6572405619990428952, guid: 828704aaa58676d4692658f3c959df40, type: 3}
   map: {fileID: 1930802557}
+  highlightSprite: {fileID: 11400000, guid: 4cad55a8e3965dc418e51f4de707bc21, type: 2}
+  defaultSprite: {fileID: 11400000, guid: 9c7816c2f6615964cbc390eda67165fb, type: 2}
   tempHerb: {fileID: 11400000, guid: 10f1e2b6a720faf4382708209bbb4a62, type: 2}
   currentGridSpace: {fileID: 0}
 --- !u!4 &262676169
@@ -912,7 +914,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1543798102}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1

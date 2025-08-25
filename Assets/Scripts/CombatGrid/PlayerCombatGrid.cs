@@ -16,7 +16,6 @@ public enum PlayerState
 
 public class PlayerCombatGrid : GridContent
 {
-    PlayerControls controls;
     public Tilemap map;
     private Vector3 destination;
     private int movementSpeed;
@@ -25,7 +24,7 @@ public class PlayerCombatGrid : GridContent
     private int x, y;
 
     public int moveDistance;
-    private List<GameObject> moveableSpaces;
+    private List<GridSpace> moveableSpaces;
 
     public Inventory inventory;
 
@@ -51,21 +50,9 @@ public class PlayerCombatGrid : GridContent
             Instance = this;
         }
 
-        controls = new PlayerControls();
     }
 
-    private void OnEnable()
-    {
-        controls.Enable();
-        controls.GridPlayer.Enable();
-
-    }
-
-    private void OnDisable()
-    {
-        controls.GridPlayer.Disable();
-        controls.Disable();
-    }
+   
 
     void Start()
     {
@@ -77,25 +64,12 @@ public class PlayerCombatGrid : GridContent
         movementSpeed = 2;
 
         destination = transform.position;
-        controls.GridPlayer.MouseClick.performed += _ => MouseClick();
 
         moveDistance = 2;
 
     }
 
-    public void MouseClick()
-    {
-        Vector2 mousePos = controls.GridPlayer.MouseMove.ReadValue<Vector2>();
-        mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-        Vector3Int gridPos = map.WorldToCell(mousePos);
-        if (map.HasTile(gridPos))
-        {
-            transform.position = map.GetCellCenterWorld(gridPos);
-            Spawner.SetCurrentGridNode(gridPos.x, gridPos.y, this);
-            destination = mousePos;
-        }
-
-    }
+    
 
     private void Update()
     {
@@ -111,9 +85,9 @@ public class PlayerCombatGrid : GridContent
 
     }
 
-    public void ShowMoveableSpaces()
+    public void ShowMoveableSpaces(int xPos, int yPos)
     {
-        moveableSpaces = Spawner.SetMoveableSpaces(moveDistance, x, y);
+        moveableSpaces = Spawner.SetMoveableSpaces(moveDistance, xPos, yPos);
 
         Spawner.HighlightMoveableSpaces(moveableSpaces);
     }
