@@ -16,9 +16,9 @@ public enum PlayerState
 
 public class PlayerCombatGrid : GridContent
 {
+    public Player_Interact interact;
+
     public Tilemap map;
-    private Vector3 destination;
-    private int movementSpeed;
 
     public CombatGridSpawner Spawner;
     private int x, y;
@@ -56,14 +56,9 @@ public class PlayerCombatGrid : GridContent
 
     void Start()
     {
-        state = PlayerState.Idle;
-        //moveableSpaces = new List<GameObject>();
-        x = 3; 
-        y = 3;
-        //transform.position = Spawner.SetEntityPos(GridContents.Player, x, y);
-        movementSpeed = 2;
+        //interact = GetComponent<Player_Interact>();
 
-        destination = transform.position;
+        state = PlayerState.Idle;
 
         moveDistance = 2;
 
@@ -73,10 +68,7 @@ public class PlayerCombatGrid : GridContent
 
     private void Update()
     {
-        if(Vector3.Distance(transform.position, destination) > 0.1f)
-        {
-            //transform.position = Vector3.MoveTowards(transform.position, destination, movementSpeed * Time.deltaTime);
-        }
+        
     }
 
     public void SetPos(int xPos, int yPos)
@@ -93,7 +85,7 @@ public class PlayerCombatGrid : GridContent
     }
     public void ShowAttackableSpaces()
     {
-        List<GameObject> temp = Spawner.SetAttackableSpaces(currentAttackPotionArray);
+        List<GridSpace> temp = Spawner.SetAttackableSpaces(currentAttackPotionArray);
         Spawner.HighlightAttackingSpaces(temp);
     }
 

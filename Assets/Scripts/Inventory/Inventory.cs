@@ -116,8 +116,6 @@ public class Inventory : ScriptableObject
             inventory.Add(newItem);
             itemDictionary.Add(reference, newItem);
             item = newItem;
-
-
         }
         if (onInventoryAdd != null)
         {

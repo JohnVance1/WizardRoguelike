@@ -17,13 +17,18 @@ public class CombatGridSpawner : MonoBehaviour
     public GameObject gridSpacePrefab;
     public GridSpace[,] grid;
     public Tilemap map;
+    public Tilemap highlightMap;
+    public Tilemap collectableMap;
 
-    public Tile highlightSprite;
+    public Tile highlightMoveSprite;
+    public Tile highlightAttackSprite;
     public Tile defaultSprite;
+    public Tile herbSprite;
 
 
     public Herb tempHerb;
-    public GameObject currentGridSpace;
+    public PotionInfo_SO tempPotion;
+    public GridSpace currentGridSpace;
 
     private int potionMaxWidth;
     private int potionMaxHeight;
@@ -33,8 +38,7 @@ public class CombatGridSpawner : MonoBehaviour
     {
         potionMaxWidth = 3;
         potionMaxHeight = 3;
-
-        
+                
         spriteHeight = gridSpacePrefab.GetComponent<SpriteRenderer>().bounds.size.y;
         spriteWidth = gridSpacePrefab.GetComponent<SpriteRenderer>().bounds.size.x;
 
@@ -55,13 +59,21 @@ public class CombatGridSpawner : MonoBehaviour
 
                 if (map.HasTile(new Vector3Int(px, py, 0)))
                 {
-                    grid[x, y] = new GridSpace(new Vector2Int(px, py));
+                    grid[x, y] = new GridSpace(new Vector2Int(px, py), new Vector2Int(x, y));
                     grid[x, y].defaultSprite = defaultSprite;
+
+                    if (x == 2 && y == 1)
+                    {
+                        grid[x, y].herb = tempHerb;
+                        grid[x, y].contentType = GridContentType.Herb;
+                        collectableMap.SetTile(new Vector3Int(px, py, 0), herbSprite);
+                    }
                 }
                 
             }
         }
 
+        PlayerCombatGrid.Instance.AddItemToInventory(tempPotion);
         SetCurrentGridNode(0, 0, PlayerCombatGrid.Instance);
         //grid[0, 0].contents = PlayerCombatGrid.Instance;
         PlayerCombatGrid.Instance.SetPos(0, 0);
@@ -73,6 +85,24 @@ public class CombatGridSpawner : MonoBehaviour
         int px = Mathf.Abs(bounds.xMin) + x;
         int py = Mathf.Abs(bounds.yMin) + y;
         Debug.Log("X:" + x + " Y:" + y);
+
+        if (grid[px, py].contentType != GridContentType.None)
+        {
+            switch(grid[px, py].contentType)
+            {
+                case GridContentType.Player:
+                    break;
+                case GridContentType.Enemy:
+                    break;
+                case GridContentType.Herb:
+                    PlayerCombatGrid.Instance.AddItemToInventory(grid[px, py].herb);
+                    grid[px, py].CollectHerb();
+                    collectableMap.SetTile(new Vector3Int(x, y, 0), null);
+                    break;
+            }
+        }
+
+
 
         grid[px, py].contents = newContent;
         Debug.Log(grid[px, py].contents.name);
@@ -130,11 +160,11 @@ public class CombatGridSpawner : MonoBehaviour
     //    grid[x, y].GetComponent<GridSpace>().UpdateContents(contents);
     //}
 
-    public void ResetGridSpaces()
+    public void ResetHighlightGridSpaces()
     {
         foreach (GridSpace GO in grid)
         {
-            map.SetTile(new Vector3Int(GO.position.x, GO.position.y, 0), GO.defaultSprite);
+            highlightMap.SetTile(new Vector3Int(GO.position.x, GO.position.y, 0), null);
             GO.IsHighlighted = false;
         }
     }
@@ -145,17 +175,20 @@ public class CombatGridSpawner : MonoBehaviour
         {
             Vector3Int tilePos = new Vector3Int(GO.position.x, GO.position.y, 0);
             GO.IsHighlighted = true;
-            map.SetTile(tilePos, highlightSprite);
+            highlightMap.SetTile(tilePos, highlightMoveSprite);
             
         }
     }
 
-    public void HighlightAttackingSpaces(List<GameObject> spaces)
+    public void HighlightAttackingSpaces(List<GridSpace> spaces)
     {
-        foreach (GameObject GO in spaces)
+        foreach (GridSpace GO in spaces)
         {
-            GO.GetComponent<GridSpace>().WeaponHighlightSpace();
-        }
+            Vector3Int tilePos = new Vector3Int(GO.position.x, GO.position.y, 0);
+            GO.IsHighlighted = true;
+            highlightMap.SetTile(tilePos, highlightAttackSprite);
+
+        }       
         
     }
 
@@ -218,9 +251,10 @@ public class CombatGridSpawner : MonoBehaviour
 
 
     }
-    public List<GameObject> SetAttackableSpaces(bool[,] array)
+
+    public List<GridSpace> SetAttackableSpaces(bool[,] array)
     {
-        List<GameObject> visited = new List<GameObject>();
+        List<GridSpace> visited = new List<GridSpace>();
 
         for (int i = 0; i <= potionMaxWidth - 1; i++)
         {
@@ -228,14 +262,13 @@ public class CombatGridSpawner : MonoBehaviour
             {
                 if (array[i, j] == true)
                 {
-                    //int tempX = ((potionMaxWidth - 1) / 2) - i + currentGridSpace.GetComponent<GridSpace>().xPos;
-                    //int tempY = ((potionMaxHeight - 1) / 2) - j + currentGridSpace.GetComponent<GridSpace>().yPos;
-                    //if(tempX < width && tempY < height && tempX >= 0 && tempY >= 0)
-                    //{
-                    //    //visited.Add(grid[tempX, tempY]);
+                    int tempX = ((potionMaxWidth - 1) / 2) - i + currentGridSpace.gridPos.x;
+                    int tempY = ((potionMaxHeight - 1) / 2) - j + currentGridSpace.gridPos.y;
+                    if (tempX < width && tempY < height && tempX >= 0 && tempY >= 0)
+                    {
+                        visited.Add(grid[tempX, tempY]);
 
-                    //}
-
+                    }
                 }
             }
         }

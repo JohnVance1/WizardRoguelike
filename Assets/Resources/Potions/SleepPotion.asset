@@ -119,6 +119,9 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: potionEffectArea
+      Entry: 6
+      Data: 
   sprite: {fileID: 21300000, guid: deae301297cf745449e47f4cdf147cfb, type: 3}
   Name: Sleep Potion
   <id>k__BackingField: SleepPotion
@@ -129,3 +132,4 @@ MonoBehaviour:
   IsFound: 0
   usageTime: 0.5
   radius: 4
+  effectArea_XPos: 3

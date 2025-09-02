@@ -35,9 +35,9 @@ public class InventoryUIController : SerializedMonoBehaviour
     public Slot_UI selected;
     public Slot_UI current;
 
-    public Player player;
+    public PlayerCombatGrid player;
 
-    private PlayerControls input;
+    //private PlayerControls input;
     private InputAction nav;
 
     private int currentX;
@@ -236,20 +236,14 @@ public class InventoryUIController : SerializedMonoBehaviour
 
     public void DrawInventory()
     {
-        //InventorySlot[] slotList = transform.GetComponentsInChildren<InventorySlot>();
         foreach (InventorySlot_UI slot in ItemSlots)
         {
             slot.Clear();
         }
 
-        //foreach (InventoryItem item in inv.inventory)
-        //{
-        //    AddInventorySlot(item);
-        //}
         for(int i = 0; i < inv.inventory.Count; i++)
         {
             ItemSlots[i].GetComponent<InventorySlot_UI>().Set(inv.inventory[i]);
-
         }
 
 
@@ -275,7 +269,7 @@ public class InventoryUIController : SerializedMonoBehaviour
 
     private void OnEnable()
     {
-        input = player.GetComponent<Player_Interact>().input;
+        //input = player.GetComponent<Player_Interact>().input;
 
         inv.onInventoryAdd += OnInventoryAdd;
         inv.onInventoryRemove += OnInventoryRemove;
@@ -286,9 +280,9 @@ public class InventoryUIController : SerializedMonoBehaviour
             item.onMouseDown += ButtonCallback;
         }
 
-        input.UI.Cancel.performed += Cancel;
-        input.UI.Navigate.Enable();
-        input.UI.Cancel.Enable();
+        //input.UI.Cancel.performed += Cancel;
+        //input.UI.Navigate.Enable();
+        //input.UI.Cancel.Enable();
         EventSystem.current.SetSelectedGameObject(ItemSlots[0].gameObject);
         OnUpdateInventory();
 
@@ -304,9 +298,9 @@ public class InventoryUIController : SerializedMonoBehaviour
             item.onMouseDown -= ButtonCallback;
 
         }
-        input.UI.Cancel.performed -= Cancel;
-        input.UI.Cancel.Disable();
-        input.UI.Navigate.Disable();
+        //input.UI.Cancel.performed -= Cancel;
+        //input.UI.Cancel.Disable();
+        //input.UI.Navigate.Disable();
     }
 
     private void Update()
@@ -510,7 +504,11 @@ public class InventoryUIController : SerializedMonoBehaviour
                     }
                     break;
                 case OpenState.General:
-                    //StartDrag(position, slot);
+                    if (selected.storedItem.item is PotionInfo_SO)
+                    {
+                        PlayerCombatGrid.Instance.currentAttackPotionArray = ((PotionInfo_SO)selected.storedItem.item).potionEffectArea;
+                        PlayerCombatGrid.Instance.state = PlayerState.UsePotion;
+                    }
                     break;
                 case OpenState.None:
                     Debug.Log("Not open in a valid state!");
@@ -527,6 +525,7 @@ public class InventoryUIController : SerializedMonoBehaviour
         yield return new WaitForSeconds(1.5f);
         alreadyResearched.SetActive(false);
     }
+
     public IEnumerator NeedsResearch()
     {
         yield return new WaitForSeconds(1.5f);

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public enum GridContents
+public enum GridContentType
 {
     None,
     Player,
@@ -12,7 +12,7 @@ public enum GridContents
 
 public class GridSpace
 {
-    //public GridContents contents;
+    public GridContentType contentType;
 
     public GridContent contents;
 
@@ -33,21 +33,24 @@ public class GridSpace
 
 
     public Vector2Int position;
+    public Vector2Int gridPos;
 
     public GridSpace() { }
 
-    public GridSpace(Vector2Int position)
+    public GridSpace(Vector2Int position, Vector2Int gridPos)
     {
         this.position = position;
+        this.gridPos = gridPos;
         IsHighlighted = false;
+        contentType = GridContentType.None;
     }
 
     
 
     
-    public void UpdateContents(GridContents newContents)
+    public void UpdateContents(GridContentType newContentType)
     {
-        //contents = newContents;
+        contentType = newContentType;
     }
     public void HighlightSpace()
     {
@@ -63,6 +66,13 @@ public class GridSpace
     {
         //playerMoveSprite.enabled = false;
         playerWeaponHighlight.enabled = false;
+    }
+
+    public void CollectHerb()
+    {
+        //contentsSprite.sprite = null;
+        UpdateContents(GridContentType.None);
+        Debug.Log("Herb Added");
     }
 
     public void OnMouseEnter()

@@ -64,7 +64,7 @@ public class Player_Interact : MonoBehaviour
     {
         input = new PlayerControls();
         IsCrouched = false;
-        PlayerInput inputContoller = FindObjectOfType<PlayerInput>();
+        PlayerInput inputContoller = FindFirstObjectByType<PlayerInput>();
         updateButtonImage(inputContoller.currentControlScheme);
     }
 

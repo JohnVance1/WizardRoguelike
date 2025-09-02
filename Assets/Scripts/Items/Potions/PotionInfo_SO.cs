@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 [CreateAssetMenu(fileName = "PotionInfo_SO", menuName = "ScriptableObjects/PotionInfo_SO", order = 1)]
 public class PotionInfo_SO : Item_Base
@@ -22,6 +23,15 @@ public class PotionInfo_SO : Item_Base
     public float usageTime;
 
     public int radius;
+
+    public int effectArea_XPos = 3;
+
+    [TableMatrix(IsReadOnly = true)]
+    public bool[,] potionEffectArea = new bool[3,3];
+
+    private void Awake()
+    {
+    }
 
     // Makes sure that the id is always the name of the ScriptableObject asset
     private void OnValidate()
