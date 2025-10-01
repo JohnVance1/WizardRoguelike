@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : GridContent
 {
     [SerializeField]
     public int health;
@@ -60,7 +60,12 @@ public class Character : MonoBehaviour
 
     }
 
-    
+    public void SetPos(int xPos, int yPos)
+    {
+        transform.position = map.GetCellCenterWorld(new Vector3Int(xPos, yPos, 0));
+
+    }
+
 
     virtual public void Attack() { }
 

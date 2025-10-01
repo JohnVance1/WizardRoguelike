@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using GridGame;
 
 public class GridGameManager : MonoBehaviour
 {
@@ -57,8 +58,9 @@ public class GridGameManager : MonoBehaviour
         if (map.HasTile(currentGridSpace))
         {
             GridSpace space = spawner.MapToGrid(currentGridSpace.x, currentGridSpace.y);
-            if (space.contents == PlayerCombatGrid.Instance && PlayerCombatGrid.Instance.state == PlayerState.Idle)
+            if (space.contents == PlayerCombatGrid.Instance && PlayerCombatGrid.Instance.state == PlayerState.Idle && PlayerCombatGrid.Instance.moveNums > 0)
             {
+                PlayerCombatGrid.Instance.currentSpace = space;
                 PlayerCombatGrid.Instance.ShowMoveableSpaces(space.position.x, space.position.y);
                 PlayerCombatGrid.Instance.state = PlayerState.Move;
             }
@@ -66,6 +68,8 @@ public class GridGameManager : MonoBehaviour
             {
                 PlayerCombatGrid.Instance.transform.position = map.GetCellCenterWorld(currentGridSpace);
                 spawner.SetCurrentGridNode(currentGridSpace.x, currentGridSpace.y, PlayerCombatGrid.Instance);
+                PlayerCombatGrid.Instance.moveNums--;
+                PlayerCombatGrid.Instance.currentSpace = space;
                 spawner.ResetHighlightGridSpaces();
                 PlayerCombatGrid.Instance.state = PlayerState.Idle;
             }

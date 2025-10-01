@@ -21,7 +21,7 @@ public class SleepPotion : PotionInfo_SO
             if(col.tag.Equals("Enemy"))
             {
                 enemies.Add(col.gameObject);
-                col.GetComponent<BaseEnemy>().SetStatus(EnemyStatus.Sleep);
+                col.GetComponent<BaseEnemy>().SetStatus(EnemyStatus.Asleep);
             }
         }
                

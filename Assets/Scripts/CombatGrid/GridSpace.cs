@@ -1,5 +1,9 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using GridGame;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 
 public enum GridContentType
 {
@@ -31,9 +35,10 @@ public class GridSpace
     public delegate void OnGridHighlightReset();
     public OnGridHighlightReset onGridHighlightReset;
 
-
     public Vector2Int position;
     public Vector2Int gridPos;
+
+    public List<GridSpace> neighbors;
 
     public GridSpace() { }
 
@@ -43,11 +48,12 @@ public class GridSpace
         this.gridPos = gridPos;
         IsHighlighted = false;
         contentType = GridContentType.None;
+        neighbors = new List<GridSpace>();
     }
 
     
 
-    
+
     public void UpdateContents(GridContentType newContentType)
     {
         contentType = newContentType;

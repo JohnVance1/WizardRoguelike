@@ -7,23 +7,20 @@ using UnityEngine.AI;
 public enum EnemyStatus
 {
     None = 0,
-    Sleep = 1,
+    Asleep = 1,
     OnFire = 2,
 };
 
 
 public class BaseEnemy : Character
 {
-    protected NavMeshAgent agent;
     [SerializeField]
     protected GameObject player;
     protected EnemyStatus status; 
 
     public void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
+
     }
 
     

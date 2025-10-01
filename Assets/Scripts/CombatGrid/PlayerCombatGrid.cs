@@ -14,14 +14,13 @@ public enum PlayerState
 }
 
 
-public class PlayerCombatGrid : GridContent
+public class PlayerCombatGrid : Character
 {
     public Player_Interact interact;
 
-    public Tilemap map;
-
-    public CombatGridSpawner Spawner;
     private int x, y;
+
+    public GridSpace currentSpace;
 
     public int moveDistance;
     private List<GridSpace> moveableSpaces;
@@ -69,12 +68,6 @@ public class PlayerCombatGrid : GridContent
     private void Update()
     {
         
-    }
-
-    public void SetPos(int xPos, int yPos)
-    {
-        transform.position = map.GetCellCenterWorld(new Vector3Int(xPos, yPos, 0));
-
     }
 
     public void ShowMoveableSpaces(int xPos, int yPos)

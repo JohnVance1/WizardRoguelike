@@ -5,6 +5,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
+using GridGame;
 
 public class CombatGridSpawner : MonoBehaviour
 {
@@ -62,6 +63,8 @@ public class CombatGridSpawner : MonoBehaviour
                     grid[x, y] = new GridSpace(new Vector2Int(px, py), new Vector2Int(x, y));
                     grid[x, y].defaultSprite = defaultSprite;
 
+                    
+
                     if (x == 2 && y == 1)
                     {
                         grid[x, y].herb = tempHerb;
@@ -73,8 +76,48 @@ public class CombatGridSpawner : MonoBehaviour
             }
         }
 
+        for (int x = 0; x < width; x++)
+        { 
+            for(int y = 0; y < height;y++)
+            {
+                if(y > 0 && y < height - 1)
+                {
+                    grid[x, y].neighbors.Add(grid[x, y - 1]);
+                    grid[x, y].neighbors.Add(grid[x, y + 1]);
+                }
+                else if(y == 0)
+                {
+                    grid[x, y].neighbors.Add(grid[x, y + 1]);
+                }
+                else if(y == height - 1)
+                {
+                    grid[x, y].neighbors.Add(grid[x, y - 1]);
+                }
+
+                if (x > 0 && x < width - 1)
+                {
+                    grid[x, y].neighbors.Add(grid[x + 1, y]);
+                    grid[x, y].neighbors.Add(grid[x - 1, y]);
+
+                }
+                else if(x == 0)
+                {
+                    grid[x, y].neighbors.Add(grid[x + 1, y]);
+                }
+                else if(x == width - 1)
+                {
+                    grid[x, y].neighbors.Add(grid[x - 1, y]);
+                }
+                
+
+
+               
+            }
+        }
+
         PlayerCombatGrid.Instance.AddItemToInventory(tempPotion);
         SetCurrentGridNode(0, 0, PlayerCombatGrid.Instance);
+        PlayerCombatGrid.Instance.currentSpace = grid[0, 0];
         //grid[0, 0].contents = PlayerCombatGrid.Instance;
         PlayerCombatGrid.Instance.SetPos(0, 0);
 
@@ -84,7 +127,6 @@ public class CombatGridSpawner : MonoBehaviour
     {
         int px = Mathf.Abs(bounds.xMin) + x;
         int py = Mathf.Abs(bounds.yMin) + y;
-        Debug.Log("X:" + x + " Y:" + y);
 
         if (grid[px, py].contentType != GridContentType.None)
         {
@@ -103,7 +145,7 @@ public class CombatGridSpawner : MonoBehaviour
         }
 
 
-
+        newContent.currentSpace = grid[px, py];
         grid[px, py].contents = newContent;
         Debug.Log(grid[px, py].contents.name);
     }
@@ -139,11 +181,11 @@ public class CombatGridSpawner : MonoBehaviour
     public Vector3Int GridToMap(int gridPosX, int gridPosY)
     {
         Vector3Int mapPos = new Vector3Int(
-            gridPosX - (width / 2), 
+            gridPosX - (width / 2),
             gridPosY - (height / 2),
             0
         );
-       
+
 
         return mapPos;
     }
@@ -196,7 +238,7 @@ public class CombatGridSpawner : MonoBehaviour
     {
         List<GridSpace> visited = new List<GridSpace>();
         //visited.Add(grid[xPos, yPos]);
-        Vector2Int vec = MapToGridVec(xPos, yPos);
+        Vector2Int vec = Grid_Utils.MapToGridVec(xPos, yPos, bounds.xMin, bounds.yMin);
         SetMoveableSpacesRecursive(moveDist, vec.x, vec.y, visited);
 
         return visited;
