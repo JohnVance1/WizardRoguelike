@@ -12,6 +12,7 @@ public class Enemy_Basic : BaseEnemy
 
     public Vector2Int gridPos;
 
+
     //public Weapon activeWeapon;
 
     public new void Start()
@@ -22,14 +23,11 @@ public class Enemy_Basic : BaseEnemy
 
     public void Update()
     {
-        MoveEnemy();
+        //MoveEnemy();
         Attack();
     }
 
-    public void MoveEnemy()
-    {
-        
-    }
+   
 
     public override void Attack()
     {
